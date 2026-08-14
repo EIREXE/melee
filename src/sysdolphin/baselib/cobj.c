@@ -1323,6 +1323,9 @@ void HSD_CObjInit(HSD_CObj* cobj, HSD_CObjDesc* desc)
 
 HSD_CObj* HSD_CObjLoadDesc(HSD_CObjDesc* desc)
 {
+#ifdef MELEE_PC
+    MELEE_PC_DAT(HSD_CObjDesc, desc);
+#endif
     HSD_ClassInfo* info;
     HSD_CObj* cobj;
 

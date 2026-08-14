@@ -158,13 +158,13 @@ void HSD_DevComARAMWakeUp(void)
                 DCStoreRange((void*) aramDC->src, aramDC->size);
                 ARQPostRequest(devComARQR[req_idx], 0, 0, 1, aramDC->src,
                                aramDC->dest, aramDC->size,
-                               HSD_DevComARAMCallback);
+                               (ARQCallback) HSD_DevComARAMCallback);
                 aramstate = 1;
             } else if (aramDC->type == 0x19) {
                 DCInvalidateRange((void*) aramDC->dest, aramDC->size);
                 ARQPostRequest(devComARQR[req_idx], 0, 1, 1, aramDC->src,
                                aramDC->dest, aramDC->size,
-                               HSD_DevComARAMCallback);
+                               (ARQCallback) HSD_DevComARAMCallback);
                 aramstate = 1;
             } else if (aramDC->type == 0x1A) {
                 DCInvalidateRange(HSD_DevCom_804C6330_bufs[req_idx],

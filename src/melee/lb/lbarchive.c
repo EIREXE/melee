@@ -144,6 +144,7 @@ void lbArchive_80016EFC(HSD_Archive* archive)
 {
     HSD_ASSERT(0xFC, archive);
     HSD_ASSERT(0xFD, archive->flags & HSD_ARCHIVE_DONT_FREE);
+    MELEE_PC_ON_ARCHIVE_FREE(archive->data, archive->header.data_size);
     lbHeap_80015CA8(0, (u32*) (archive->data - 0x20));
     lbHeap_80015CA8(0, (u32*) archive);
 }

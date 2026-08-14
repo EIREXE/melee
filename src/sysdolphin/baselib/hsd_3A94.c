@@ -581,7 +581,7 @@ s32 fn_803AA790(void)
         entry->x0 = 0;
         return result;
     case 2:
-        switch (((s32*) (arg0 + 0x28))[entry->x8]) {
+        switch (((CardState*) arg0)->x28[entry->x8]) {
         case 0:
             result = fn_803AE7F8((struct CardState*) entry->x4, entry->x8,
                                  entry->xC, 1, (s32) entry->x14);
@@ -4966,7 +4966,8 @@ int hsd_803B2550(s32* arg0, const char* arg1, void (*arg2)(int, int))
 {
     s32 new_var;
     u8* base = hsd_804D1138;
-    s32 chan = arg0[1];
+    CardState* state = (CardState*) arg0;
+    s32 chan = state->x4;
     s32 new_var3;
     s32 new_var2;
     s32 retries;
@@ -4974,7 +4975,7 @@ int hsd_803B2550(s32* arg0, const char* arg1, void (*arg2)(int, int))
     s32 write_idx;
     new_var2 = chan;
     for (retries = 0; retries < 10; retries++) {
-        result = CARDOpen(new_var2, (char*) arg1, (CARDFileInfo*) (arg0 + 3));
+        result = CARDOpen(new_var2, (char*) arg1, &state->file_info);
         if (result != -1) {
             break;
         }
@@ -4986,15 +4987,15 @@ int hsd_803B2550(s32* arg0, const char* arg1, void (*arg2)(int, int))
 
     result = 0;
     {
-        s32 tmp = arg0[4];
+        s32 tmp = state->file_info.fileNo;
         do {
             if (tmp != -1) {
                 break;
             }
             result++;
         } while (result < 10);
-        write_idx = arg0[4];
-        retries = (new_var = (new_var3 = arg0[4]));
+        write_idx = state->file_info.fileNo;
+        retries = (new_var = (new_var3 = state->file_info.fileNo));
         write_idx = retries;
         if (tmp < 0) {
             return new_var;
@@ -5002,7 +5003,7 @@ int hsd_803B2550(s32* arg0, const char* arg1, void (*arg2)(int, int))
     }
 
     for (chan = 0; chan < 10; chan++) {
-        if (CARDClose((CARDFileInfo*) (arg0 + 3)) != -1) {
+        if (CARDClose(&state->file_info) != -1) {
             break;
         }
     }

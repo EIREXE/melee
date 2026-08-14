@@ -695,7 +695,7 @@ HSD_Text* HSD_SisLib_803A6754(int font_idx, s32 context_id)
 
     text = HSD_SisLib_803A5ACC(font_idx, context_id, 0.0F, 0.0F, 0.0F, 640.0F,
                                480.0F);
-    alloc = HSD_SisLib_Alloc(0x10);
+    alloc = HSD_SisLib_Alloc(MAX(0x10, (s32) sizeof(SisBlock)));
     text->alloc_data = alloc;
     buffer = HSD_SisLib_Alloc(0x80);
     alloc->data = buffer;
@@ -1724,6 +1724,12 @@ done:
 
 void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
 {
+#ifdef MELEE_PC
+    // Text rendering is disabled on PC, for now
+    (void) gobj;
+    (void) pass;
+    return;
+#else
     // clang-format off
     HSD_Text *text;
     GXTexObj tex_obj;
@@ -2258,6 +2264,7 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
         }
     }
     // clang-format on
+#endif
 }
 
 HSD_Archive* HSD_SisLib_803A945C(char* path)

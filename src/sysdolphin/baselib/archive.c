@@ -9,8 +9,9 @@ static inline void Locate(HSD_Archive* archive)
     u32* ptr;
 
     for (i = 0; i < archive->header.nb_reloc; i++) {
-        ptr = (u32*) (archive->data + archive->reloc_info[i].offset);
-        *ptr += (u32) archive->data;
+        ptr = (u32*) (archive->data +
+                      MELEE_PC_BE32(archive->reloc_info[i].offset));
+        *ptr = MELEE_PC_BE32(MELEE_PC_BE32(*ptr) + (u32) archive->data);
     }
 }
 
@@ -25,6 +26,7 @@ s32 HSD_ArchiveParse(HSD_Archive* archive, u8* src, size_t file_size)
     memset(archive, 0, sizeof(HSD_Archive));
     archive->flags |= 1;
     memcpy(archive, src, sizeof(HSD_ArchiveHeader));
+    MELEE_PC_ARCHIVE_HEADER_BE(&archive->header);
 
     if (archive->header.file_size != file_size) {
         OSReport("HSD_ArchiveParse: byte-order mismatch! Please check data "
@@ -72,11 +74,13 @@ void* HSD_ArchiveGetPublicAddress(HSD_Archive* archive, const char* symbols)
 
     for (i = 0; i < archive->header.nb_public; i++) {
         int comparison =
-            strcmp(archive->symbols + archive->public_info[i].symbol, symbols);
+            strcmp(archive->symbols +
+                       MELEE_PC_BE32(archive->public_info[i].symbol),
+                   symbols);
 
         if (comparison == 0) {
             // If both strings are equal, we've found the node
-            return archive->data + archive->public_info[i].offset;
+            return archive->data + MELEE_PC_BE32(archive->public_info[i].offset);
         }
     }
 
@@ -89,7 +93,8 @@ char* HSD_ArchiveGetExtern(HSD_Archive* archive, int offset)
         return NULL;
     }
 
-    return archive->symbols + archive->extern_info[offset].symbol;
+    return archive->symbols +
+           MELEE_PC_BE32(archive->extern_info[offset].symbol);
 }
 
 void HSD_ArchiveLocateExtern(HSD_Archive* archive, const char* symbols,
@@ -101,10 +106,11 @@ void HSD_ArchiveLocateExtern(HSD_Archive* archive, const char* symbols,
 
     for (i = 0; i < archive->header.nb_extern; i++) {
         int comparison =
-            strcmp(symbols, archive->symbols + archive->extern_info[i].symbol);
+            strcmp(symbols, archive->symbols +
+                                MELEE_PC_BE32(archive->extern_info[i].symbol));
 
         if (comparison == 0) {
-            offset = archive->extern_info[i].offset;
+            offset = MELEE_PC_BE32(archive->extern_info[i].offset);
             break;
         }
     }
@@ -114,8 +120,9 @@ void HSD_ArchiveLocateExtern(HSD_Archive* archive, const char* symbols,
     }
 
     while (offset != -1U && offset < archive->header.data_size) {
-        next = *(uintptr_t*) ((uintptr_t) archive->data + offset);
-        *(u32*) ((uintptr_t) archive->data + offset) = (uintptr_t) addr;
+        next = MELEE_PC_BE32(*(u32*) ((uintptr_t) archive->data + offset));
+        *(u32*) ((uintptr_t) archive->data + offset) =
+            MELEE_PC_BE32((u32) (uintptr_t) addr);
         offset = next;
     }
 }

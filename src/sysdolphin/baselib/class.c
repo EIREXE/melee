@@ -46,6 +46,7 @@ void hsdInitClassInfo(HSD_ClassInfo* class_info, HSD_ClassInfo* parent_info,
         }
         HSD_ASSERT(94, class_info->head.obj_size >= parent_info->head.obj_size);
         HSD_ASSERT(95, class_info->head.info_size >= parent_info->head.info_size);
+        // 0x28 is sizeof(HSD_ClassInfoHead) on PowerPC
         memcpy(&class_info->alloc, &parent_info->alloc,
                parent_info->head.info_size - sizeof(HSD_ClassInfoHead));
         class_info->head.next = parent_info->head.child;
@@ -108,7 +109,8 @@ HSD_MemoryEntry* GetMemoryEntry(s32 idx)
             memcpy(new_list, memory_list,
                    sizeof(*memory_list) * nb_memory_list);
             memset(&new_list[nb_memory_list], 0,
-                   4 * (new_nb -
+                   sizeof(*memory_list) *
+                       (new_nb -
                         nb_memory_list)); // You start *after* existing ptrs
                                           // and make sure memory is zero'd
 

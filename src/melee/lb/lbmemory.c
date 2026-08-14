@@ -64,7 +64,7 @@ static inline Handle* new_handle(void* arenaLo, void* arenaHi)
     Handle* h;
     HSD_ASSERT(0x7B, _p(free_heap));
 
-    if (((u32) arenaLo < 0x80000000U) && ((u32) arenaHi < 0x80000000U)) {
+    if (MELEE_PC_IS_NOT_MAINRAM(arenaLo) && MELEE_PC_IS_NOT_MAINRAM(arenaHi)) {
         HSD_ASSERT(0x80, (u32)arenaLo >= (u32)_p(a_arenaLo) && (u32)arenaHi <= (u32)_p(a_arenaHi));
     }
 
@@ -349,6 +349,16 @@ void lbMemory_8001564C(void)
 
     _p(x634_max_num_allocs) = 0;
     _p(x630_num_allocs) = 0;
+#ifdef MELEE_PC
+    // Written through the array rather than as base+constant
+    _p(free_heap) = &_p(x638_heap)[0];
+    _p(x638_heap)[0].x0_next = &_p(x638_heap)[1];
+    _p(x638_heap)[1].x0_next = &_p(x638_heap)[2];
+    _p(x638_heap)[2].x0_next = &_p(x638_heap)[3];
+    _p(x638_heap)[3].x0_next = &_p(x638_heap)[4];
+    _p(x638_heap)[4].x0_next = &_p(x638_heap)[5];
+    _p(x638_heap)[5].x0_next = NULL;
+#else
     // The chain below walks _p(x638_heap)[0..5], one Handle (0x10) apart.
     // Writing it through the array instead does not match.
     _p(free_heap) = &_p(x638_heap)[0];
@@ -358,6 +368,7 @@ void lbMemory_8001564C(void)
     *(void**) (base + 0x668) = base + 0x678;
     *(void**) (base + 0x678) = base + 0x688;
     *(void**) (base + 0x688) = NULL;
+#endif
     _p(x69C) = NULL;
     {
         void* hi = _p(a_arenaHi);

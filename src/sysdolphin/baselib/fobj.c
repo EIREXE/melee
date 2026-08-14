@@ -455,6 +455,9 @@ void HSD_FObjInterpretAnimAll(void* fobj, void* obj,
 
 HSD_FObj* HSD_FObjLoadDesc(HSD_FObjDesc* desc)
 {
+#ifdef MELEE_PC
+    MELEE_PC_DAT(HSD_FObjDesc, desc);
+#endif
     if (desc != NULL) {
         HSD_FObj* fobj = HSD_FObjAlloc();
         fobj->next = HSD_FObjLoadDesc(desc->next);
