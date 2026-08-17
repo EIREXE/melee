@@ -19,6 +19,7 @@ void exit(int status);
 void melee_pc_arq_drain(void);
 void melee_pc_alarms_poll(void);
 void melee_pc_card_drain(void);
+void melee_pc_dvd_drain(void);
 void melee_pc_vi_poll(void);
 int vprintf(const char* format, va_list arg);
 int fflush(void* stream);
@@ -119,6 +120,9 @@ static void deliver_interrupts(void)
         return;
     }
 
+    // Disc first: a DVD completion posts the ARAM transfer that finishes the
+    // request, so draining it here lets the whole chain advance in one pass.
+    melee_pc_dvd_drain();     // stands in for the DI completion interrupt
     melee_pc_arq_drain();     // stands in for the ARAM DMA completion
 
     if (in_delivery) {
@@ -132,6 +136,8 @@ static void deliver_interrupts(void)
     melee_pc_vi_poll();       // stands in for the VI vertical-retrace interrupt
     in_delivery = false;
 }
+
+void melee_pc_pump(void) { deliver_interrupts(); }
 
 BOOL OSDisableInterrupts(void)
 {
@@ -387,6 +393,7 @@ void VIWaitForRetrace(void)
     deadline = melee_pc_now() + (OSTime) OS_TIMER_CLOCK;
 
     while (retrace_count == start) {
+        melee_pc_dvd_drain();
         melee_pc_arq_drain();
         melee_pc_alarms_poll();
         melee_pc_vi_poll();

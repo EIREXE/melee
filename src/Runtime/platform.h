@@ -191,6 +191,19 @@ bool melee_pc_in_mem1(const void* p);
 void melee_pc_dat_forget(const void* base, u32 size);
 #define MELEE_PC_ON_ARCHIVE_FREE(base, size)                                  \
     melee_pc_dat_forget((base), (size))
+
+/// @brief Runs one round of simulated interrupt delivery: ARAM DMA, memory
+/// card, alarms and vertical retrace. Expands to nothing everywhere else,
+/// because on the GameCube the hardware does this on its own.
+///
+/// Only needed inside the game's busy-wait loops. Elsewhere the compat layer
+/// delivers from OSRestoreInterrupts(), which is the closest thing a PC has to
+/// the moment the CPU becomes interruptible again. A loop like
+/// lbfile.c's waitForDisc() never touches the interrupt state, though, so
+/// nothing there is ever delivered and the completion it is waiting for cannot
+/// arrive.
+void melee_pc_pump(void);
+#define MELEE_PC_PUMP() melee_pc_pump()
 #else
 /// Identity on the GameCube, which is big-endian already.
 #define MELEE_PC_BE32(x) (x)
@@ -200,6 +213,7 @@ void melee_pc_dat_forget(const void* base, u32 size);
 #define MELEE_PC_IS_NOT_MAINRAM(a) ((u32) (a) < 0x80000000U)
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)
 #define MELEE_PC_ALIGN32
+#define MELEE_PC_PUMP() ((void) 0)
 #endif
 
 #define RETURN_IF(cond)                                                       \

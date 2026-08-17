@@ -51,6 +51,7 @@ void lb_8001955C(void)
 
 void lb_800195D0(void)
 {
+    MELEE_PC_PUMP();
     lb_800192A8(lb_8001955C);
     lb_8001CC84();
 }

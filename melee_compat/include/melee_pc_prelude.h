@@ -67,6 +67,15 @@ u32 melee_pc_pad_read(struct PADStatus* status);
 #define CARDRenameAsync melee_pc_card_rename_async
 #define CARDSetStatusAsync melee_pc_card_set_status_async
 
+// Routes disc reads through melee_compat/src/dvd_async.c, which runs the
+// completion callback on the game thread instead of on aurora's DVD worker.
+// devcom.c's state machine is not thread-safe and OSDisableInterrupts is
+// per-thread here, so a callback from the worker corrupts it mid-request.
+struct DVDFileInfo;
+int melee_pc_dvd_read_async_prio(struct DVDFileInfo*, void*, s32, s32,
+                                 void (*)(s32, struct DVDFileInfo*), s32);
+#define DVDReadAsyncPrio melee_pc_dvd_read_async_prio
+
 float powf(float x, float y);
 float tanf(float x);
 

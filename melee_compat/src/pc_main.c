@@ -25,6 +25,7 @@
 // the game sources need but this one must not see.
 void melee_pc_set_mem1(const void* start, unsigned int size);
 void melee_pc_arq_drain(void);
+void melee_pc_dvd_drain(void);
 void melee_pc_alarms_poll(void);
 void melee_pc_mark_game_thread(void);
 int melee_pc_dat_selftest(void);
@@ -136,6 +137,7 @@ void melee_pc_frame_pump(void)
     // on hardware. Alarms are normally delivered from OSRestoreInterrupts, but
     // a frame the game spends blocked on VI rather than on the pad queue would
     // otherwise let their schedule drift.
+    melee_pc_dvd_drain();
     melee_pc_arq_drain();
     melee_pc_alarms_poll();
 
