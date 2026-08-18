@@ -275,9 +275,34 @@ def closure(gc: dict) -> list[str]:
     return seen
 
 
+# Typedefs that are pointers without a "*" in the spelling. A pointer misread
+# as a scalar used to be survivable -- the archive loader wrote absolute
+# addresses, so copying the 32 bits through happened to produce a valid pointer
+# on a low-mapped host. It is not survivable now: slots hold self-relative
+# offsets, so an undecoded one is a wild pointer. HSD_Joint::mtx (MtxPtr) is
+# how this was found.
+POINTER_TYPEDEFS = {"MtxPtr", "VecMtxPtr"}
+
+# Typedefs that are a fixed-size array of scalars rather than one scalar.
+# Classifying one as DAT_U32 swaps its first four bytes and leaves the rest
+# zeroed, so each is emitted as N separate elements instead.
+INLINE_SCALAR_ARRAYS = {"Mtx44": ("DAT_U32", 16, 4)}
+
+# Everything else that may legitimately appear as a scalar field. The point of
+# listing them is that kind_for() must never silently fall back: an unknown
+# type is far more likely to be a new typedef than a new integer width, and
+# guessing DAT_U32 is exactly the bug described above.
+KNOWN_SCALARS = {
+    "int", "unsigned int", "long", "unsigned long", "s32", "u32", "f32",
+    "float", "enum_t",
+}
+
+
 def kind_for(ctype: str) -> str:
     t = ctype.replace("const ", "").strip()
     if "*" in t:
+        return "DAT_PTR"
+    if t in POINTER_TYPEDEFS:
         return "DAT_PTR"
     if t in ("u8", "s8", "char", "unsigned char", "signed char", "bool",
              "_Bool"):
@@ -287,7 +312,9 @@ def kind_for(ctype: str) -> str:
     if t in ("f64", "double", "u64", "s64", "long long",
              "unsigned long long"):
         return "DAT_U64"
-    return "DAT_U32"  # int, u32, f32, enums: swapping 32 bits is right anyway
+    if t in KNOWN_SCALARS or t.startswith("GX"):
+        return "DAT_U32"  # int, u32, f32, enums: swapping 32 bits is right
+    return ""  # unknown -- main() turns this into an error
 
 
 def main() -> int:
@@ -440,8 +467,28 @@ def main() -> int:
                             f"{pid}, {crow['off']}, {cw} }}, "
                             f"// {r['name']}[{cname}]")
             else:
+                # base_type() is for pointers and returns "" here, so match
+                # the spelled type the same way kind_for() does.
+                base = r["ctype"].replace("const ", "").strip()
+                if base in INLINE_SCALAR_ARRAYS:
+                    ek, n, w = INLINE_SCALAR_ARRAYS[base]
+                    for j in range(n):
+                        body.append(f"    {{ {goff + j * w:4}, "
+                                    f"{hoff + j * w:4}, {ek:15}, "
+                                    f"{'DAT_T_NONE':28}, 0, 0 }}, "
+                                    f"// {r['ctype']} {r['name']}[{j}]")
+                    continue
+                k = kind_for(r["ctype"])
+                if not k:
+                    print(f"error: {name}.{r['name']}: unknown field type "
+                          f"'{r['ctype']}'. If it is a pointer add it to "
+                          f"POINTER_TYPEDEFS, if it is an array of scalars add "
+                          f"it to INLINE_SCALAR_ARRAYS, otherwise add it to "
+                          f"KNOWN_SCALARS. Guessing here is how a pointer ends "
+                          f"up copied through undecoded.", file=sys.stderr)
+                    return 1
                 body.append(f"    {{ {goff:4}, {hoff:4}, "
-                            f"{kind_for(r['ctype']):15}, {pid:28}, 0, 0 }},"
+                            f"{k:15}, {pid:28}, 0, 0 }},"
                             f" // {r['ctype']} {r['name']}")
 
         body.append("    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },")

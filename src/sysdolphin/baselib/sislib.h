@@ -4,6 +4,10 @@
 #include <placeholder.h>
 #include <platform.h>
 
+#include "sislib_font.h" // HSD_SisLib_FontAtlas, for the glyph count below
+
+#include <stddef.h> // offsetof, for the layout asserts below
+
 #include "baselib/archive.h"
 #include "baselib/cobj.h"
 
@@ -48,6 +52,10 @@ typedef struct sisLib_803A7664_t {
     u32 xC;
 } sisLib_803A7664_t;
 
+/// Named so the field below can carry a pointer qualifier, which needs the
+/// type spelled before the declarator.
+typedef void (*HSD_TextRenderCallback)(void*);
+
 struct HSD_Text {
     // these get passed to the text initializer HSD_SisLib_803A5ACC
     f32 pos_x;      ///< world position x
@@ -71,14 +79,19 @@ struct HSD_Text {
     u8 hidden; ///< visibility flag
     u8 x4E;
     u8 font_idx; ///< which font to select from the array HSD_SisLib_804D1124
-    HSD_Text* next;
-    HSD_GObj* entity;
-    void (*render_callback)(
-        void*);      ///< callback in the text renderer (HSD_SisLib_803A84BC)
-    SIS* sis_buffer; ///< SIS text buffer
-    UNK_T x60;       ///< position in text buffer
-    SisBlock* alloc_data;
-    char* string_buffer; ///< raw string buffer
+    // The field names from here down are GameCube offsets, so this struct is
+    // layout-pinned and every pointer in it has to stay four bytes wide. Left
+    // natural, the seven below shifted sis_buffer by 12 and everything from
+    // x6C on by 28, and the text renderer read its opcode cursor out of two
+    // unrelated halves.
+    HSD_Text* MELEE_PC_PTR32 next;
+    HSD_GObj* MELEE_PC_PTR32 entity;
+    /// callback in the text renderer (HSD_SisLib_803A84BC)
+    HSD_TextRenderCallback MELEE_PC_PTR32 render_callback;
+    SIS* MELEE_PC_PTR32 sis_buffer; ///< SIS text buffer
+    UNK_T MELEE_PC_PTR32 x60;       ///< position in text buffer
+    SisBlock* MELEE_PC_PTR32 alloc_data;
+    char* MELEE_PC_PTR32 string_buffer; ///< raw string buffer
     u16 x6C;             ///< string length?
     u16 x6E;             ///< alloc size?
     f32 current_width;
@@ -96,6 +109,10 @@ struct HSD_Text {
     u8 alignment;
     u8 x9F;
 };
+MELEE_PC_LAYOUT_ASSERT(sizeof(struct HSD_Text) == 0xA0);
+MELEE_PC_LAYOUT_ASSERT(offsetof(struct HSD_Text, sis_buffer) == 0x5C);
+MELEE_PC_LAYOUT_ASSERT(offsetof(struct HSD_Text, x60) == 0x60);
+MELEE_PC_LAYOUT_ASSERT(offsetof(struct HSD_Text, x94) == 0x94);
 
 struct sislib_UnkAlloc3 {
     sislib_UnkAlloc3* x0;

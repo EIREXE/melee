@@ -575,6 +575,16 @@ void HSD_SisLib_803A62A0(s32 font_idx, char* archive_name, char* symbol_name)
     {
         SIS* sis = HSD_ArchiveGetPublicAddress(HSD_SisLib_804D1110[font_idx],
                                                symbol_name);
+#ifdef MELEE_PC
+        // The block is raw DAT memory: a flat array of 32-bit pointer slots,
+        // each holding a self-relative offset. Rebuild it at host width before
+        // anything reads it -- the renderer takes text->sis_buffer straight
+        // from here and walks it.
+        {
+            extern void* melee_pc_sis_convert(HSD_Archive*, void*);
+            sis = melee_pc_sis_convert(HSD_SisLib_804D1110[font_idx], sis);
+        }
+#endif
         HSD_SisLib_804D1124[font_idx] = sis;
         if (sis == NULL) {
             OSReport("Cannot find symbol %s.\n", symbol_name);
@@ -1261,12 +1271,12 @@ loop_3:
         HSD_SisLib_803A7684(text, (u8*) cursor, 0x85U);
         /* fallthrough */
     case 8:
-        cursor = (u8*) *(s32*) ((u8*) cursor + 1) - 1;
+        cursor = (u8*) (uintptr_t) MELEE_PC_BE32(*(u32*) ((u8*) cursor + 1)) - 1;
         goto block_33;
     case 14:
         HSD_SisLib_803A7684(text, (u8*) cursor, 0x83U);
-        text->x80.x = (f32) * (u16*) ((u8*) cursor + 1) / 256.0F;
-        scale_val = *(u16*) ((u8*) cursor + 3);
+        text->x80.x = (f32) MELEE_PC_BE16(*(u16*) ((u8*) cursor + 1)) / 256.0F;
+        scale_val = MELEE_PC_BE16(*(u16*) ((u8*) cursor + 3));
         cursor = (u8*) cursor + 4;
         text->x80.y = (f32) scale_val / 256.0F;
         goto block_33;
@@ -1279,7 +1289,7 @@ loop_3:
     case 10:
         if ((text->alloc_data == NULL) || (kern_enabled == 0)) {
             HSD_SisLib_803A7684(text, (u8*) cursor, 0x81U);
-            text->x78.x = (f32) * (s16*) ((u8*) cursor + 1) / 256.0F;
+            text->x78.x = (f32) (s16) MELEE_PC_BE16(*(u16*) ((u8*) cursor + 1)) / 256.0F;
         }
         cursor = (u8*) cursor + 4;
         goto block_33;
@@ -1310,7 +1320,7 @@ loop_3:
         if (opcode >= 0x20U) {
             *out_width += text->x80.x * (32.0F + text->x78.x);
             if (kern_enabled != 0) {
-                glyph_code = *(u16*) cursor;
+                glyph_code = MELEE_PC_BE16(*(u16*) cursor);
                 if (glyph_code < 0x4000U) {
                     kern_width =
                         (s32) (default_kerning +
@@ -1724,12 +1734,6 @@ done:
 
 void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
 {
-#ifdef MELEE_PC
-    // Text rendering is disabled on PC, for now
-    (void) gobj;
-    (void) pass;
-    return;
-#else
     // clang-format off
     HSD_Text *text;
     GXTexObj tex_obj;
@@ -1828,7 +1832,9 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
         GXSetAlphaUpdate(GX_DISABLE);
         if (gobj != NULL) {
             if (text->render_callback != NULL) {
-                text->render_callback(gobj);
+                // Widened before the call: the field is a 32-bit slot on PC and
+                // LLVM cannot emit a call through one. A no-op on GameCube.
+                ((HSD_TextRenderCallback) text->render_callback)(gobj);
             }
         }
         GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
@@ -1972,20 +1978,20 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
                                 skip_count -= 1;
                             } else {
                                 text->x98 = (u32) (text->x98 + 1);
-                                text->x94 = *(u16*) (sis_cursor + 1);
+                                text->x94 = MELEE_PC_BE16(*(u16*) (sis_cursor + 1));
                                 text->x60 = (void *) (sis_cursor + 3);
                             }
                             sis_cursor += 2;
                             break;
                         case 6:
-                            line_delay = *(u16*) (sis_cursor + 1);
-                            char_delay = *(u16*) (sis_cursor + 3);
+                            line_delay = MELEE_PC_BE16(*(u16*) (sis_cursor + 1));
+                            char_delay = MELEE_PC_BE16(*(u16*) (sis_cursor + 3));
                             sis_cursor += 4;
                             break;
                         case 7:
                             line_started = 1U;
                             HSD_SisLib_803A8134((void*) (sis_cursor + 5), text, &line_width_out, &line_height_out);
-                            x_origin = (f32) *(s16*) (sis_cursor + 1);
+                            x_origin = (f32) (s16) MELEE_PC_BE16(*(u16*) (sis_cursor + 1));
                             if (( text->fitting == 1) && (text->box_size_x < line_width_out)) {
                                 text->x88 = (text->box_size_x / line_width_out);
                             } else {
@@ -2002,7 +2008,7 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
                                 text->current_width = x_origin;
                                 break;
                             }
-                            y_offset = *(s16*) (sis_cursor + 3);
+                            y_offset = (s16) MELEE_PC_BE16(*(u16*) (sis_cursor + 3));
                             sis_cursor += 4;
                             text->current_height = ((f32) y_offset * text->font_size.y);
                             break;
@@ -2010,13 +2016,13 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
                             HSD_SisLib_803A7684(text, sis_cursor, 5U);
                             /* fallthrough */
                         case 8:
-                            sis_cursor = (u8*) *(s32*) (sis_cursor + 1) - 1;
+                            sis_cursor = (u8*) (uintptr_t) MELEE_PC_BE32(*(u32*) (sis_cursor + 1)) - 1;
                             break;
                         case 10:
                             if (((u32) text->alloc_data == 0U) || (saved_kerning == 0)) {
                                 HSD_SisLib_803A7684(text, sis_cursor, 1U);
-                                text->x78.x = (f32) ((f32) *(s16*) (sis_cursor + 1) * 0.00390625F);
-                                text->x78.y = (f32) ((f32) *(s16*) (sis_cursor + 3) * 0.00390625F);
+                                text->x78.x = (f32) ((f32) (s16) MELEE_PC_BE16(*(u16*) (sis_cursor + 1)) * 0.00390625F);
+                                text->x78.y = (f32) ((f32) (s16) MELEE_PC_BE16(*(u16*) (sis_cursor + 3)) * 0.00390625F);
                             }
                             sis_cursor += 4;
                             break;
@@ -2037,8 +2043,8 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
                             break;
                         case 14:
                             HSD_SisLib_803A7684(text, sis_cursor, 3U);
-                            text->x80.x = (f32) ((f32) *(u16*) (sis_cursor + 1) * 0.00390625F);
-                            text->x80.y = (f32) ((f32) *(u16*) (sis_cursor + 3) * 0.00390625F);
+                            text->x80.x = (f32) ((f32) MELEE_PC_BE16(*(u16*) (sis_cursor + 1)) * 0.00390625F);
+                            text->x80.y = (f32) ((f32) MELEE_PC_BE16(*(u16*) (sis_cursor + 3)) * 0.00390625F);
                             sis_cursor += 4;
                             break;
                         case 15:
@@ -2138,7 +2144,7 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
                                         }
                                     }
                                 }
-                                glyph_idx = *(u16 *)sis_cursor;
+                                glyph_idx = MELEE_PC_BE16(*(u16 *)sis_cursor);
                                 if (glyph_idx < 0x4000U) {
                                     tex_offset = glyph_idx - 0x2000;
                                 } else {
@@ -2193,6 +2199,33 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
                                             }
                                         }
                                     }
+#ifdef MELEE_PC
+                                    // The mask below bounds the offset to
+                                    // 32MB, but the atlas is only
+                                    // sizeof(HSD_SisLib_FontAtlas). A glyph
+                                    // past the end would hand GXInitTexObj a
+                                    // pointer into whatever follows the array,
+                                    // and the upload would sample it.
+                                    if (draw_glyph != 0U && glyph_idx < 0x4000U &&
+                                        ((tex_offset << 9) & 0x01FFFE00) >=
+                                            sizeof(HSD_SisLib_FontAtlas))
+                                    {
+                                        static int reported;
+                                        if (reported < 20) {
+                                            reported++;
+                                            OSReport(
+                                                "melee_pc: glyph 0x%X is "
+                                                "outside the font atlas "
+                                                "(offset 0x%X, atlas 0x%X); "
+                                                "not drawing it\n",
+                                                glyph_idx,
+                                                (tex_offset << 9) & 0x01FFFE00,
+                                                (unsigned) sizeof(
+                                                    HSD_SisLib_FontAtlas));
+                                        }
+                                        draw_glyph = 0U;
+                                    }
+#endif
                                     if (draw_glyph != 0U) {
                                         if (glyph_idx < 0x4000U) {
                                             GXInitTexObj(&tex_obj, data + ((tex_offset << 9) & 0x01FFFE00), 0x20U, 0x20U, GX_TF_I4, GX_CLAMP, GX_CLAMP, 0U);
@@ -2264,7 +2297,6 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
         }
     }
     // clang-format on
-#endif
 }
 
 HSD_Archive* HSD_SisLib_803A945C(char* path)

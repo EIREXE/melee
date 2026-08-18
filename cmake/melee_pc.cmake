@@ -161,6 +161,7 @@ add_library(melee_compat_impl STATIC
   melee_compat/src/audio_heap.c
   melee_compat/src/card_work.c
   melee_compat/src/card_async.c
+  melee_compat/src/sis_dat.c
   melee_compat/src/dvd_async.c
   melee_compat/src/pad_inject.c
   melee_compat/src/ar_stubs.c

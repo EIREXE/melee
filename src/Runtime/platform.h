@@ -147,6 +147,7 @@ typedef bool (*Predicate)(void);
 /// everything inside a DAT archive is. Identity on the GameCube, which is
 /// big-endian already.
 #define MELEE_PC_BE32(x) __builtin_bswap32(x)
+#define MELEE_PC_BE16(x) __builtin_bswap16(x)
 
 /// @brief Resolves one archive pointer slot, storing the result as a signed
 /// byte offset *from the slot itself* rather than as an address.
@@ -276,6 +277,7 @@ void melee_pc_pump(void);
 #else
 /// Identity on the GameCube, which is big-endian already.
 #define MELEE_PC_BE32(x) (x)
+#define MELEE_PC_BE16(x) (x)
 #define MELEE_PC_DAT(T, p)
 #define MELEE_PC_DAT_PTRNULL(T, p)
 #define MELEE_PC_ON_ARCHIVE_FREE(base, size) ((void) 0)

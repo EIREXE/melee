@@ -21,7 +21,7 @@ static const DatField HSD_Joint_fields[] = {
     {   44,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
     {   48,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
     {   52,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
-    {   56,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // MtxPtr mtx
+    {   56,   80, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // MtxPtr mtx
     {   60,   88, DAT_PTR        , DAT_T_HSD_RObjDesc          , 0, 0 }, // HSD_RObjDesc * robjdesc
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
@@ -273,7 +273,22 @@ static const DatField HSD_FogDesc_fields[] = {
 static const DatField HSD_FogAdjDesc_fields[] = {
     {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 center
     {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 width
-    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[0]
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[1]
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[2]
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[3]
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[4]
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[5]
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[6]
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[7]
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[8]
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[9]
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[10]
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[11]
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[12]
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[13]
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[14]
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Mtx44 mtx[15]
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
