@@ -462,7 +462,7 @@ static const DatField UnkStageDat_fields[] = {
     {    4,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk4
     {    8,   16, DAT_ARR_COUNT, DAT_T_UnkStageDat_x8_t, 12, 4 }, // unk8[unkC]
     {   12,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unkC
-    {   16,   32, DAT_PTR        , DAT_T_HSD_Spline            , 0, 0 }, // HSD_Spline ** unk10
+    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // HSD_Spline ** unk10 (array, raw)
     {   20,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk14
     {   24,   48, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * unk18
     {   28,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk1C

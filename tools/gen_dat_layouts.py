@@ -168,8 +168,12 @@ ARRAYS = {
     ("MapCollData", "lines"): ("count", "line_count"),
     ("MapCollData", "joints"): ("count", "joint_count"),
     ("UnkStageDat", "unk8"): ("count", "unkC"),
-    # unk10 is HSD_Spline**, and HSD_Spline is a runtime object (NEVER), so
-    # the pointer is decoded but the splines are left raw.
+    # unk10 is HSD_Spline**, a *table* of pointers that ground.c indexes as
+    # `unk4->unk10[arg1]`. Since HSD_Spline became a converted type it would
+    # otherwise be followed as a single spline, relaying out the first pointer
+    # slot as though it were one. Left raw; the element wants converting at the
+    # use site.
+    ("UnkStageDat", "unk10"): ("raw",),
     ("UnkStageDat", "unk28"): ("ptrcount", "unk2C"),
     ("UnkStageDat", "unk20"): ("count", "unk24"),
     ("UnkStageDat_x8_t", "unk20"): ("count", "unk24"),
