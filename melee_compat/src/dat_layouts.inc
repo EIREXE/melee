@@ -751,9 +751,9 @@ static const DatField Vec2_fields[] = {
 
 static const DatField UnkStageDat_x8_t_fields[] = {
     {    0,    0, DAT_PTR        , DAT_T_HSD_Joint             , 0, 0 }, // struct HSD_Joint * unk0
-    {    4,    8, DAT_ARR_PTRNULL, DAT_T_HSD_AnimJoint, 0, 0 }, // unk4[] until NULL
-    {    8,   16, DAT_ARR_PTRNULL, DAT_T_HSD_MatAnimJoint, 0, 0 }, // unk8[] until NULL
-    {   12,   24, DAT_ARR_PTRNULL, DAT_T_HSD_ShapeAnimJoint, 0, 0 }, // unkC[] until NULL
+    {    4,    8, DAT_ARR_PTRNULL_RAW, DAT_T_HSD_AnimJoint, 0, 0 }, // unk4[] until NULL, elements raw
+    {    8,   16, DAT_ARR_PTRNULL_RAW, DAT_T_HSD_MatAnimJoint, 0, 0 }, // unk8[] until NULL, elements raw
+    {   12,   24, DAT_ARR_PTRNULL_RAW, DAT_T_HSD_ShapeAnimJoint, 0, 0 }, // unkC[] until NULL, elements raw
     {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // HSD_CameraDescPerspective * x10
     {   20,   40, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x14
     {   24,   48, DAT_ARR_PTRNULL, DAT_T_LightList, 0, 0 }, // x18[] until NULL

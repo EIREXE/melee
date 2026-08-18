@@ -97,7 +97,9 @@ struct StageInfo {
     /* +6B8 */ void* map_ptcl;
     /* +6BC */ void* map_texg;
     /* +6C0 */ void* yakumono_param;
-    /* +6C4 */ void* map_plit;
+    /// Handed to Ground_801C20E0() by Ground_801C49B4(), whose parameter is a
+    /// LightList**.
+    /* +6C4 */ LightList** map_plit;
     /* +6C8 */ void* x6C8;
     /* +6CC */ DynamicModelDesc* quake_model_set;
     s16 x6D0;

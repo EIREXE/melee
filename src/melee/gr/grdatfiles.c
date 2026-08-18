@@ -76,6 +76,8 @@ void grDatFiles_801C6038(void* arg0, s32 arg1, s32 arg2)
                 HSD_ArchiveGetPublicAddress(sp14, "yakumono_param");
             stage_info.map_plit =
                 HSD_ArchiveGetPublicAddress(sp14, "map_plit");
+            // A NULL-terminated LightList table, same as the per-model x18.
+            MELEE_PC_DAT_PTRNULL(LightList, stage_info.map_plit);
             stage_info.quake_model_set =
                 HSD_ArchiveGetPublicAddress(sp14, "quake_model_set");
         }

@@ -163,9 +163,9 @@ typedef bool (*Predicate)(void);
 /// for a real pointer -- which it cannot, since that would need a slot holding
 /// its own address.
 ///
-/// Only the DAT converter reads these slots back (melee_compat/src/dat_reloc.c,
-/// which also defines this); code that reads archive memory in place has to be
-/// converted first.
+/// Only the DAT converter reads these slots back
+/// (melee_compat/src/dat_reloc.c, which also defines this); code that reads
+/// archive memory in place has to be converted first.
 void melee_pc_dat_store_ptr(void* slot, const void* target);
 
 /// @brief Byte-swaps a DAT archive header in place. Nothing elsewhere.
@@ -179,6 +179,13 @@ void melee_pc_archive_header_be(struct HSD_ArchiveHeader* h);
 /// pointer are left alone. Expands to the pointer unchanged everywhere else.
 void* melee_pc_dat_root(const void* p, int type);
 #define MELEE_PC_DAT(T, p) ((p) = melee_pc_dat_root((p), DAT_T_##T))
+
+/// @brief Converts element @p i of a GameCube-side array of @p T, given its
+/// base. For arrays whose length the DAT does not record: the call site has
+/// the index, so it converts just that element. Plain indexing elsewhere.
+void* melee_pc_dat_elem(const void* base, int type, int index);
+#define MELEE_PC_DAT_ELEM(T, base, i)                                         \
+    ((T*) melee_pc_dat_elem((base), DAT_T_##T, (i)))
 
 /// @brief As #MELEE_PC_DAT, for a symbol that is a NULL-terminated *table* of
 /// pointers rather than a single structure (LightList** and friends).
@@ -280,6 +287,7 @@ void melee_pc_pump(void);
 #define MELEE_PC_BE16(x) (x)
 #define MELEE_PC_DAT(T, p)
 #define MELEE_PC_DAT_PTRNULL(T, p)
+#define MELEE_PC_DAT_ELEM(T, base, i) (&(base)[i])
 #define MELEE_PC_ON_ARCHIVE_FREE(base, size) ((void) 0)
 #define MELEE_PC_IS_NOT_MAINRAM(a) ((u32) (a) < 0x80000000U)
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)

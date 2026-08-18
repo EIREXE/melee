@@ -173,9 +173,12 @@ ARRAYS = {
     # cv[idx * 3] and would need 3 * numcv - 2; if a bezier spline shows up,
     # this needs a hook rather than a plain count.
     ("HSD_Spline", "cv"): ("count", "numcv"),
-    ("UnkStageDat_x8_t", "unk4"): ("ptrnull",),
-    ("UnkStageDat_x8_t", "unk8"): ("ptrnull",),
-    ("UnkStageDat_x8_t", "unkC"): ("ptrnull",),
+    # grAnime_801C7C1C indexes each entry as an array (`aj = &aj[arg2]`) and
+    # the file records no length, so entries stay raw and the call site
+    # converts the one element it wants.
+    ("UnkStageDat_x8_t", "unk4"): ("ptrnullraw",),
+    ("UnkStageDat_x8_t", "unk8"): ("ptrnullraw",),
+    ("UnkStageDat_x8_t", "unkC"): ("ptrnullraw",),
 }
 
 PROBE = """
@@ -524,6 +527,10 @@ def main() -> int:
                 body.append(f"    {{ {goff:4}, {hoff:4}, DAT_ARR_SENTINEL, "
                             f"{pid}, {trow['off']}, {val} }}, "
                             f"// {r['name']}[] until {tag}=={val:#x}")
+            elif arr and arr[0] == "ptrnullraw":
+                body.append(f"    {{ {goff:4}, {hoff:4}, "
+                            f"DAT_ARR_PTRNULL_RAW, {pid}, 0, 0 }}, "
+                            f"// {r['name']}[] until NULL, elements raw")
             elif arr and arr[0] == "ptrnull":
                 body.append(f"    {{ {goff:4}, {hoff:4}, DAT_ARR_PTRNULL, "
                             f"{pid}, 0, 0 }}, "

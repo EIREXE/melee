@@ -103,6 +103,11 @@ typedef enum {
     // Pointer to a NULL-terminated array of pointers. We need to keep the
     // terminator otherwise melee will hang!!
     DAT_ARR_PTRNULL,
+    // As DAT_ARR_PTRNULL, but the elements are left as decoded *GameCube*
+    // addresses rather than converted. For tables whose entries are the base
+    // of an array whose length the file does not record: the call site knows
+    // the index, so it converts that one element with MELEE_PC_DAT_ELEM().
+    DAT_ARR_PTRNULL_RAW,
     // Several fields share this offset. Only the discriminant says which is
     // live, and that is type-specific game logic, so a hand-written converter
     // is needed, see dat_union_hooks.
@@ -444,6 +449,30 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
             memcpy(dst, &p, sizeof(p));
             break;
         }
+        case DAT_ARR_PTRNULL_RAW: {
+            uintptr_t gcptr = rd_ptr(src);
+            void** p = NULL;
+            if (gcptr != 0) {
+                const u8* tbl = (const u8*) gcptr;
+                u32 n = 0;
+                u32 i;
+                while (rd_ptr(tbl + n * 4) != 0) {
+                    n++;
+                }
+                p = arena_alloc((size_t) (n + 1) * sizeof(void*));
+                if (p == NULL) {
+                    OSPanic(__FILE__, __LINE__,
+                            "melee_pc: out of memory converting %s[] (raw)",
+                            dat_types[f->type].name);
+                }
+                for (i = 0; i < n; i++) {
+                    p[i] = (void*) rd_ptr(tbl + i * 4);
+                }
+                p[n] = NULL;
+            }
+            memcpy(dst, &p, sizeof(p));
+            break;
+        }
         case DAT_ARR_PTRCOUNT: {
             uintptr_t gcptr = rd_ptr(src);
             u32 n = read_scalar(gc + f->aux, count_kind(f->aux2));
@@ -758,6 +787,24 @@ void* melee_pc_dat_root(const void* p, int type)
         return (void*) p;
     }
     return melee_pc_dat_convert(p, type);
+}
+
+// Converts one element of a GameCube-side array, given its base and index.
+//
+// The file does not record how long these arrays are -- see
+// DAT_ARR_PTRNULL_RAW -- so there is nothing to convert eagerly. The caller
+// has the index, and the element's own address is a stable memo key, so
+// converting on demand is exact rather than a guess at a count.
+void* melee_pc_dat_elem(const void* base, int type, int index)
+{
+    if (base == NULL) {
+        return NULL;
+    }
+    if (type < 0 || type >= DAT_T_COUNT) {
+        OSPanic(__FILE__, __LINE__, "melee_pc: bad DAT type id %d", type);
+    }
+    return melee_pc_dat_root(
+        (const u8*) base + index * dat_types[type].gc_size, type);
 }
 
 // Converts a NULL-terminated table of pointers, as a root.

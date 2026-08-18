@@ -981,7 +981,10 @@ void grAnime_801C7C1C(HSD_JObj* jobj, s32 map_id, s32 arg2, s32 arg3, s32 arg4,
     if ((arg3 & 1) && (ajp = archive->unk4->unk8[map_id].unk4, ajp != NULL) &&
         ((aj = ajp[arg4]) != NULL))
     {
-        aj = &aj[arg2];
+        // The table entry is the base of an array whose length the DAT does
+        // not record, so on PC its entries are left as GameCube addresses and
+        // just this element is converted. Plain `&aj[arg2]` on hardware.
+        aj = MELEE_PC_DAT_ELEM(HSD_AnimJoint, aj, arg2);
         var_r30 |= 0x81;
         anim_flags |= 0x220;
     } else {
@@ -990,7 +993,7 @@ void grAnime_801C7C1C(HSD_JObj* jobj, s32 map_id, s32 arg2, s32 arg3, s32 arg4,
     if ((arg3 & 2) && (mjp = archive->unk4->unk8[map_id].unk8, mjp != NULL) &&
         ((mj = mjp[arg4]) != NULL))
     {
-        mj = &mj[arg2];
+        mj = MELEE_PC_DAT_ELEM(HSD_MatAnimJoint, mj, arg2);
         var_r30 |= 0x416;
         anim_flags |= 0x7484;
     } else {
@@ -999,7 +1002,7 @@ void grAnime_801C7C1C(HSD_JObj* jobj, s32 map_id, s32 arg2, s32 arg3, s32 arg4,
     if ((arg3 & 4) && (sjp = archive->unk4->unk8[map_id].unkC, sjp != NULL) &&
         ((sj = sjp[arg4]) != NULL))
     {
-        sj = &sj[arg2];
+        sj = MELEE_PC_DAT_ELEM(HSD_ShapeAnimJoint, sj, arg2);
         var_r30 |= 8;
         anim_flags |= 0x100;
     } else {
@@ -1182,17 +1185,17 @@ void grAnime_801C8138(HSD_GObj* gobj, enum_t arg1, bool arg2)
     ajp = archive->unk4->unk8[arg1].unk4;
     mjp = archive->unk4->unk8[arg1].unk8;
     if (sap != NULL) {
-        sa = sap[arg2];
+        sa = MELEE_PC_DAT_ELEM(HSD_ShapeAnimJoint, sap[arg2], 0);
     } else {
         sa = NULL;
     }
     if (mjp != NULL) {
-        ma = mjp[arg2];
+        ma = MELEE_PC_DAT_ELEM(HSD_MatAnimJoint, mjp[arg2], 0);
     } else {
         ma = NULL;
     }
     if (ajp != NULL) {
-        aj = ajp[arg2];
+        aj = MELEE_PC_DAT_ELEM(HSD_AnimJoint, ajp[arg2], 0);
     } else {
         aj = NULL;
     }
