@@ -323,8 +323,16 @@ void ftMaterial_800BF6BC(Fighter* fp, HSD_MObj* mobj, HSD_TExp* texp)
             }
             sp_cnst1.reg = (u8) reg2;
             {
-                // @todo Fix this stack pointer arithmetic
+// Writes the four bytes *before* a local, which on GameCube is an
+// unnamed slot of the original frame but on the host aliases whatever
+// the compiler put there. Only r/g/b are read: HSD_TExpSetReg replaces
+// col.a with the register's own alpha, so real storage is equivalent.
+#ifdef MELEE_PC
+                GXColor color_storage;
+                GXColor* color = &color_storage;
+#else
                 GXColor* color = (GXColor*) ((u8*) &sp_tevdesc - 4);
+#endif
                 u8 alpha = sp168.a;
 
                 color->r = alpha;

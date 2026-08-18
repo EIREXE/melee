@@ -135,17 +135,27 @@ static void fn_8019EFC4(HSD_PadStatus* pad)
         HSD_JObjReqAnimAll(lbl_80479A98.x5C, (f32) lbl_80479A98.x6C);
         {
             s32 i;
+            // `&lbl_80479A98 + 0x28` is &x28, so index i names x2C[i - 1]:
+            // this walks the whole x2C[10] array. Both the base offset and the
+            // 4-byte stride the raw form assumes are wrong once pointers
+            // widen.
+            // `&lbl_80479A98 + 0x28` is &x28, so index i names x2C[i - 1]:
+            // this walks the whole x2C[10] array. Both the base offset and the
+            // 4-byte stride the raw form assumes are wrong once pointers
+            // widen, so index 10 reads well past the array on the host.
+#ifdef MELEE_PC
+#define GM_19EF_SLOT(i) (lbl_80479A98.x2C[(i) - 1])
+#else
+#define GM_19EF_SLOT(i) (((HSD_JObj**) ((u8*) &lbl_80479A98 + 0x28))[i])
+#endif
             for (i = 10; i > 0; i--) {
                 if (i > lbl_80479A98.x70) {
-                    HSD_JObjSetFlags(
-                        ((HSD_JObj**) ((u8*) &lbl_80479A98 + 0x28))[i],
-                        JOBJ_HIDDEN);
+                    HSD_JObjSetFlags(GM_19EF_SLOT(i), JOBJ_HIDDEN);
                 } else {
-                    HSD_JObjClearFlags(
-                        ((HSD_JObj**) ((u8*) &lbl_80479A98 + 0x28))[i],
-                        JOBJ_HIDDEN);
+                    HSD_JObjClearFlags(GM_19EF_SLOT(i), JOBJ_HIDDEN);
                 }
             }
+#undef GM_19EF_SLOT
         }
         HSD_JObjAnimAll(child_next);
     }

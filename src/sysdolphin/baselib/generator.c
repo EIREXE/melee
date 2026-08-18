@@ -12,8 +12,9 @@
 /* 4D78DA */ extern u16 hsd_804D78DA;
 /* 4D78E0 */ extern u16 hsd_804D78E0;
 /* 4D78E2 */ extern u16 hsd_804D78E2[2];
-/* 4D78E8 */ extern u32 hsd_804D78E8;
-/* 4D78E8 */ extern u32 hsd_804D78EC;
+// Both hold function addresses; a u32 truncates them on a 64-bit host.
+/* 4D78E8 */ extern void (*hsd_804D78E8)(HSD_Generator*, Mtx);
+/* 4D78EC */ extern void (*hsd_804D78EC)(HSD_Generator*);
 /* 4D78F0 */ extern HSD_CObj* psCamera;
 /* 4D78F4 */ extern u32 hsd_804D78F4;
 /* 4D0D58 */ extern int psNumCmdList[65];
@@ -84,8 +85,8 @@ void hsd_8039D354(u32 unused)
     hsd_804D78DA = 0;
     hsd_804D78F4 = 0;
     psCamera = NULL;
-    hsd_804D78E8 = 0;
-    hsd_804D78EC = 0;
+    hsd_804D78E8 = NULL;
+    hsd_804D78EC = NULL;
     hsd_804D78F8 = 0;
     hsd_804D7900 = NULL;
 }
@@ -982,8 +983,8 @@ f32 hsd_8039DAD4(HSD_Generator* gen)
         }
 
         default: /* shape > 8 */
-            if ((void (*)(HSD_Generator*, Mtx)) hsd_804D78E8 != NULL) {
-                ((void (*)(HSD_Generator*, Mtx)) hsd_804D78E8)(gen, rot_mtx);
+            if (hsd_804D78E8 != NULL) {
+                hsd_804D78E8(gen, rot_mtx);
             }
             break;
         }
@@ -1257,8 +1258,8 @@ HSD_Generator* hsd_8039F05C(s32 linkNo, s32 bank, s32 idx)
             break;
         }
         default:
-            if ((void (*)(HSD_Generator*)) hsd_804D78EC != NULL) {
-                ((void (*)(HSD_Generator*)) hsd_804D78EC)(gen);
+            if (hsd_804D78EC != NULL) {
+                hsd_804D78EC(gen);
             }
             break;
         }

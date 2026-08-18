@@ -1014,7 +1014,22 @@ void mn_8022A440(HSD_GObj* gp, HSD_JObj* root, MainMenuSelection selection)
 void mn_8022A5D0(HSD_GObj* gp, MainMenuSelection selection)
 {
     u8 _[8];
+    // spA0 is indexed by `i < option_count`, and by the remapped index
+    // mn_80229A04() returns for the same range. option_count comes from
+    // mn_803EB6B0[].selection_count, which reaches 10 (menu kind 12) across
+    // the table's 34 entries -- so seven is three short. Same shape as the
+    // sp20 bug in mn_8022B3A0 below: four bytes over on GameCube and absorbed
+    // by frame padding, eight on the host and onto the canary.
+    //
+    // mn_803EAE68 is the table read at the same index, and has exactly the 10
+    // entries option_count tops out at. The declared size is a decomp artifact
+    // rather than the original frame's, so the GameCube side is left alone.
+#ifdef MELEE_PC
+    HSD_JObj* spA0[sizeof(mn_803EAE68) / sizeof(mn_803EAE68[0])];
+#else
     HSD_JObj* spA0[7];
+#endif
+    // Not option_count: lb_8001204C fills this from mn_803EAE7C, 7 at a time.
     HSD_JObj* sp84[7];
     HSD_JObj* sp80;
     Vec3 sp74;
@@ -1215,7 +1230,20 @@ void fn_8022AFEC(HSD_GObj* gp)
     u8 state;
     u8 option_count;
     u8 pad[0x20];
+    // sp20 is written in lockstep with mn_803EAE68[] -- `sp20[i]` and
+    // `mn_803EAE68[i]` share the loop index -- so it has to be at least as
+    // large as that table. Four is too few: option_count reaches 5 on the main
+    // menu, so the loop writes one element past the end. On GameCube that is
+    // four bytes and lands in adjacent padding, which is why hardware never
+    // noticed; a host pointer is eight, and it lands on the stack canary.
+    //
+    // The declared size is a decomp artifact rather than the original frame's,
+    // so the GameCube side is left alone to keep that build matching.
+#ifdef MELEE_PC
+    HSD_JObj* sp20[sizeof(mn_803EAE68) / sizeof(mn_803EAE68[0])];
+#else
     HSD_JObj* sp20[4];
+#endif
     PAD_STACK(18);
 
     var_r26 = 0;
@@ -1675,7 +1703,21 @@ static inline HSD_GObj* mn_8022BE34_OnEnter(void)
 
     mn_804D6BAC = gobj;
     cobj = HSD_CObjLoadDesc(MenMain_cam);
+#ifdef MELEE_PC
+    // The +0x14 below is a decomp artifact. `pos` is a bare Vec3 -- 12 bytes
+    // -- so writing one at +0x14 lands 8 bytes past its end. On GameCube that
+    // hit another slot in this function's original frame and was harmless; on
+    // the host it lands exactly on gm_801A4014's saved r12, which holds
+    // `handler`. Restoring the clobbered value made handler->OnFrame read
+    // 0x424C0000 and the main menu died on entry.
+    //
+    // The value written is never read -- this is the only reference to `pos`
+    // -- so only the call's side effects matter (HSD_WObjGetPosition sets up
+    // the joint matrix and clears a flag). Writing it in bounds keeps those.
+    HSD_CObjGetEyePosition(cobj, &pos);
+#else
     HSD_CObjGetEyePosition(cobj, (Vec3*) ((u8*) &pos + 0x14));
+#endif
     HSD_GObjObject_80390A70(gobj, HSD_GObj_804D784B, cobj);
     GObj_SetupGXLinkMax(gobj, fn_8022BDB4, 0);
     gobj->gxlink_prios = 0x7F;
@@ -2935,6 +2977,106 @@ void mn_8022DDA8_OnEnter(MenuEnterData* data)
             "MenMainCursorSs_Top_shapeanim_joint",
 
             0);
+
+        // Every symbol above is DAT-resident and is walked through host
+        // structs, so each root needs converting before anything follows it.
+        // Without this, lb_80011AC4() walked the light list as raw GameCube
+        // memory and the main menu died on entry. Same pattern as the title
+        // screen in gmtitle.c.
+        MELEE_PC_DAT(HSD_CObjDesc, MenMain_cam);
+        // ScMenMain_scene_lights is a LightList**, walked to a NULL
+        // terminator.
+        MELEE_PC_DAT_PTRNULL(LightList, MenMain_lights);
+        MELEE_PC_DAT(HSD_FogDesc, MenMain_fog);
+        MELEE_PC_DAT(HSD_Joint, MenMainBack_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainBack_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainBack_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainBack_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainPanel_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainPanel_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainPanel_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainPanel_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainConTop_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainConTop_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainConTop_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainConTop_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursor_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursor_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursor_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainCursor_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainConRl_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainConRl_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainConRl_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainConRl_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorRl_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorRl_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorRl_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainCursorRl_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainNmRl_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainNmRl_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainNmRl_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainNmRl_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorTr01_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorTr01_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorTr01_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorTr01_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorTr02_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorTr02_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorTr02_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorTr02_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorTr03_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorTr03_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorTr03_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorTr03_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorTr04_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorTr04_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorTr04_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorTr04_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorRl01_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorRl01_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorRl01_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorRl01_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorRl02_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorRl02_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorRl02_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorRl02_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorRl03_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorRl03_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorRl03_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorRl03_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorRl04_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorRl04_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorRl04_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorRl04_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorRl05_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorRl05_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorRl05_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint,
+                     MenMainCursorRl05_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainConIs_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainConIs_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainConIs_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainConIs_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorIs_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorIs_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorIs_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainCursorIs_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainConSs_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainConSs_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainConSs_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainConSs_Top.shapeanim_joint);
+        MELEE_PC_DAT(HSD_Joint, MenMainCursorSs_Top.joint);
+        MELEE_PC_DAT(HSD_AnimJoint, MenMainCursorSs_Top.animjoint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, MenMainCursorSs_Top.matanim_joint);
+        MELEE_PC_DAT(HSD_ShapeAnimJoint, MenMainCursorSs_Top.shapeanim_joint);
 
         if (lbLang_IsSavedLanguageUS()) {
             HSD_SisLib_803A62A0(0, "SdMenu.usd", "SIS_MenuData");

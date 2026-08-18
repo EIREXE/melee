@@ -983,9 +983,11 @@ struct grZebes_GroundVars4 {
     /* +08 gp+CC */ f32 xCC;
     /* +0C gp+D0 */ f32 xD0;
     /* +10 gp+D4 */ f32 xD4;
-    /* +14 gp+D8 */ u32 xD8;
-    /* +18 gp+DC */ u32 xDC;
-    /* +1C gp+E0 */ u32 xE0;
+    /* +14 gp+D8 */ HSD_JObj* xD8;
+    /// Written from Ground_801C3FA4() (an HSD_JObj*) but read back as an
+    /// HSD_LObj*, so this stays void* until one of the two is shown wrong.
+    /* +18 gp+DC */ void* xDC;
+    /* +1C gp+E0 */ HSD_GObj* xE0;
     /* +20 gp+E4 */ s16 xE4;
     /* +22 gp+E6 */ s16 xE6;
     /* +24 gp+E8 */ s32 xE8;
@@ -1011,7 +1013,7 @@ struct grZebes_GroundVars5 {
     /* +32 gp+F6 */ s16 xF6;
     /* +34 gp+F8 */ u32 xF8;
     /* +38 gp+FC */ u32 xFC;
-    /* +3C gp+100 */ u32 x100;
+    /* +3C gp+100 */ HSD_GObj* x100;
 };
 
 struct grRCruise_Entry {

@@ -35,7 +35,11 @@
 // externs
 extern u32* ptclref_804D0E5C[65];
 extern EF_DAT_Entry efAsync_DatEntries[51];
-extern u32 hsd_804D7900;
+/// Holds a function address, so a u32 truncates it on a 64-bit host. Note the
+/// signature disagrees with generator.c's `static void (*)(HSD_Generator*)`
+/// for the same address, and that static means this write and generator.c's
+/// reads do not reach the same object.
+extern void (*hsd_804D7900)(HSD_Particle*);
 
 // forward declarations to avoid sdata2 pollution
 void HSD_MtxGetScale(Mtx, Vec3*);
@@ -166,7 +170,7 @@ void efLib_Init(void)
 
     hsd_8039D354(0);
     hsd_80398A08(0);
-    hsd_804D7900 = (u32) efLib_Cb_PtclAppSRTHook;
+    hsd_804D7900 = efLib_Cb_PtclAppSRTHook;
 
     gobj = GObj_Create(8U, 0xBU, 1U);
     GObj_SetupGXLink(gobj, efLib_render_callback, 7U, 2U);

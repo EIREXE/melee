@@ -1303,21 +1303,23 @@ void mnName_80239FFC(HSD_GObj* gobj)
 
 void mnName_8023A058(HSD_GObj* gobj)
 {
-    u8* p = (u8*) gobj;
-    HSD_JObj* jobj;
+    // Same shape as mnName_80239FFC above: 0x30 is the gobj's
+    // user_data_remove_func slot reused as a jobj, and 0x3C is
+    // MnName_GObj::text. Both offsets move once pointers are 64-bit.
+    MnName_GObj* mn = (MnName_GObj*) gobj;
+    HSD_JObj* jobj = (HSD_JObj*) mn->gobj.user_data_remove_func;
     HSD_JObj* child;
 
-    jobj = *(HSD_JObj**) (p + 0x30);
     if (jobj == NULL) {
         child = NULL;
     } else {
-        child = *(HSD_JObj**) ((u8*) jobj + 0x10);
+        child = jobj->child;
     }
     HSD_JObjRemoveAll(child);
 
-    if (*(void**) (p + 0x3C) != NULL) {
-        HSD_SisLib_803A5CC4(*(void**) (p + 0x3C));
-        *(void**) (p + 0x3C) = NULL;
+    if (mn->text != NULL) {
+        HSD_SisLib_803A5CC4(mn->text);
+        mn->text = NULL;
     }
 
     mnName_80239A24(gobj);
@@ -1508,7 +1510,7 @@ HSD_GObj* mnName_8023A59C(u8 arg0)
                        archive->shapeanim_joint);
     HSD_JObjReqAnimAll(root_jobj, 0.0f);
     HSD_JObjAnimAll(root_jobj);
-    user_data = (MnName_GObj*) HSD_MemAlloc(0x44);
+    user_data = (MnName_GObj*) HSD_MemAlloc(sizeof(MnName_GObj));
     HSD_ASSERTREPORT(0x67CU, user_data, "Can't get user_data.\n");
     GObj_InitUserData(gobj, 0U, HSD_Free, user_data);
     *(u8*) &user_data->gobj.classifier = (u8) mn_804A04F0.cur_menu;

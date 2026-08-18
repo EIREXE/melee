@@ -287,7 +287,16 @@ void it_80278108(Item* item, HSD_MObj* mobj, HSD_TExp* texp)
         }
         spFC.reg = reg2;
         {
+// Writes the four bytes *before* a local, which on GameCube is an
+// unnamed slot of the original frame but on the host aliases whatever
+// the compiler put there. Only r/g/b are read: HSD_TExpSetReg replaces
+// col.a with the register's own alpha, so real storage is equivalent.
+#ifdef MELEE_PC
+            GXColor color_storage;
+            GXColor* color = &color_storage;
+#else
             GXColor* color = (GXColor*) ((u8*) &sp1C - 4);
+#endif
             u8 alpha = sp168.a;
 
             color->r = alpha;
