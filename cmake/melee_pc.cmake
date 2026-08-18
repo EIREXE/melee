@@ -62,6 +62,24 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
   )
 endif()
 
+# Two mistakes in platform.h are invisible at compile time: emptying a macro's
+# body in the MELEE_PC branch (it then silently does nothing at every call
+# site), and defining one in only one branch. Both have happened, so check
+# before anything is built rather than after something misbehaves.
+find_package(Python3 COMPONENTS Interpreter QUIET)
+if(Python3_Interpreter_FOUND)
+  execute_process(
+    COMMAND ${Python3_EXECUTABLE}
+            ${CMAKE_CURRENT_LIST_DIR}/../tools/check_pc_macros.py
+    RESULT_VARIABLE _pc_macros_result
+    OUTPUT_VARIABLE _pc_macros_out
+    ERROR_VARIABLE _pc_macros_err)
+  if(NOT _pc_macros_result EQUAL 0)
+    message(FATAL_ERROR "${_pc_macros_err}")
+  endif()
+  message(STATUS "melee PC: ${_pc_macros_out}")
+endif()
+
 add_library(melee_pc_options INTERFACE)
 target_compile_options(melee_pc_options INTERFACE
   -include ${CMAKE_CURRENT_SOURCE_DIR}/melee_compat/include/melee_pc_prelude.h
