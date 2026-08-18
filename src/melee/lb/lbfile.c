@@ -116,7 +116,11 @@ void lbFile_800164A4(int file, uintptr_t dst, size_t* size, int pri,
 {
     int type;
     *size = lbFile_8001634C(file);
-    type = (dst >= 0x80000000) ? 0x21 : 0x23;
+    // Main RAM goes straight to the destination; ARAM has to go through a
+    // relay buffer. The test is against the GameCube's main-RAM base, which on
+    // PC is wherever MEM1 was mapped -- a literal comparison there silently
+    // picks the wrong transfer path.
+    type = MELEE_PC_IS_MAINRAM(dst) ? 0x21 : 0x23;
     HSD_DevComRequest(file, 0, dst, ROUND_UP_32(*size), type, pri, callback,
                       args);
 }

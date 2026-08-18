@@ -5,16 +5,7 @@
 #include <stddef.h>
 #include <string.h>
 
-typedef struct {
-    s32 type;
-    s32 f1;
-    s32 f2;
-    s32 f3;
-    s32 f4;
-    s32 f5;
-} HsdCmdEntry;
-
-#define CMD_QUEUE(base) ((HsdCmdEntry*) ((base) + 0x1210))
+// HsdCmdEntry and CMD_QUEUE() come from hsd_3A94.h, which owns the layout.
 
 int hsd_803B27F4(const s32* arg0, const char* arg1, int arg2, int arg3,
                  void (*arg4)(int, int))

@@ -94,7 +94,7 @@ int lbHeap_800158E8(int arg0)
 
 void lbHeap_80015900(void)
 {
-    s32 temp_r0;
+    uintptr_t temp_r0; // a heap's end address, see struct Heap::start
     struct lbHeap_HeapOffsetView* destroy_view;
     s32 bounds_i;
     struct Heap* bounds_heap;
@@ -299,6 +299,9 @@ void lbHeap_80015F3C(void)
     lbHeap_ResetHeap(&lbHeap_80431FA0.heap_array[4]);
     lbHeap_ResetHeap(&lbHeap_80431FA0.heap_array[5]);
 
+    // The casts below are uintptr_t, not s32: these are addresses, and an
+    // s32 one sign-extends when struct Heap::start is later turned back into
+    // a pointer. Identical on GameCube, where both are 32 bits wide.
     desc = lbHeap_803BA380;
     while ((curr_idx = desc->idx) != 6) {
         curr_heap = &lbHeap_80431FA0.heap_array[curr_idx];

@@ -148,6 +148,25 @@ typedef bool (*Predicate)(void);
 /// big-endian already.
 #define MELEE_PC_BE32(x) __builtin_bswap32(x)
 
+/// @brief Resolves one archive pointer slot, storing the result as a signed
+/// byte offset *from the slot itself* rather than as an address.
+///
+/// On GameCube a relocated slot simply holds the address, because a pointer is
+/// four bytes there. On a 64-bit host it cannot: writing an address into a
+/// four-byte slot is what forces the whole archive below 4GB. A self-relative
+/// delta has no such ceiling -- it stays valid wherever the buffer is mapped,
+/// because it never contains an address at all.
+///
+/// Zero keeps meaning NULL. A slot absent from the relocation table stays zero
+/// and must decode as NULL, so the encoding must never produce a zero delta
+/// for a real pointer -- which it cannot, since that would need a slot holding
+/// its own address.
+///
+/// Only the DAT converter reads these slots back (melee_compat/src/dat_reloc.c,
+/// which also defines this); code that reads archive memory in place has to be
+/// converted first.
+void melee_pc_dat_store_ptr(void* slot, const void* target);
+
 /// @brief Byte-swaps a DAT archive header in place. Nothing elsewhere.
 struct HSD_ArchiveHeader;
 void melee_pc_archive_header_be(struct HSD_ArchiveHeader* h);
@@ -204,6 +223,56 @@ void melee_pc_dat_forget(const void* base, u32 size);
 /// arrive.
 void melee_pc_pump(void);
 #define MELEE_PC_PUMP() melee_pc_pump()
+
+/// @brief Qualifies a pointer *field* so it occupies the 32-bit slot the
+/// GameCube gave it. Expands to nothing everywhere else, where a pointer is
+/// already 32 bits wide.
+///
+/// Written after the `*`, in the position a qualifier goes:
+///
+///     CardState* MELEE_PC_PTR32 x4;   // 4 bytes on every target
+///
+/// The point is that nothing else has to change. The compiler narrows on
+/// store and widens on load, so pointer arithmetic, indexing, assignment from
+/// an ordinary pointer, null tests and `&field` all keep working as written --
+/// which matters because these fields are read in hundreds of places that the
+/// matching build must keep verbatim.
+///
+/// Use it on any struct whose layout the game depends on: ones it reinterprets
+/// through a differently-typed pointer, indexes with a stride the hardware
+/// build pinned, or overlays on a fixed run of memory. A 64-bit pointer field
+/// silently moves every field after it and changes the struct's stride, which
+/// is invisible right up until an aliasing cast lands in the wrong place.
+///
+/// Safe because the PC build keeps everything the game round-trips through a
+/// 32-bit slot below 4GB: the image via -no-pie (cmake/melee_link.cmake), MEM1
+/// via AllocMEM1 in aurora's OSMemory.cpp, and the audio heap via
+/// melee_compat/src/audio_heap.c. An address above that would truncate
+/// silently, but so would the `(s32) ptr` casts the game itself is full of.
+///
+/// One restriction: LLVM cannot emit a call *through* a 32-bit function
+/// pointer. Widen it first, which costs a cast that is a no-op on the
+/// GameCube and so needs no macro of its own:
+///
+///     ((CardCallback) ctx->x8)(ctx->xC, result);
+///
+/// Storing, comparing and passing one are all fine as they are.
+#if !defined(__clang__)
+// GCC has no equivalent: its named address spaces are per-target and x86 only
+// exposes the segment ones. Without a 32-bit pointer qualifier these fields
+// silently double in width and every overlaid struct in the tree is wrong, so
+// fail here rather than at some unrelated address at runtime. The PC build
+// already requires clang regardless -- see -finline-hint-functions in
+// cmake/melee_pc.cmake, which GCC rejects outright.
+#error "the melee PC build requires clang: no 32-bit pointer qualifier"
+#endif
+#define MELEE_PC_PTR32 __ptr32
+
+/// @brief Pins a GameCube struct layout at compile time. Unlike #STATIC_ASSERT
+/// this one is live on PC and inert on the GameCube, which is the direction
+/// that catches anything: the hardware build gets these offsets right by
+/// construction, the PC build is where a field silently grows.
+#define MELEE_PC_LAYOUT_ASSERT(cond) _Static_assert((cond), #cond)
 #else
 /// Identity on the GameCube, which is big-endian already.
 #define MELEE_PC_BE32(x) (x)
@@ -214,6 +283,9 @@ void melee_pc_pump(void);
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)
 #define MELEE_PC_ALIGN32
 #define MELEE_PC_PUMP() ((void) 0)
+/// A GameCube pointer is already the 32-bit slot it is stored in.
+#define MELEE_PC_PTR32
+#define MELEE_PC_LAYOUT_ASSERT(cond)
 #endif
 
 #define RETURN_IF(cond)                                                       \

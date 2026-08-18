@@ -3,15 +3,16 @@
 
 #include <placeholder.h>
 
+#include <stddef.h>
 #include <Gecko_setjmp.h>
 #include <dolphin/card.h>
 
 typedef struct CardFileData {
-    u8* ptr;
+    u8* MELEE_PC_PTR32 ptr;
 } CardFileData;
 
 typedef struct CardState {
-    /* 0x00 */ u8* x0;
+    /* 0x00 */ u8* MELEE_PC_PTR32 x0;
     /* 0x04 */ s32 x4;
     /* 0x08 */ u32 x8;
     /* 0x0C */ CARDFileInfo file_info;
@@ -33,6 +34,95 @@ typedef struct CardState {
     /* 0x430 */ u8 digest[0x30];
     /* 0x460 */ s32 x460;
 } CardState;
+
+typedef struct {
+    u8 x0[0x300];
+} __baselib_UnkType003;
+
+/// A callback the card queue holds in a 32-bit slot.
+typedef void (*CardCallback)(s32, s32);
+
+/// The ring of pending card commands, viewed as raw slots. hsd_3A94.c reaches
+/// the same memory through this, through #CardCmd and through #CardContext, at
+/// three different base offsets; all three only line up because every field is
+/// one 32-bit slot and the stride is the same.
+typedef struct CardBufEntry {
+    s32 x0, x4, x8, xC;
+    s32 x10;
+    s32 x14, x18, x1C, x20;
+} CardBufEntry;
+
+typedef struct CardCmd {
+    /* 0x00 */ s32 type;
+    /* 0x04 */ CardState* MELEE_PC_PTR32 state;
+    /* 0x08 */ s32 x8;
+    /* 0x0C */ s32 xC;
+    /* 0x10 */ s32 x10;
+    /* 0x14 */ s32 x14;
+    /* 0x18 */ void* MELEE_PC_PTR32 x18;
+    /* 0x1C */ s32 x1C;
+    /* 0x20 */ s32 x20;
+} CardCmd;
+
+typedef struct HsdCmdEntry {
+    s32 type;
+    s32 f1;
+    s32 f2;
+    s32 f3;
+    s32 f4;
+    s32 f5;
+} HsdCmdEntry;
+
+/// The whole card work area. On GameCube this is three adjacent .bss objects --
+/// hsd_804D1138 (0x10), hsd_804D1148 (0x1200) and hsd_804D2348 (0x300) -- and
+/// the card code walks straight across the boundaries: CMD_QUEUE() indexes
+/// hsd_804D1138 + offsetof(CardContext, x1210), which lands in hsd_804D2348.
+/// See hsd_4D11.c, which reserves the storage.
+typedef struct CardContext {
+    /* 0x0000 */ s32 x0;
+    /* 0x0004 */ CardState* MELEE_PC_PTR32 x4;
+    /* 0x0008 */ CardCallback MELEE_PC_PTR32 x8;
+    /* 0x000C */ s32 xC;
+    /* 0x0010 */ CardCmd x10[128];
+    /* 0x1210 */ HsdCmdEntry x1210[32];
+} CardContext;
+
+/// Overlays CardContext::x1210, so it has to match HsdCmdEntry's stride.
+typedef struct CardQueueEntry {
+    /* 0x00 */ s32 x0;
+    /* 0x04 */ s32 x4;
+    /* 0x08 */ s32 x8;
+    /* 0x0C */ s32 xC;
+    /* 0x10 */ s32 x10;
+    /* 0x14 */ CardCallback MELEE_PC_PTR32 x14;
+} CardQueueEntry;
+
+/// Everything above is aliased against everything else, so pin the shape the
+/// GameCube build gets for free.
+MELEE_PC_LAYOUT_ASSERT(sizeof(CardBufEntry) == 0x24);
+MELEE_PC_LAYOUT_ASSERT(sizeof(CardCmd) == 0x24);
+MELEE_PC_LAYOUT_ASSERT(sizeof(HsdCmdEntry) == 0x18);
+MELEE_PC_LAYOUT_ASSERT(sizeof(CardQueueEntry) == sizeof(HsdCmdEntry));
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardContext, x4) == 0x04);
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardContext, x8) == 0x08);
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardContext, xC) == 0x0C);
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardContext, x10) == 0x10);
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardContext, x1210) == 0x1210);
+MELEE_PC_LAYOUT_ASSERT(sizeof(CardContext) == 0x1510);
+MELEE_PC_LAYOUT_ASSERT(sizeof(CardState) == 0x464);
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardState, x70) == 0x70);
+MELEE_PC_LAYOUT_ASSERT(offsetof(CardState, x170) == 0x170);
+
+/// @brief Start of the command queue, which is CardContext::x1210 reached from
+/// a `u8*` to the base of the work area.
+#define CMD_QUEUE(base)                                                       \
+    ((HsdCmdEntry*) ((base) + offsetof(CardContext, x1210)))
+
+/// Ring length of the command buffer and of the queue behind it.
+#define CARD_CMD_COUNT                                                        \
+    (sizeof(((CardContext*) NULL)->x10) / sizeof(CardCmd))
+#define CARD_QUEUE_COUNT                                                      \
+    (sizeof(((CardContext*) NULL)->x1210) / sizeof(HsdCmdEntry))
 
 /* 3AA790 */ s32 fn_803AA790(void);
 /* 3AAA48 */ void hsd_803AAA48(void);
@@ -79,7 +169,12 @@ typedef struct CardState {
 /* 3B2674 */ s32 hsd_803B2674(CardState* state);
 /* 3B26CC */ s32 fn_803B26CC(CardState* state, s32 file_id, s32 seq_num,
                              s32 version, void (*callback)(s32, s32));
+// The three objects the card code walks as one CardContext. Adjacent in that
+// order on GameCube; melee_compat/src/card_work.c reproduces the adjacency on
+// PC, where hsd_4D11.c is excluded from the build.
 /* 4D1138 */ extern u8 hsd_804D1138[0x10];
+/* 4D1148 */ extern u32 hsd_804D1148[0x80][0x9];
+/* 4D2348 */ extern __baselib_UnkType003 hsd_804D2348;
 /* 4D2648 */ extern __jmp_buf hsd_804D2648;
 /* 4D2E70 */ extern u8 hsd_804D2E70[2084];
 /* 4D7990 */ extern s32 hsd_804D7990;

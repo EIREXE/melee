@@ -277,7 +277,11 @@ static void lbMemory_80015320(int arg0, int _handle, void* arg2,
             *currentp = (void*) ((u32) handle->x4_lo + (u32) handle->x8_hi);
             copy_src = null_or_old;
 
-            if ((u32) handle->x4_lo < 0x80000000U) {
+            // Below the GameCube's main-RAM base means an ARAM address, which
+            // has to be copied through the DMA queue rather than directly.
+            // The literal cannot say that on PC: it both truncates the host
+            // pointer and compares it against an address MEM1 may well be at.
+            if (MELEE_PC_IS_NOT_MAINRAM(handle->x4_lo)) {
                 HSD_DevComRequest(0, (u32) copy_src, current,
                                   OSRoundUp32B(handle->x8_hi), 0x1B, 1,
                                   lbMemory_80015320, handle->x0_next);

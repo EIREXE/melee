@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 50 types, reached from the HSD_*LoadDesc entry points.
+// 52 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -285,6 +285,12 @@ static const DatField SceneDesc_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField lbRefract_Data_fields[] = {
+    {    0,    0, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 count
+    {    4,    8, DAT_ARR_COUNT, DAT_T_lbRefract_Param, 0, 1 }, // params[count]
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField HSD_VtxDescList_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttr attr
     {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttrType attr_type
@@ -468,6 +474,12 @@ static const DatField Vec_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField lbRefract_Param_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 modulus
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 scale
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField HSD_ShapeSetDesc_fields[] = {
     {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 flags
     {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 nb_shape
@@ -573,6 +585,7 @@ static const DatType dat_types[] = {
     { "HSD_FogDesc", 20, 32, HSD_FogDesc_fields, 0 },
     { "HSD_FogAdjDesc", 68, 68, HSD_FogAdjDesc_fields, 0 },
     { "SceneDesc", 16, 32, SceneDesc_fields, 0 },
+    { "lbRefract_Data", 8, 16, lbRefract_Data_fields, 0 },
     { "HSD_VtxDescList", 24, 32, HSD_VtxDescList_fields, 0 },
     { "HSD_TexAnim", 24, 48, HSD_TexAnim_fields, 0 },
     { "HSD_SList", 8, 16, HSD_SList_fields, 0 },
@@ -597,6 +610,7 @@ static const DatType dat_types[] = {
     { "HSD_Material", 20, 20, HSD_Material_fields, 0 },
     { "HSD_RvalueList", 8, 16, HSD_RvalueList_fields, 0 },
     { "Vec", 12, 12, Vec_fields, 0 },
+    { "lbRefract_Param", 8, 8, lbRefract_Param_fields, 0 },
     { "HSD_ShapeSetDesc", 28, 48, HSD_ShapeSetDesc_fields, 0 },
     { "HSD_EnvelopeDesc", 8, 16, HSD_EnvelopeDesc_fields, 0 },
     { "HSD_PEDesc", 12, 12, HSD_PEDesc_fields, 0 },

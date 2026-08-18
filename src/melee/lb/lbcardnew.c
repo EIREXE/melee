@@ -134,7 +134,7 @@ again:
         }
     }
     if (result != 11 && _p(x50C) != NULL) {
-        _p(x50C)(result);
+        ((LbCardNewDone) _p(x50C))(result);
         _p(x50C) = NULL;
     }
     if (result != 11 && _p(unk_80) != 0) {

@@ -11,7 +11,15 @@ static inline void Locate(HSD_Archive* archive)
     for (i = 0; i < archive->header.nb_reloc; i++) {
         ptr = (u32*) (archive->data +
                       MELEE_PC_BE32(archive->reloc_info[i].offset));
+#ifdef MELEE_PC
+        // The slot cannot hold the resolved address: it is four bytes wide, and
+        // storing a host address in it is what used to pin every archive below
+        // 4GB. Store the distance from the slot to its target instead, which
+        // is valid wherever the buffer is mapped.
+        melee_pc_dat_store_ptr(ptr, archive->data + MELEE_PC_BE32(*ptr));
+#else
         *ptr = MELEE_PC_BE32(MELEE_PC_BE32(*ptr) + (u32) archive->data);
+#endif
     }
 }
 
@@ -120,9 +128,18 @@ void HSD_ArchiveLocateExtern(HSD_Archive* archive, const char* symbols,
     }
 
     while (offset != -1U && offset < archive->header.data_size) {
+        // Each slot in the chain holds the offset of the next one, so read it
+        // out before overwriting.
         next = MELEE_PC_BE32(*(u32*) ((uintptr_t) archive->data + offset));
+#ifdef MELEE_PC
+        // Same encoding as Locate() above: these slots are read back by the
+        // same converter, so both writers have to agree.
+        melee_pc_dat_store_ptr((void*) ((uintptr_t) archive->data + offset),
+                               addr);
+#else
         *(u32*) ((uintptr_t) archive->data + offset) =
             MELEE_PC_BE32((u32) (uintptr_t) addr);
+#endif
         offset = next;
     }
 }

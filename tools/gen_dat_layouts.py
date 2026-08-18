@@ -50,6 +50,8 @@ ROOTS = [
     # lbArchive_LoadSymbols()-style public-symbol lookups rather than the HSD
     # load entry points, so each root is converted at its call site.
     "SceneDesc",
+    # lbRefract_800222A4() looks this up as "lbRefData" in LbRf.dat.
+    "lbRefract_Data",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -91,6 +93,9 @@ EXTRA = [
     "HSD_Material",
     "HSD_RvalueList",
     "Vec",
+    # The lbRefract_Data curve array. Two floats, so leaving it raw would feed
+    # big-endian bit patterns to the refraction maths as parameters.
+    "lbRefract_Param",
 ]
 
 # Runtime objects: HSD allocates these itself, already in host layout.
@@ -130,6 +135,7 @@ ARRAYS = {
     ("LightList", "anims"): ("ptrnull",),
     ("HSD_TexAnim", "imagetbl"): ("ptrcount", "n_imagetbl"),
     ("HSD_TexAnim", "tluttbl"): ("ptrcount", "n_tluttbl"),
+    ("lbRefract_Data", "params"): ("count", "count"),
 }
 
 PROBE = """
@@ -148,6 +154,7 @@ PROBE = """
 #include <baselib/fog.h>
 #include <baselib/sobjlib.h>
 #include <melee/sc/types.h>
+#include <melee/lb/types.h>
 """
 
 INCLUDES = [
@@ -425,7 +432,8 @@ def main() -> int:
                     print(f"error: {name}.{r['name']}: count field "
                           f"'{cname}' not found", file=sys.stderr)
                     return 1
-                cw = 2 if kind_for(crow["ctype"]) == "DAT_U16" else 4
+                ck = kind_for(crow["ctype"])
+                cw = 1 if ck == "DAT_U8" else 2 if ck == "DAT_U16" else 4
                 k = ("DAT_ARR_COUNT" if arr[0] == "count"
                      else "DAT_ARR_PTRCOUNT")
                 body.append(f"    {{ {goff:4}, {hoff:4}, {k}, "

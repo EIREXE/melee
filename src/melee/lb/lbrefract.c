@@ -59,7 +59,7 @@ struct lbl_804336D0_t {
 STATIC_ASSERT(sizeof(struct lbl_804336D0_t) == 0x40);
 
 static struct lbl_804336D0_t lbl_804336D0;
-static u8* refract_data;
+static lbRefract_Data* refract_data;
 
 static inline void lbRefract_WriteTexCoord(lbRefract_CallbackData* cb, s32 row,
                                            u32 col, f32 y, f32 x, f32 param0)
@@ -110,7 +110,7 @@ void lbRefract_80021CE8(void* arg0, s32 arg1)
             if (dist_sq > 1.0f) {
                 dist = 1.0f;
             }
-            params = *(f32**) (refract_data + 4);
+            params = (f32*) refract_data->params;
             param0 = params[param_idx];
             if (param0) {
                 f32 rem;
@@ -128,7 +128,7 @@ void lbRefract_80021CE8(void* arg0, s32 arg1)
             } else {
                 param0 = dist;
             }
-            params = *(f32**) (refract_data + 4);
+            params = (f32*) refract_data->params;
             param0 *= params[param_idx + 1];
             if (param0 > 1.0f) {
                 param0 = 1.0f;
@@ -406,16 +406,23 @@ void lbRefract_800222A4(void)
 
     lbl_804336D0.refractionUserCount = 0;
     lbArchive_LoadSymbols("LbRf.dat", &refract_data, "lbRefData", 0);
+    MELEE_PC_DAT(lbRefract_Data, refract_data);
     {
         s32 buf_size =
             GXGetTexBufferSize(image_width, image_height, GX_TF_RGB565, 0, 0);
         lbl_804336D0.image_ptr = HSD_MemAlloc(buf_size);
         memset(lbl_804336D0.image_ptr, 0, buf_size);
     }
-    lbl_804336D0.tobj_list = HSD_MemAlloc(*refract_data * 4);
-    lbl_804336D0.imagedesc = HSD_MemAlloc(*refract_data * 24);
+    // Element sizes from the types, not from their GameCube widths: a
+    // HSD_TObj* is 8 bytes here and a HSD_ImageDesc 32, so the literals
+    // 4 and 24 under-allocated both buffers and the loop below indexed
+    // straight off the end of them.
+    lbl_804336D0.tobj_list =
+        HSD_MemAlloc(refract_data->count * sizeof(HSD_TObj*));
+    lbl_804336D0.imagedesc =
+        HSD_MemAlloc(refract_data->count * sizeof(HSD_ImageDesc));
 
-    for (i = 0; i < *refract_data; i++) {
+    for (i = 0; i < refract_data->count; i++) {
         buf = HSD_MemAlloc(GXGetTexBufferSize(32, 32, GX_TF_IA8, 0, 0));
         lbRefract_8002219C(&cb, buf, GX_TF_IA8, 32, 32);
         lbRefract_80021CE8(&cb, i);

@@ -17,44 +17,61 @@
 
 #include <dolphin/os.h>
 
-// Allocated with mmap(MAP_32BIT), not malloc, for two reasons.
+// Two properties are needed of these blocks, and only one of them is free.
 //
-// For alignemnt the OSAllocFromHeap hands back 32-byte-aligned blocks and the DMA
-// layer relies on it, HSD_DevComRequest asserts `dest % 32 == 0`.
-// Host malloc only guarantees 16.
+// Alignment: OSAllocFromHeap hands back 32-byte-aligned blocks and the DMA
+// layer relies on it -- HSD_DevComRequest asserts `dest % 32 == 0`. Host malloc
+// only promises 16, so ask for the alignment explicitly.
 //
-// Address range: the synth narrows an audio-heap pointer to 32 bits when it
-// uses one as a transfer destination --
+// Address range: axdriver.c:873 narrows an audio-heap pointer to 32 bits when
+// it relocates its own tables (`(u32) AXDriver_804D7798 & ~3u`), so a block
+// above 4GB comes back truncated and the DVD layer writes to a garbage
+// address. The cast is unsigned, so 4GB is the ceiling.
 //
-// so a block above 4GB comes back truncated and the DVD layer writes to a
-// garbage address. so the mapping is made explicitly low here.
+// Nothing here places the block. It comes out low because the executable is
+// linked -no-pie and pc_main.c raises glibc's mmap threshold, which keeps
+// allocations on the brk heap just above the image -- see the reasoning in
+// cmake/melee_link.cmake. That is a property of the link and of the allocator
+// tuning rather than of this call, so it is checked here instead of assumed.
 //
-// The size is stashed in a 32-byte shadow variable so free() can unmap exactly.
-#include <sys/mman.h>
+// This replaced a hand-rolled mmap that walked candidate addresses looking for
+// a free slot below 4GB and carried a shadow header so free() could unmap the
+// right length. The search was only ever reproducing where brk already puts
+// things, and it made this the one file in the compat layer that needed
+// <sys/mman.h>.
 
-#define AUDIO_SHADOW_SIZE 32
+// Declared here rather than by including <stdlib.h>: melee_compat/include
+// carries MSL-shadowing headers for the game sources, and this file is built
+// with them on the include path.
+void* aligned_alloc(size_t alignment, size_t size);
+void free(void* ptr);
+
+#define AUDIO_ALIGN 32
+#define AUDIO_CEILING 0x100000000ULL
 
 static void* audio_alloc(size_t size)
 {
-    size_t total = size + AUDIO_SHADOW_SIZE;
-    void* base = mmap(NULL, total, PROT_READ | PROT_WRITE,
-                      MAP_PRIVATE | MAP_ANONYMOUS | MAP_32BIT, -1, 0);
-    if (base == MAP_FAILED) {
+    // C11 wants a size that is an integral multiple of the alignment.
+    size_t rounded = (size + (AUDIO_ALIGN - 1)) & ~(size_t) (AUDIO_ALIGN - 1);
+    void* p = aligned_alloc(AUDIO_ALIGN, rounded);
+
+    if (p == NULL) {
         return NULL;
     }
-    *(size_t*) base = total;
-    return (u8*) base + AUDIO_SHADOW_SIZE;
+    if ((uintptr_t) p + rounded > AUDIO_CEILING) {
+        // Refusing is better than handing back a block whose address the
+        // driver will truncate: the failure would otherwise surface as the DVD
+        // layer writing somewhere unrelated, a long way from the cause.
+        OSReport("melee_pc: audio heap block at %p is above the 4GB ceiling "
+                 "axdriver relocation needs -- is the build still -no-pie?\n",
+                 p);
+        free(p);
+        return NULL;
+    }
+    return p;
 }
 
-static void audio_free(void* p)
-{
-    u8* base;
-    if (p == NULL) {
-        return;
-    }
-    base = (u8*) p - AUDIO_SHADOW_SIZE;
-    munmap(base, *(size_t*) base);
-}
+static void audio_free(void* p) { free(p); }
 
 // Heap handles are indices, so a negative one was never initialised.
 static bool bad_heap(OSHeapHandle heap) { return heap < 0; }

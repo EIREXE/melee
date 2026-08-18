@@ -12,15 +12,9 @@ typedef struct {
     u8 x0[0x80 * 0x24];
 } __baselib_UnkType002;
 
-typedef struct {
-    u8 x0[0x300];
-} __baselib_UnkType003;
-
-typedef struct CardBufEntry {
-    s32 x0, x4, x8, xC;
-    s32 x10;
-    s32 x14, x18, x1C, x20;
-} CardBufEntry;
+// CardBufEntry, CardCmd, HsdCmdEntry, CardContext and CardQueueEntry live in
+// hsd_3A94.h: hsd_4D11.c has to size the work area from CardContext, and
+// hsd_3B27.c indexes the same command queue.
 
 typedef struct CardBlock {
     /* 0x00 */ u8 pad_00[0x10];
@@ -30,45 +24,6 @@ typedef struct CardBlock {
     /* 0x13 */ u8 pad_13[0x0D];
     /* 0x20 */ u8 x20[1];
 } CardBlock;
-
-typedef struct CardCmd {
-    /* 0x00 */ s32 type;
-    /* 0x04 */ CardState* state;
-    /* 0x08 */ s32 x8;
-    /* 0x0C */ s32 xC;
-    /* 0x10 */ s32 x10;
-    /* 0x14 */ s32 x14;
-    /* 0x18 */ void* x18;
-    /* 0x1C */ s32 x1C;
-    /* 0x20 */ s32 x20;
-} CardCmd;
-
-typedef struct HsdCmdEntry {
-    s32 type;
-    s32 f1;
-    s32 f2;
-    s32 f3;
-    s32 f4;
-    s32 f5;
-} HsdCmdEntry;
-
-typedef struct CardContext {
-    /* 0x0000 */ s32 x0;
-    /* 0x0004 */ CardState* x4;
-    /* 0x0008 */ void (*x8)(s32, s32);
-    /* 0x000C */ s32 xC;
-    /* 0x0010 */ CardCmd x10[128];
-    /* 0x1210 */ HsdCmdEntry x1210[32];
-} CardContext;
-
-typedef struct CardQueueEntry {
-    /* 0x00 */ s32 x0;
-    /* 0x04 */ s32 x4;
-    /* 0x08 */ s32 x8;
-    /* 0x0C */ s32 xC;
-    /* 0x10 */ s32 x10;
-    /* 0x14 */ void (*x14)(s32, s32);
-} CardQueueEntry;
 
 #define CMD_S32(off)                                                          \
     (((CardBufEntry*) ((unsigned char*) op + (off)))[hsd_804D7980].x0)
@@ -83,8 +38,8 @@ typedef struct CardQueueEntry {
 
 /* 3A949C */ static void hsd_803A949C(s32 chan, s32 arg1);
 /* 3ACB74 */ static s32 fn_803ACB74(s32 seq_a, s32 seq_b);
-/* 4D1148 */ extern u32 hsd_804D1148[0x80][0x9];
-/* 4D2348 */ extern __baselib_UnkType003 hsd_804D2348;
+// hsd_804D1148 and hsd_804D2348 are declared in hsd_3A94.h alongside
+// hsd_804D1138: on PC all three are windows into one object.
 /* 4D7980 */ extern volatile s32 hsd_804D7980;
 /* 4D7984 */ extern volatile s32 hsd_804D7984;
 /* 4D7988 */ extern s32 hsd_804D7988;
@@ -557,8 +512,6 @@ void hsd_803A949C(s32 chan, s32 arg1)
     hsd_804D7980 = (hsd_804D7980 + 1) % 128;
 }
 
-#define CMD_QUEUE(base) ((HsdCmdEntry*) ((base) + 0x1210))
-
 s32 fn_803AA790(void)
 {
     CardQueueEntry* entry;
@@ -575,7 +528,7 @@ s32 fn_803AA790(void)
                              entry->xC, 1, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                entry->x14(entry->x8, result);
+                ((CardCallback) entry->x14)(entry->x8, result);
             }
         }
         entry->x0 = 0;
@@ -601,7 +554,7 @@ s32 fn_803AA790(void)
         }
         if (result < 0) {
             if (entry->x14 != NULL) {
-                entry->x14(entry->x8, result);
+                ((CardCallback) entry->x14)(entry->x8, result);
             }
         }
         entry->x0 = 0;
@@ -611,7 +564,7 @@ s32 fn_803AA790(void)
                              entry->x10, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                entry->x14(0, result);
+                ((CardCallback) entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -621,7 +574,7 @@ s32 fn_803AA790(void)
             fn_803B21E8(entry->x4, entry->xC, entry->x10, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                entry->x14(0, result);
+                ((CardCallback) entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -630,7 +583,7 @@ s32 fn_803AA790(void)
         result = fn_803ADE4C(arg0, entry->x8, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                entry->x14(0, result);
+                ((CardCallback) entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -640,7 +593,7 @@ s32 fn_803AA790(void)
                              entry->x10, entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                entry->x14(0, result);
+                ((CardCallback) entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -870,7 +823,7 @@ void hsd_803AAA48(void)
     s32 chan;
     while (1) {
         CardContext* ctx = (CardContext*) hsd_804D1138;
-        CardState** state = &ctx->x4;
+        CardState* MELEE_PC_PTR32* state = &ctx->x4;
         s32* cmd;
         s32 type;
         BOOL intr = OSDisableInterrupts();
@@ -930,7 +883,7 @@ void hsd_803AAA48(void)
                     }
                 }
                 if (ctx->x8 != 0) {
-                    ctx->x8(ctx->xC, hsd_804D7988);
+                    ((CardCallback) ctx->x8)(ctx->xC, hsd_804D7988);
                 }
                 ctx->x0 = 0;
             }
@@ -4959,7 +4912,7 @@ void hsd_803B24E4(s32* ctx, int channel, int file_no, void* work_buf)
 
 static inline HsdCmdEntry* hsd_803B2550_inline(u8* arg0, s32 arg1)
 {
-    return &((HsdCmdEntry*) (arg0 + 0x1210))[arg1];
+    return &CMD_QUEUE(arg0)[arg1];
 }
 
 int hsd_803B2550(s32* arg0, const char* arg1, void (*arg2)(int, int))

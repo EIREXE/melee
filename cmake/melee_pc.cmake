@@ -82,6 +82,11 @@ target_compile_options(melee_pc_options INTERFACE
   # NOTE: this has no effect at -O0, where clang marks every function `optnone`
   # and the inliner never runs. Debug builds must use -Og; see the check below.
   -finline-hint-functions
+  # Enables clang's __ptr32, which MELEE_PC_PTR32 (src/Runtime/platform.h) uses
+  # to keep a GameCube pointer field four bytes wide. Without it every overlaid
+  # struct in the tree changes stride and the aliasing casts the game is built
+  # on land in the wrong place.
+  -fms-extensions
   -fno-strict-aliasing  # the tree type-puns constantly
   -ffp-contract=off     # matches `-fp_contract off` in the mwcc SDK build
   -fwrapv
@@ -156,6 +161,7 @@ add_library(melee_compat_impl STATIC
   melee_compat/src/audio_heap.c
   melee_compat/src/card_work.c
   melee_compat/src/card_async.c
+  melee_compat/src/dvd_async.c
   melee_compat/src/pad_inject.c
   melee_compat/src/ar_stubs.c
   melee_compat/src/ax_stubs.c

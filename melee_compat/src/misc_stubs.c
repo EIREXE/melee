@@ -40,6 +40,16 @@ int MCCStreamOpen(enum MCC_CHANNEL ch, u8 blockSize) { (void) ch; (void) blockSi
 
 // --- THP ------------------------------------------------------------------
 
+// Melee's THP decoder (src/melee/lb/lbmthp.c) is written against a THPDec_*
+// interface that this header does not otherwise describe. Only this one type
+// is needed; the functions are declared by melee's own lbmthp.h.
+typedef struct {
+  s32 val0;
+  u16 val1;
+  u16 _pad;
+  u8 val2;
+} THPDec_8032FD40_Data;
+
 BOOL THPInit(void) { COMPAT_STUB(); return false; }
 s32 THPDec_8032F8D4(u32 file, void* out) { (void) file; (void) out; return -1; }
 s32 THPDec_8032FD40(THPDec_8032FD40_Data* arg0, u16 height)

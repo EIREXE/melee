@@ -70,9 +70,11 @@ add_executable(melee_pc)
 # the truncation lossless: the addresses fit in 31 bits, so they survive both
 # the narrowing and the sign extension on the way back.
 #
-# This is the same reasoning as MAP_32BIT for MEM1 (see the aurora patch); the
-# two together mean every pointer the game round-trips through a 32-bit slot is
-# either in MEM1 or in the image, and both are addressable in 32 bits.
+# This is the same reasoning that puts MEM1 low (AllocMEM1 in aurora's
+# OSMemory.cpp, which walks candidate bases below 4GB) and the audio heap low
+# (melee_compat/src/audio_heap.c). Together they mean every pointer the game
+# round-trips through a 32-bit slot lives in MEM1, the audio heap or the image,
+# and all three are addressable in 32 bits.
 set_target_properties(melee_pc PROPERTIES POSITION_INDEPENDENT_CODE OFF)
 target_link_options(melee_pc PRIVATE -no-pie)
 

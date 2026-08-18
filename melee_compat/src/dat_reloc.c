@@ -197,6 +197,60 @@ static u32 rd32(const void* p)
     return __builtin_bswap32(v);
 }
 
+// --- self-relative archive pointers ---------------------------------------
+//
+// HSD_ArchiveRelocation used to resolve a slot by writing the target address
+// into it. That is a four-byte slot, so the address had to fit in 32 bits, and
+// that single line is what pinned every archive -- and therefore MEM1 -- below
+// 4GB.
+//
+// A slot now holds the signed byte distance from the slot to its target
+// instead. A distance is the same in every address space, so the buffer can be
+// mapped anywhere; only the two functions below know the encoding, and they
+// are deliberately adjacent so they cannot drift apart.
+//
+// Zero still means NULL: slots that no relocation entry covers are left zero
+// by the loader, and a real pointer can never encode as zero because that
+// would require a slot holding its own address.
+
+void melee_pc_dat_store_ptr(void* slot, const void* target)
+{
+    ptrdiff_t delta = (const u8*) target - (const u8*) slot;
+    u32 raw;
+
+    // The slot is four bytes, so the reach is +-2GB. Within an archive that is
+    // never close -- both ends are in the same buffer -- but an external
+    // reference resolved to a far-away address would truncate, and a truncated
+    // delta is a wild pointer that surfaces a long way from here. Say so
+    // instead.
+    if (delta < -0x80000000LL || delta > 0x7FFFFFFFLL) {
+        OSPanic(__FILE__, __LINE__,
+                "melee_pc: DAT pointer at %p is %lld bytes from its target, "
+                "too far for a 32-bit slot",
+                slot, (long long) delta);
+    }
+    // Zero is reserved for NULL, so a slot may never point at itself.
+    if (delta == 0) {
+        OSPanic(__FILE__, __LINE__,
+                "melee_pc: DAT pointer at %p resolves to itself", slot);
+    }
+
+    raw = __builtin_bswap32((u32) (s32) delta);
+    memcpy(slot, &raw, sizeof(raw));
+}
+
+// Reads a slot back as an ordinary address. Returns 0 for NULL so callers can
+// keep testing the result the way they tested the raw word.
+static uintptr_t rd_ptr(const void* slot)
+{
+    s32 delta = (s32) rd32(slot);
+
+    if (delta == 0) {
+        return 0;
+    }
+    return (uintptr_t) ((const u8*) slot + delta);
+}
+
 static u64 rd64(const void* p)
 {
     u64 v;
@@ -220,6 +274,21 @@ static u32 read_scalar(const u8* p, u8 kind)
         return rd16(p);
     default:
         return rd32(p);
+    }
+}
+
+// The array-length fields carry their width in bytes rather than a DatKind,
+// because that is what the generator knows about them. One byte is a real
+// case: lbRefract_Data counts its curves in a u8.
+static u8 count_kind(u16 width)
+{
+    switch (width) {
+    case 1:
+        return DAT_U8;
+    case 2:
+        return DAT_U16;
+    default:
+        return DAT_U32;
     }
 }
 
@@ -302,25 +371,24 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
             break;
         }
         case DAT_PTR: {
-            u32 gcptr = rd32(src);
+            uintptr_t gcptr = rd_ptr(src);
             void* p;
             if (gcptr == 0) {
                 p = NULL;
             } else if (f->type == DAT_T_NONE) {
                 // No descriptor: nothing to relayout, so the address stands.
-                p = (void*) (uintptr_t) gcptr;
+                p = (void*) gcptr;
             } else {
-                p = melee_pc_dat_convert((const void*) (uintptr_t) gcptr,
-                                         f->type);
+                p = melee_pc_dat_convert((const void*) gcptr, f->type);
             }
             memcpy(dst, &p, sizeof(p));
             break;
         }
         case DAT_ARR_SENTINEL: {
-            u32 gcptr = rd32(src);
+            uintptr_t gcptr = rd_ptr(src);
             const DatType* et = &dat_types[f->type];
             u8 tagk = kind_at(et, f->aux);
-            const u8* e = (const u8*) (uintptr_t) gcptr;
+            const u8* e = (const u8*) gcptr;
             u32 n = 0;
             void* p;
             if (gcptr != 0) {
@@ -337,22 +405,21 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
             break;
         }
         case DAT_ARR_COUNT: {
-            u32 gcptr = rd32(src);
-            u32 n = read_scalar(gc + f->aux, f->aux2 == 2 ? DAT_U16 : DAT_U32);
-            void* p = gcptr ? convert_array((const u8*) (uintptr_t) gcptr,
-                                            f->type, n)
-                            : NULL;
+            uintptr_t gcptr = rd_ptr(src);
+            u32 n = read_scalar(gc + f->aux, count_kind(f->aux2));
+            void* p =
+                gcptr ? convert_array((const u8*) gcptr, f->type, n) : NULL;
             memcpy(dst, &p, sizeof(p));
             break;
         }
         case DAT_ARR_PTRNULL: {
-            u32 gcptr = rd32(src);
+            uintptr_t gcptr = rd_ptr(src);
             void** p = NULL;
             if (gcptr != 0) {
-                const u8* tbl = (const u8*) (uintptr_t) gcptr;
+                const u8* tbl = (const u8*) gcptr;
                 u32 n = 0;
                 u32 i;
-                while (rd32(tbl + n * 4) != 0) {
+                while (rd_ptr(tbl + n * 4) != 0) {
                     n++;
                 }
                 // One extra slot, left NULL: the game's loops stop on it.
@@ -364,7 +431,7 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
                 }
                 for (i = 0; i < n; i++) {
                     p[i] = melee_pc_dat_convert(
-                        (const void*) (uintptr_t) rd32(tbl + i * 4), f->type);
+                        (const void*) rd_ptr(tbl + i * 4), f->type);
                 }
                 p[n] = NULL;
             }
@@ -372,11 +439,11 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
             break;
         }
         case DAT_ARR_PTRCOUNT: {
-            u32 gcptr = rd32(src);
-            u32 n = read_scalar(gc + f->aux, f->aux2 == 2 ? DAT_U16 : DAT_U32);
+            uintptr_t gcptr = rd_ptr(src);
+            u32 n = read_scalar(gc + f->aux, count_kind(f->aux2));
             void** p = NULL;
             if (gcptr != 0 && n != 0) {
-                const u8* tbl = (const u8*) (uintptr_t) gcptr;
+                const u8* tbl = (const u8*) gcptr;
                 u32 i;
                 p = arena_alloc((size_t) n * sizeof(void*));
                 if (p == NULL) {
@@ -384,9 +451,8 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
                             "melee_pc: out of memory converting pointer table");
                 }
                 for (i = 0; i < n; i++) {
-                    u32 ep = rd32(tbl + i * 4);
-                    p[i] = ep ? melee_pc_dat_convert(
-                                    (const void*) (uintptr_t) ep, f->type)
+                    uintptr_t ep = rd_ptr(tbl + i * 4);
+                    p[i] = ep ? melee_pc_dat_convert((const void*) ep, f->type)
                               : NULL;
                 }
             }
@@ -470,6 +536,10 @@ void* melee_pc_dat_convert(const void* gc, int type)
 
 // Reads a big-endian u32 from the GameCube copy.
 #define GC_U32(off) rd32(gc + (off))
+// Reads a pointer slot from the GameCube copy, decoding the self-relative
+// encoding the loader wrote. Use this, not GC_U32, for anything held as an
+// address -- even an arm that is carried through without being followed.
+#define GC_PTR(off) ((void*) rd_ptr(gc + (off)))
 #define GC_U16(off) rd16(gc + (off))
 
 // Stores a converted pointer at a host offset.
@@ -482,10 +552,9 @@ static void put_ptr(u8* host, u16 off, void* p)
 static void conv_arm(const u8* gc, u8* host, u16 gc_off, u16 host_off,
                      int type)
 {
-    u32 v = rd32(gc + gc_off);
+    uintptr_t v = rd_ptr(gc + gc_off);
     put_ptr(host, host_off,
-            v ? melee_pc_dat_convert((const void*) (uintptr_t) v, type)
-              : NULL);
+            v ? melee_pc_dat_convert((const void*) v, type) : NULL);
 }
 
 // The POBJ_ENVELOPE arm is two levels deep, which no DatField kind expresses:
@@ -498,17 +567,17 @@ static void conv_arm(const u8* gc, u8* host, u16 gc_off, u16 host_off,
 // Converting the arm as a single descriptor, as this used to, left the inner
 // arrays in GameCube layout -- 8 bytes per element instead of 16, big-endian
 // joint pointers -- so the inner walk ran off into whatever followed.
-static void* conv_envelope_array(u32 gcptr)
+static void* conv_envelope_array(uintptr_t gcptr)
 {
     const DatType* et = &dat_types[DAT_T_HSD_EnvelopeDesc];
-    const u8* e = (const u8*) (uintptr_t) gcptr;
+    const u8* e = (const u8*) gcptr;
     u32 n = 0;
 
     if (gcptr == 0) {
         return NULL;
     }
     // joint is at offset 0 and terminates the array.
-    while (rd32(e + n * et->gc_size) != 0) {
+    while (rd_ptr(e + n * et->gc_size) != 0) {
         n++;
     }
     n++; // keep the terminator: the game's loop stops on it
@@ -517,14 +586,14 @@ static void* conv_envelope_array(u32 gcptr)
 
 static void conv_envelope_table(const u8* gc, u8* host, u16 goff, u16 hoff)
 {
-    u32 tbl = rd32(gc + goff);
+    uintptr_t tbl = rd_ptr(gc + goff);
     void** p = NULL;
 
     if (tbl != 0) {
-        const u8* t = (const u8*) (uintptr_t) tbl;
+        const u8* t = (const u8*) tbl;
         u32 n = 0, i;
 
-        while (rd32(t + n * 4) != 0) {
+        while (rd_ptr(t + n * 4) != 0) {
             n++;
         }
         p = arena_alloc((size_t) (n + 1) * sizeof(void*));
@@ -533,7 +602,7 @@ static void conv_envelope_table(const u8* gc, u8* host, u16 goff, u16 hoff)
                     "melee_pc: out of memory converting envelope table");
         }
         for (i = 0; i < n; i++) {
-            p[i] = conv_envelope_array(rd32(t + i * 4));
+            p[i] = conv_envelope_array(rd_ptr(t + i * 4));
         }
         p[n] = NULL;
     }
@@ -584,7 +653,7 @@ static bool joint_union(const u8* gc, u8* host)
 
     if (flags & (1u << 14)) {
         // HSD_Spline is a runtime type with no descriptor; the address stands.
-        put_ptr(host, 32, (void*) (uintptr_t) GC_U32(16));
+        put_ptr(host, 32, GC_PTR(16));
     } else if (flags & (1u << 5)) {
         // A DAT-resident singly-linked list: 8 bytes on GameCube, 16 on host,
         // so it genuinely needs converting rather than widening.
@@ -645,9 +714,9 @@ static bool lightdesc_union(const u8* gc, u8* host)
         return true;
     case 0u: // LOBJ_AMBIENT
     case 1u: // LOBJ_INFINITE
-        // Neither reads the union (lobj.c:959-963). Carry the raw address so
+        // Neither reads the union (lobj.c:959-963). Carry the address so
         // nothing is silently zeroed, but do not follow it.
-        put_ptr(host, 40, (void*) (uintptr_t) GC_U32(24));
+        put_ptr(host, 40, GC_PTR(24));
         return true;
     default:
         return false;
@@ -708,7 +777,7 @@ void* melee_pc_dat_root_ptrnull(const void* p, int type)
     }
 
     t = (const u8*) p;
-    while (rd32(t + n * 4) != 0) {
+    while (rd_ptr(t + n * 4) != 0) {
         n++;
     }
 
@@ -721,8 +790,8 @@ void* melee_pc_dat_root_ptrnull(const void* p, int type)
     *slot = host;
 
     for (i = 0; i < n; i++) {
-        host[i] = melee_pc_dat_convert((const void*) (uintptr_t) rd32(t + i * 4),
-                                       type);
+        host[i] =
+            melee_pc_dat_convert((const void*) rd_ptr(t + i * 4), type);
     }
     host[n] = NULL;
     return host;
@@ -805,7 +874,20 @@ static int selftest_sentinel_array(void)
 
 int melee_pc_dat_selftest(void)
 {
-    static const u8 gc[24] = {
+    // A stand-in for whatever the vertex pointer resolves to. Its address is
+    // the value the round-trip below has to reproduce.
+    static u8 vertex_target;
+
+    // Not const: the vertex slot is written the way the archive loader writes
+    // one, so this covers the store/load round-trip rather than assuming an
+    // encoding. Everything else is raw big-endian, as it is on disc.
+    //
+    // Static, and so is the target above: a real archive holds both ends of a
+    // pointer in the same buffer, and the 32-bit slot only reaches +-2GB. A
+    // stack fixture pointing at a static target is around 140TB out and would
+    // be testing something the loader never does.
+    static u8 gc[24];
+    static const u8 gc_init[24] = {
         0x00, 0x00, 0x00, 0x09, // attr        @0
         0x00, 0x00, 0x00, 0x01, // attr_type   @4
         0x00, 0x00, 0x00, 0x01, // comp_cnt    @8
@@ -813,8 +895,11 @@ int melee_pc_dat_selftest(void)
         0x07,                   // frac        @16
         0x00,                   // (pad)
         0x00, 0x0C,             // stride      @18
-        0x00, 0xAB, 0xCD, 0xEF, // vertex      @20
+        0x00, 0x00, 0x00, 0x00, // vertex      @20, filled in below
     };
+
+    memcpy(gc, gc_init, sizeof(gc));
+    melee_pc_dat_store_ptr(gc + 20, &vertex_target);
     const DatType* ty = &dat_types[DAT_T_HSD_VtxDescList];
     const u8* host;
     int fails = 0;
@@ -846,7 +931,20 @@ int melee_pc_dat_selftest(void)
     CHECK("comp_type", *(const u32*) (host + 12), 4);
     CHECK("frac", *(const u8*) (host + 16), 7);
     CHECK("stride", *(const u16*) (host + 18), 0x000C);
-    CHECK("vertex", *(const uintptr_t*) (host + 24), 0x00ABCDEFu);
+    CHECK("vertex", *(const uintptr_t*) (host + 24),
+          (uintptr_t) &vertex_target);
+
+    // A slot no relocation entry covers stays zero, and zero has to keep
+    // meaning NULL rather than decoding as "this slot's own address".
+    {
+        u8 nul[24];
+        const u8* nhost;
+
+        memcpy(nul, gc, sizeof(nul));
+        memset(nul + 20, 0, 4);
+        nhost = melee_pc_dat_convert(nul, DAT_T_HSD_VtxDescList);
+        CHECK("null vertex", *(const uintptr_t*) (nhost + 24), 0);
+    }
 #undef CHECK
 
     // Same input must memoise to the same output.
