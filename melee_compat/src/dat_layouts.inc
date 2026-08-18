@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 66 types, reached from the HSD_*LoadDesc entry points.
+// 67 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -128,7 +128,7 @@ static const DatField HSD_AObjDesc_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 flags
     {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 end_frame
     {    8,    8, DAT_PTR        , DAT_T_HSD_FObjDesc          , 0, 0 }, // HSD_FObjDesc * fobjdesc
-    {   12,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 obj_id
+    {   12,   16, DAT_PTR        , DAT_T_HSD_Joint             , 0, 0 }, // struct HSD_Joint * obj_id
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -462,7 +462,7 @@ static const DatField UnkStageDat_fields[] = {
     {    4,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk4
     {    8,   16, DAT_ARR_COUNT, DAT_T_UnkStageDat_x8_t, 12, 4 }, // unk8[unkC]
     {   12,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unkC
-    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // HSD_Spline ** unk10
+    {   16,   32, DAT_PTR        , DAT_T_HSD_Spline            , 0, 0 }, // HSD_Spline ** unk10
     {   20,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk14
     {   24,   48, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * unk18
     {   28,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk1C
@@ -756,7 +756,7 @@ static const DatField UnkStageDat_x8_t_fields[] = {
     {   12,   24, DAT_ARR_PTRNULL, DAT_T_HSD_ShapeAnimJoint, 0, 0 }, // unkC[] until NULL
     {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // HSD_CameraDescPerspective * x10
     {   20,   40, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x14
-    {   24,   48, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x18
+    {   24,   48, DAT_ARR_PTRNULL, DAT_T_LightList, 0, 0 }, // x18[] until NULL
     {   28,   56, DAT_PTR        , DAT_T_HSD_FogDesc           , 0, 0 }, // HSD_FogDesc * x1C
     {   32,   64, DAT_ARR_COUNT, DAT_T_GrJoint, 36, 4 }, // unk20[unk24]
     {   36,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk24
@@ -781,6 +781,17 @@ static const DatField GrJoint_fields[] = {
 
 static const DatField GroundShadowEntry_fields[] = {
     {    0,    0, DAT_PTR        , DAT_T_HSD_LightAnim         , 0, 0 }, // HSD_LightAnim * unk0
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField HSD_Spline_fields[] = {
+    {    0,    0, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 type
+    {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 numcv
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 tension
+    {    8,    8, DAT_ARR_COUNT, DAT_T_Vec, 2, 2 }, // cv[numcv]
+    {   12,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 totalLength
+    {   16,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // f32 * segLength
+    {   20,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // f32 (*)[5] segPoly
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -929,6 +940,7 @@ static const DatType dat_types[] = {
     { "UnkStageDatInternal", 8, 8, UnkStageDatInternal_fields, 0 },
     { "GrJoint", 6, 6, GrJoint_fields, 0 },
     { "GroundShadowEntry", 8, 16, GroundShadowEntry_fields, 0 },
+    { "HSD_Spline", 24, 40, HSD_Spline_fields, 0 },
     { "HSD_ShapeSetDesc", 28, 48, HSD_ShapeSetDesc_fields, 0 },
     { "HSD_EnvelopeDesc", 8, 16, HSD_EnvelopeDesc_fields, 0 },
     { "HSD_PEDesc", 12, 12, HSD_PEDesc_fields, 0 },

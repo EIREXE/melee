@@ -134,6 +134,20 @@ typedef struct StageCallbacks {
     /*  +C */ void (*callback3)(Ground_GObj*);
     /* +10 */ union {
         /* +10 */ u32 flags;
+#ifdef MELEE_PC
+        // Bit endianness shenanigans
+        struct {
+            u32 : 24;
+            u32 flags_b7 : 1;
+            u32 flags_b6 : 1;
+            u32 flags_b5 : 1;
+            u32 flags_b4 : 1;
+            u32 flags_b3 : 1;
+            u32 flags_b2 : 1;
+            u32 flags_b1 : 1;
+            u32 flags_b0 : 1;
+        };
+#else
         struct {
             /* +10:0 */ u8 flags_b0 : 1;
             /* +10:1 */ u8 flags_b1 : 1;
@@ -144,6 +158,7 @@ typedef struct StageCallbacks {
             /* +10:6 */ u8 flags_b6 : 1;
             /* +10:7 */ u8 flags_b7 : 1;
         };
+#endif
     };
 } StageCallbacks;
 
@@ -1985,7 +2000,8 @@ struct UnkStageDat_x8_t {
     /*  +C */ HSD_ShapeAnimJoint** unkC;
     /* +10 */ HSD_CameraDescPerspective* x10;
     /* +14 */ UNK_T x14;
-    /* +18 */ UNK_T x18;
+    /// Handed to Ground_801C20E0(), whose parameter is a LightList**.
+    /* +18 */ LightList** x18;
     /* +1C */ HSD_FogDesc* x1C;
     /* +20 */ GrJoint* unk20;
     /* +24 */ s32 unk24; // size of unk20 array

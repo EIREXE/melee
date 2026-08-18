@@ -660,8 +660,12 @@ static bool joint_union(const u8* gc, u8* host)
     u32 flags = GC_U32(4);
 
     if (flags & (1u << 14)) {
-        // HSD_Spline is a runtime type with no descriptor; the address stands.
-        put_ptr(host, 32, GC_PTR(16));
+        // HSD_Spline has no separate *Desc type, which makes it look like a
+        // runtime object -- splInit() does fill segLength/segPoly later. But
+        // the header and the control points are file data: left unconverted,
+        // splGetSplinePoint() reads numcv as 2304 rather than 9 and walks a
+        // cv pointer made of two big-endian words.
+        conv_arm(gc, host, 16, 32, DAT_T_HSD_Spline);
     } else if (flags & (1u << 5)) {
         // A DAT-resident singly-linked list: 8 bytes on GameCube, 16 on host,
         // so it genuinely needs converting rather than widening.

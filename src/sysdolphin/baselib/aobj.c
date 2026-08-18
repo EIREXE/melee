@@ -194,15 +194,23 @@ HSD_AObj* HSD_AObjLoadDesc(HSD_AObjDesc* aobjdesc)
         fobjdesc = aobjdesc->fobjdesc;
         fobj = HSD_FObjLoadDesc(fobjdesc);
         HSD_AObjSetFObj(aobj, fobj);
+#ifdef MELEE_PC
+        id = (u32) (uintptr_t) aobjdesc->obj_id;
+#else
         id = aobjdesc->obj_id;
+#endif
         if (id != 0U) {
             HSD_Obj* hsd_obj = HSD_IDGetDataFromTable(0, id, 0);
             phi_r30 = hsd_obj;
             if (hsd_obj != NULL) {
                 ref_INC(hsd_obj);
             } else {
+#ifdef MELEE_PC
+                phi_r30 = (HSD_Obj*) HSD_JObjLoadJoint(aobjdesc->obj_id);
+#else
                 phi_r30 =
                     (HSD_Obj*) HSD_JObjLoadJoint((void*) aobjdesc->obj_id);
+#endif
             }
             if (aobj != NULL) {
                 if (aobj->hsd_obj != NULL) {

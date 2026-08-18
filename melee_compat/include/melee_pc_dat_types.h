@@ -65,17 +65,18 @@ typedef enum {
     DAT_T_UnkStageDatInternal = 53,
     DAT_T_GrJoint = 54,
     DAT_T_GroundShadowEntry = 55,
-    DAT_T_HSD_ShapeSetDesc = 56,
-    DAT_T_HSD_EnvelopeDesc = 57,
-    DAT_T_HSD_PEDesc = 58,
-    DAT_T_HSD_ImageDesc = 59,
-    DAT_T_HSD_TexLODDesc = 60,
-    DAT_T_HSD_ExpDesc = 61,
-    DAT_T_HSD_ByteCodeExpDesc = 62,
-    DAT_T_HSD_IKHintDesc = 63,
-    DAT_T_HSD_LightPointDesc = 64,
-    DAT_T_HSD_LightSpotDesc = 65,
-    DAT_T_COUNT = 66
+    DAT_T_HSD_Spline = 56,
+    DAT_T_HSD_ShapeSetDesc = 57,
+    DAT_T_HSD_EnvelopeDesc = 58,
+    DAT_T_HSD_PEDesc = 59,
+    DAT_T_HSD_ImageDesc = 60,
+    DAT_T_HSD_TexLODDesc = 61,
+    DAT_T_HSD_ExpDesc = 62,
+    DAT_T_HSD_ByteCodeExpDesc = 63,
+    DAT_T_HSD_IKHintDesc = 64,
+    DAT_T_HSD_LightPointDesc = 65,
+    DAT_T_HSD_LightSpotDesc = 66,
+    DAT_T_COUNT = 67
 } DatTypeId;
 
 #endif

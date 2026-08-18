@@ -52,7 +52,16 @@ struct HSD_AObjDesc {
     u32 flags;
     f32 end_frame;
     HSD_FObjDesc* fobjdesc;
+#ifdef MELEE_PC
+    /// A joint *pointer* into the archive, this slot is in the DAT's
+    /// relocation table, that doubles as an id for HSD_IDGetDataFromTable.
+    /// Both readings fit in the same four bytes on GameCube. On the host it
+    /// has to be declared as the pointer, or the self-relative delta Locate()
+    /// stores here gets read as the id
+    struct HSD_Joint* obj_id;
+#else
     u32 obj_id;
+#endif
 };
 
 struct HSD_AnimJoint {

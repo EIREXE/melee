@@ -113,6 +113,10 @@ EXTRA = [
     "UnkStageDatInternal",
     "GrJoint",
     "GroundShadowEntry",
+    # Reached through HSD_Joint's spline arm. It looks like a runtime type --
+    # splInit() fills segLength/segPoly later -- but the header fields and the
+    # control points come straight out of the DAT.
+    "HSD_Spline",
 ]
 
 # Runtime objects: HSD allocates these itself, already in host layout.
@@ -121,7 +125,7 @@ NEVER = {
     "HSD_JObj", "HSD_DObj", "HSD_PObj", "HSD_MObj", "HSD_TObj", "HSD_AObj",
     "HSD_RObj", "HSD_WObj", "HSD_CObj", "HSD_LObj", "HSD_Fog", "HSD_FObj",
     "HSD_Obj", "HSD_GObj", "HSD_Tlut", "HSD_TObjTev", "HSD_TExp",
-    "HSD_Spline", "HSD_Exp", "HSD_FogAdj", "HSD_CObj", "HSD_Fog",
+    "HSD_Exp", "HSD_FogAdj", "HSD_CObj", "HSD_Fog",
     # Runtime objects that loadShapeSetDesc()/friends allocate from a Desc.
     # HSD_LightAnim and HSD_WObjAnim look like they belong here but do not:
     # unlike HSD_ShapeSet they have no separate *Desc type, because they *are*
@@ -164,6 +168,11 @@ ARRAYS = {
     ("UnkStageDat", "unk28"): ("ptrcount", "unk2C"),
     ("UnkStageDat", "unk20"): ("count", "unk24"),
     ("UnkStageDat_x8_t", "unk20"): ("count", "unk24"),
+    ("UnkStageDat_x8_t", "x18"): ("ptrnull",),
+    # Enough for type 0 (lerp), which indexes cv[0 .. numcv). Type 1 walks
+    # cv[idx * 3] and would need 3 * numcv - 2; if a bezier spline shows up,
+    # this needs a hook rather than a plain count.
+    ("HSD_Spline", "cv"): ("count", "numcv"),
     ("UnkStageDat_x8_t", "unk4"): ("ptrnull",),
     ("UnkStageDat_x8_t", "unk8"): ("ptrnull",),
     ("UnkStageDat_x8_t", "unkC"): ("ptrnull",),
@@ -184,6 +193,7 @@ PROBE = """
 #include <baselib/cobj.h>
 #include <baselib/fog.h>
 #include <baselib/sobjlib.h>
+#include <baselib/spline.h>
 #include <melee/sc/types.h>
 #include <melee/lb/types.h>
 #include <melee/ef/types.h>
