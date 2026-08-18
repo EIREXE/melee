@@ -212,6 +212,11 @@ bool melee_pc_in_mem1(const void* p);
 /// elsewhere, so the matching build's text is unchanged.
 #define MELEE_PC_ALIGN32 ATTRIBUTE_ALIGN(32)
 
+/// @brief 16-byte alignment on the host, nothing on GameCube. For an object
+/// whose *other* declaration leads the compiler to emit aligned SSE stores --
+/// see ft_8045A1E0, declared both as an array of pointers and as a struct.
+#define MELEE_PC_ALIGN16 ATTRIBUTE_ALIGN(16)
+
 /// @brief Tells the PC build's relocating DAT loader that an archive's memory
 /// is going away, so it can drop the structures it converted out of it.
 /// Expands to nothing everywhere else.
@@ -292,6 +297,7 @@ void melee_pc_pump(void);
 #define MELEE_PC_IS_NOT_MAINRAM(a) ((u32) (a) < 0x80000000U)
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)
 #define MELEE_PC_ALIGN32
+#define MELEE_PC_ALIGN16
 #define MELEE_PC_PUMP() ((void) 0)
 /// A GameCube pointer is already the 32-bit slot it is stored in.
 #define MELEE_PC_PTR32

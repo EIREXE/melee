@@ -182,6 +182,9 @@ void Fighter_LoadCommonData(void)
 {
     void** pData;
     lbArchive_LoadSymbols("PlCo.dat", (void**) &pData, "ftLoadCommonData", 0);
+    // 23 four-byte big-endian slots in the archive; read as host-width
+    // pointers they come out as pairs of DAT words glued together.
+    MELEE_PC_DAT(ftLoadCommonData, pData);
 
     // copy 23 4-byte chunks from pData to p_ftCommonData in reverse order,
     // equivalent to this: for(i=0; i<23; i++)

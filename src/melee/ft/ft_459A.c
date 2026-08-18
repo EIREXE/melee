@@ -16,7 +16,13 @@ UnkCostumeStruct ft_8045A330[5];
 UnkCostumeStruct ft_8045A2D0[4];
 UnkCostumeStruct ft_8045A270[4];
 UnkCostumeStruct ft_8045A1F8[5];
-UnkCostumeStruct ft_8045A1E0;
+// ft_0877.h declares this one as `HSD_Joint* ft_8045A1E0[6]`, the same 24
+// bytes on GameCube, but on the host the two views disagree on both size (40
+// vs 48) and alignment. ftPr_Init_8013C2F8 clears it through the array view
+// and clang vectorises that into 16-byte `movaps` stores, which fault on an
+// object clang only had to align to 8. Over-align the definition so the
+// array view's stores are valid.
+MELEE_PC_ALIGN16 UnkCostumeStruct ft_8045A1E0;
 UnkCostumeStruct ft_8045A168[5];
 UnkCostumeStruct ft_8045A0F0[5];
 UnkCostumeStruct ft_8045A090[4];

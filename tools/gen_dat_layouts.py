@@ -58,6 +58,8 @@ ROOTS = [
     "GroundItemData",
     "MapCollData",
     "UnkStageDat",
+    "ftLoadCommonData",
+    "ftData",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -203,6 +205,7 @@ PROBE = """
 #include <melee/gr/types.h>
 #include <melee/it/it_3F14.h>
 #include <melee/mp/types.h>
+#include <melee/ft/fighter.h>
 """
 
 INCLUDES = [

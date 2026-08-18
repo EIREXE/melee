@@ -1487,6 +1487,9 @@ void ftData_8008572C(FighterKind kind)
     if (gFtDataList[kind] == NULL) {
         lbArchive_80017040(NULL, ftData_803C1F40[kind].a, &gFtDataList[kind],
                            ftData_803C1F40[kind].b, 0);
+        // PlXx.dat's per-character root, straight out of the archive: every
+        // arm is a 4-byte big-endian slot.
+        MELEE_PC_DAT(ftData, gFtDataList[kind]);
     }
 }
 

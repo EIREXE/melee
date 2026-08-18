@@ -79,6 +79,39 @@ struct plAllocInfo;
 /* 459054 */ extern HSD_ObjAllocData fighter_dobj_list_alloc_data;
 /* 459080 */ extern HSD_ObjAllocData fighter_x2040_alloc_data;
 /* 4590AC */ extern HSD_ObjAllocData fighter_x59C_alloc_data;
+/// PlCo.dat's @c ftLoadCommonData: the 23 pointers Fighter_LoadCommonData()
+/// fans out into the globals below.
+///
+/// Only the two joints are typed so far. The rest stay @c void* on purpose:
+/// the DAT converter then decodes each slot's address without following it,
+/// so a field can be given its real type as that data is actually needed
+/// rather than pulling every fighter table in at once.
+typedef struct ftLoadCommonData {
+    /* 00 */ void* common_data;
+    /* 04 */ void* x04;
+    /* 08 */ void* x08;
+    /* 0C */ void* x0C;
+    /* 10 */ void* parts_table;
+    /* 14 */ void* x14;
+    /* 18 */ void* x18;
+    /* 1C */ void* x1C;
+    /* 20 */ void* x20;
+    /* 24 */ void* x24;
+    /* 28 */ void* x28;
+    /* 2C */ void* x2C;
+    /* 30 */ void* x30;
+    /* 34 */ void* x34;
+    /* 38 */ void* x38;
+    /* 3C */ void* x3C;
+    /* 40 */ HSD_Joint* trophy_platform_joint;
+    /* 44 */ void* x44;
+    /* 48 */ void* x48;
+    /* 4C */ void* x4C;
+    /* 50 */ HSD_Joint* x50_joint;
+    /* 54 */ void* crowd_config;
+    /* 58 */ void* x58;
+} ftLoadCommonData;
+
 /* 4D6504 */ extern HSD_Joint* Fighter_804D6504;
 /* 4D6508 */ extern u8* Fighter_804D6508;
 /* 4D650C */ extern u8* Fighter_804D650C;
