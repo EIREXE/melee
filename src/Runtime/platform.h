@@ -307,6 +307,7 @@ void melee_pc_pump(void);
 #define MELEE_PC_DAT_PTRNULL(T, p)
 #define MELEE_PC_DAT_ELEM(T, base, i) (&(base)[i])
 #define MELEE_PC_DAT_ARRAY(T, p, n)
+#define MELEE_PC_DAT_PTRARRAY(T, p, n)
 #define MELEE_PC_ON_ARCHIVE_FREE(base, size) ((void) 0)
 #define MELEE_PC_IS_NOT_MAINRAM(a) ((u32) (a) < 0x80000000U)
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)
