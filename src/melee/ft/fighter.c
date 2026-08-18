@@ -195,6 +195,9 @@ void Fighter_LoadCommonData(void)
     Fighter_804D654C = pData[2];
     Fighter_804D6548 = pData[3];
     ftPartsTable = pData[4];
+    // Indexed by fighter kind, so its length is FTKIND_MAX rather than
+    // anything the file records.
+    MELEE_PC_DAT_PTRARRAY(FighterPartsTable, ftPartsTable, FTKIND_MAX);
     Fighter_804D6540 = pData[5];
     Fighter_804D653C = pData[6];
     Fighter_804D6538 = pData[7];

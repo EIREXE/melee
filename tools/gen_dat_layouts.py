@@ -61,6 +61,8 @@ ROOTS = [
     "ftLoadCommonData",
     "ftData",
     "Fighter_WaitAnimData",
+    # ftPartsTable's elements, indexed by fighter kind.
+    "FighterPartsTable",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -176,6 +178,10 @@ ARRAYS = {
     # cv[idx * 3] and would need 3 * numcv - 2; if a bezier spline shows up,
     # this needs a hook rather than a plain count.
     ("HSD_Spline", "cv"): ("count", "numcv"),
+    # ftData's two wait-anim tables: sized by ftData_Table_Unk0[kind].count
+    # and its demo twin, both in the executable rather than the file.
+    ("ftData", "xC"): ("raw",),
+    ("ftData", "x14"): ("raw",),
     # grAnime_801C7C1C indexes each entry as an array (`aj = &aj[arg2]`) and
     # the file records no length, so entries stay raw and the call site
     # converts the one element it wants.
@@ -542,6 +548,16 @@ def main() -> int:
                 body.append(f"    {{ {goff:4}, {hoff:4}, DAT_ARR_SENTINEL, "
                             f"{pid}, {trow['off']}, {val} }}, "
                             f"// {r['name']}[] until {tag}=={val:#x}")
+            elif arr and arr[0] == "raw":
+                # Pointer to an array whose length lives outside the DAT. The
+                # address is decoded but the pointee is left alone, so the
+                # call site can convert the right number of elements with
+                # MELEE_PC_DAT_ARRAY(). Without this the known pointee type
+                # would make the converter relayout element 0 only, and every
+                # later index would read the next arena object.
+                body.append(f"    {{ {goff:4}, {hoff:4}, DAT_PTR        , "
+                            f"{'DAT_T_NONE':28}, 0, 0 }}, "
+                            f"// {r['ctype']} {r['name']} (array, raw)")
             elif arr and arr[0] == "ptrnullraw":
                 body.append(f"    {{ {goff:4}, {hoff:4}, "
                             f"DAT_ARR_PTRNULL_RAW, {pid}, 0, 0 }}, "

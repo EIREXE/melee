@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 70 types, reached from the HSD_*LoadDesc entry points.
+// 71 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -504,9 +504,9 @@ static const DatField ftData_fields[] = {
     {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftCo_DatAttrs * x0
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * ext_attr
     {    8,   16, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x8 * x8
-    {   12,   24, DAT_PTR        , DAT_T_Fighter_WaitAnimData  , 0, 0 }, // struct Fighter_WaitAnimData * xC
+    {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct Fighter_WaitAnimData * xC (array, raw)
     {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 (*)[2] x10
-    {   20,   40, DAT_PTR        , DAT_T_Fighter_WaitAnimData  , 0, 0 }, // struct Fighter_WaitAnimData * x14
+    {   20,   40, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct Fighter_WaitAnimData * x14 (array, raw)
     {   24,   48, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 (*)[2] x18
     {   28,   56, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x1C ** x1C
     {   32,   64, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct (unnamed at /home/deck/repos/doldecomp-melee2/src/melee/ft/types.h:633:15) * x20
@@ -535,6 +535,13 @@ static const DatField Fighter_WaitAnimData_fields[] = {
     {   12,   16, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // union CmdUnion * xC
     {   16,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x10_animCurrFlags
     {   20,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // uintptr_t x14
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField FighterPartsTable_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 * joint_to_part
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 * part_to_joint
+    {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 parts_num
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -975,6 +982,7 @@ static const DatType dat_types[] = {
     { "ftLoadCommonData", 92, 184, ftLoadCommonData_fields, 0 },
     { "ftData", 96, 192, ftData_fields, 0 },
     { "Fighter_WaitAnimData", 24, 40, Fighter_WaitAnimData_fields, 0 },
+    { "FighterPartsTable", 12, 24, FighterPartsTable_fields, 0 },
     { "HSD_VtxDescList", 24, 32, HSD_VtxDescList_fields, 0 },
     { "HSD_TexAnim", 24, 48, HSD_TexAnim_fields, 0 },
     { "HSD_SList", 8, 16, HSD_SList_fields, 0 },

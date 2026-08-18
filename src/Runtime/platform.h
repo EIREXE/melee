@@ -193,6 +193,13 @@ void* melee_pc_dat_array(const void* p, int type, unsigned int count);
 #define MELEE_PC_DAT_ARRAY(T, p, n)                                           \
     ((p) = melee_pc_dat_array((p), DAT_T_##T, (unsigned int) (n)))
 
+/// @brief Converts a table of @p n pointers to @p T. For tables indexed by
+/// something the file does not describe -- ftPartsTable is indexed by fighter
+/// kind, so its length lives in the executable.
+void* melee_pc_dat_ptrarray(const void* p, int type, unsigned int count);
+#define MELEE_PC_DAT_PTRARRAY(T, p, n)                                        \
+    ((p) = melee_pc_dat_ptrarray((p), DAT_T_##T, (unsigned int) (n)))
+
 /// @brief As #MELEE_PC_DAT, for a symbol that is a NULL-terminated *table* of
 /// pointers rather than a single structure (LightList** and friends).
 void* melee_pc_dat_root_ptrnull(const void* p, int type);

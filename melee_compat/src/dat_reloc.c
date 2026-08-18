@@ -834,6 +834,44 @@ void* melee_pc_dat_elem(const void* base, int type, int index)
 // Memoised on the table address so repeated roots share one host copy, using
 // the same trick as the array kinds: type | 0x100 keys the table itself apart
 // from an element that happens to start at the same address.
+// Converts a GameCube-side *table of pointers* of known length, as a root.
+//
+// The ptrnull kinds find their own end; this is for tables indexed by
+// something the file does not describe -- ftPartsTable is indexed by fighter
+// kind, so its length is FTKIND_MAX and lives in the executable.
+void* melee_pc_dat_ptrarray(const void* p, int type, unsigned int count)
+{
+    const u8* tbl = (const u8*) p;
+    void** slot;
+    void** host;
+    unsigned int i;
+
+    if (p == NULL || !melee_pc_in_mem1(p) || count == 0) {
+        return (void*) p;
+    }
+    if (type < 0 || type >= DAT_T_COUNT) {
+        OSPanic(__FILE__, __LINE__, "melee_pc: bad DAT type id %d", type);
+    }
+
+    // Keyed apart from a struct conversion of the same address, as the array
+    // kinds are.
+    slot = memo_slot(p, type | 0x200);
+    if (*slot != NULL) {
+        return *slot;
+    }
+    host = arena_alloc((size_t) count * sizeof(void*));
+    if (host == NULL) {
+        OSPanic(__FILE__, __LINE__, "melee_pc: out of memory converting %s*[]",
+                dat_types[type].name);
+    }
+    *slot = host;
+    for (i = 0; i < count; i++) {
+        uintptr_t e = rd_ptr(tbl + i * 4);
+        host[i] = e ? melee_pc_dat_convert((const void*) e, type) : NULL;
+    }
+    return host;
+}
+
 void* melee_pc_dat_root_ptrnull(const void* p, int type)
 {
     const u8* t;

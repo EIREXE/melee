@@ -1589,14 +1589,14 @@ void ftData_80085A14(FighterKind kind)
         lbFile_800168A0(1, ftData_803C23E4[kind], &sp18, &sp10);
         a_head = sp18;
         HSD_ASSERT(0x974, a_head);
-        // NOT converted yet, deliberately. The table's length is not in the
-        // DAT (it is this count, which lives in the executable), so
-        // MELEE_PC_DAT_ARRAY() would be the tool, but struct
-        // Fighter_WaitAnimData is the wrong size. Converting with its
-        // 24-byte GameCube stride reads element 1 four bytes early: the
-        // element's x4, a pointer value,
-        // which is element 1's real x0. The struct is missing a member and
-        // needs decomp work before any of this can be converted.
+        // The table's length is not in the DAT -- it is this count, which
+        // lives in the executable -- so it is converted here rather than when
+        // gFtDataList[kind] was. ftData::xC is annotated "raw" in the layout
+        // generator for the same reason: left to the converter it would
+        // relayout element 0 alone and every later index would read whatever
+        // the arena allocated next.
+        MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, temp_r27->xC,
+                           ftData_Table_Unk0[kind].count);
         for (i = 0; i < (u32) ftData_Table_Unk0[kind].count; i++) {
             temp_r0 = temp_r27->xC[i].x8;
             if (temp_r0 != 0) {
@@ -1640,8 +1640,9 @@ void ftData_80085B98(Fighter* fp, int arg1, int arg2)
         HSD_ASSERTREPORT(0x9D2, 0, "Demo Status error! %d\n", arg2);
     }
     if (temp_r30 != 0U) {
-        // Same table, demo-mode counterpart; not converted for the same
-        // reason as ftData_80085A14's above.
+        // Same table, demo-mode counterpart, sized by its own count.
+        MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, fp->ft_data->x14,
+                           ftData_UnkIntPairs[fp->kind].count);
         for (i = arg1; i <= arg2; i++) {
             temp_r3 = &fp->ft_data->x14[i];
             temp_r0 = temp_r3->x8;
