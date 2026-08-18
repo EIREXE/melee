@@ -1282,7 +1282,13 @@ void efAsync_OnLoad(HSD_Archive* archive, u8* data, u32 length, int index)
     lbArchive_InitializeDAT(archive, data, length);
     result = HSD_ArchiveGetPublicAddress(
         archive, efAsync_DatEntries[index].effDataTable_name);
-    if ((u32) result->ef_DAT_file | (u32) result->effDataTable_name) {
+    // `result` points straight into the archive, where these are three 4-byte
+    // big-endian slots. Read as host pointers they come out as two DAT words
+    // glued together, which is what used to reach psInitDataBankLocate.
+    MELEE_PC_DAT(EF_DAT_Entry, result);
+    if ((u32) (uintptr_t) result->ef_DAT_file |
+        (u32) (uintptr_t) result->effDataTable_name)
+    {
         psInitDataBankLocate((HSD_Archive*) result->ef_DAT_file,
                              (HSD_Archive*) result->effDataTable_name, NULL);
     }
@@ -1306,7 +1312,12 @@ void efAsync_LoadSync(int idx)
     {
         bool chk = lbArchive_80017040(NULL, lookup->ef_DAT_file, &spC,
                                       lookup->effDataTable_name, 0);
-        if ((u32) spC->ef_DAT_file | (u32) spC->effDataTable_name) {
+        // Same as in efAsync_OnLoad above: spC is a public symbol inside the
+        // archive, so its three pointer fields are 4-byte big-endian slots.
+        MELEE_PC_DAT(EF_DAT_Entry, spC);
+        if ((u32) (uintptr_t) spC->ef_DAT_file |
+            (u32) (uintptr_t) spC->effDataTable_name)
+        {
             if (chk) {
                 psInitDataBankLoad(idx, (void*) spC->ef_DAT_file,
                                    (void*) spC->effDataTable_name, NULL, NULL);

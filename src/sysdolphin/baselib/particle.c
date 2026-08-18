@@ -113,6 +113,25 @@ void psInitDataBankLoad(int bank, const int* cmdBank, const int* texBank,
     s32* base = (s32*) hsd_804D08E8;
     u16 version;
 
+#ifdef MELEE_PC
+    // NOT PORTED, same as psInitDataBankLocate below. Every read here is a
+    // big-endian file word (`*(u16*) cmdBank` yields 0x4200 rather than 0x42,
+    // which is why this used to reach the "unknown version" panic), and every
+    // store puts a host pointer into an s32 slot of the hsd_804D08E8 table --
+    // a table whose 0x104 stride and 0x60/0x164/0x268/0x36C/0x470/0x574
+    // offsets all assume 4-byte pointers.
+    {
+        static bool reported = false;
+        if (!reported) {
+            reported = true;
+            OSReport("melee_pc: psInitDataBankLoad is not ported, effect "
+                     "bank %d is not registered\n",
+                     bank);
+        }
+    }
+    return;
+#endif
+
     if (formBank != NULL && *formBank != *texBank) {
         OSPanic(__FILE__, 177,
                 "illigal form data (strange number of group)\n");
@@ -158,6 +177,29 @@ void psInitDataBankLocate(HSD_Archive* cmdBank, HSD_Archive* texBank,
     s32* ptr;
     s32* base;
     s32 version;
+
+#ifdef MELEE_PC
+    // NOT PORTED. Everything below reads big-endian file data through native
+    // loads and relocates it with `slot += (s32) base`, i.e. it stores a host
+    // address into a 4-byte slot. Both need the DAT treatment, and so does
+    // every later reader of those slots in particle.c/psdisp.c, see the
+    // note in psInitDataBankLocate's comment block.
+    //
+    // Bailing out means effects have no relocated bank, so nothing that draws
+    // from it will render; it does not corrupt anything, which running the
+    // unported code does (the version word reads as 0x4200 rather than 0x42,
+    // so the dispatch falls through and Phase 2 walks an uninitialised
+    // `base`).
+    {
+        static bool reported = false;
+        if (!reported) {
+            reported = true;
+            OSReport("melee_pc: psInitDataBankLocate is not ported, effect "
+                     "banks are left unrelocated and will not render\n");
+        }
+    }
+    return;
+#endif
 
     version = *(u16*) cmdBank;
     if (version < 0x40) {

@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 52 types, reached from the HSD_*LoadDesc entry points.
+// 53 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -306,6 +306,13 @@ static const DatField lbRefract_Data_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField EF_DAT_Entry_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // char * ef_DAT_file
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // char * effDataTable_name
+    {    8,   16, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * data
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField HSD_VtxDescList_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttr attr
     {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttrType attr_type
@@ -601,6 +608,7 @@ static const DatType dat_types[] = {
     { "HSD_FogAdjDesc", 68, 68, HSD_FogAdjDesc_fields, 0 },
     { "SceneDesc", 16, 32, SceneDesc_fields, 0 },
     { "lbRefract_Data", 8, 16, lbRefract_Data_fields, 0 },
+    { "EF_DAT_Entry", 12, 24, EF_DAT_Entry_fields, 0 },
     { "HSD_VtxDescList", 24, 32, HSD_VtxDescList_fields, 0 },
     { "HSD_TexAnim", 24, 48, HSD_TexAnim_fields, 0 },
     { "HSD_SList", 8, 16, HSD_SList_fields, 0 },

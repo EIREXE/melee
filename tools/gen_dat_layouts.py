@@ -52,6 +52,7 @@ ROOTS = [
     "SceneDesc",
     # lbRefract_800222A4() looks this up as "lbRefData" in LbRf.dat.
     "lbRefract_Data",
+    "EF_DAT_Entry",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -155,6 +156,7 @@ PROBE = """
 #include <baselib/sobjlib.h>
 #include <melee/sc/types.h>
 #include <melee/lb/types.h>
+#include <melee/ef/types.h>
 """
 
 INCLUDES = [
