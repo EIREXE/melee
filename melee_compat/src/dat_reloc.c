@@ -795,6 +795,22 @@ void* melee_pc_dat_root(const void* p, int type)
 // DAT_ARR_PTRNULL_RAW -- so there is nothing to convert eagerly. The caller
 // has the index, and the element's own address is a stable memo key, so
 // converting on demand is exact rather than a guess at a count.
+// Converts a GameCube-side array of @p count elements, as a root.
+//
+// For arrays whose length is not in the file but *is* known to the caller,
+// ftData's wait-anim tables are sized by ftData_Table_Unk0[kind].count, which
+// lives in the executable, not the DAT.
+void* melee_pc_dat_array(const void* p, int type, u32 count)
+{
+    if (p == NULL || !melee_pc_in_mem1(p)) {
+        return (void*) p;
+    }
+    if (type < 0 || type >= DAT_T_COUNT) {
+        OSPanic(__FILE__, __LINE__, "melee_pc: bad DAT type id %d", type);
+    }
+    return convert_array((const u8*) p, type, count);
+}
+
 void* melee_pc_dat_elem(const void* base, int type, int index)
 {
     if (base == NULL) {

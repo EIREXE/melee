@@ -60,6 +60,7 @@ ROOTS = [
     "UnkStageDat",
     "ftLoadCommonData",
     "ftData",
+    "Fighter_WaitAnimData",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -233,10 +234,16 @@ def dump_layouts(target: str | None) -> dict:
     cmd = ["clang", "-fsyntax-only", "-std=gnu99", "-w",
            "-DMELEE_PC", "-DAURORA", "-DTARGET_PC", "-DBUGFIX",
            "-Xclang", "-fdump-record-layouts-complete", "-x", "c", "-"]
+    # Order matters and must match the real build: melee_compat/include
+    # shadows src/MSL, so getting these backwards makes the probe see
+    # `uintptr_t` as MSL's 4-byte typedef while the PC build compiles the
+    # 8-byte one -- and every host offset after such a field comes out wrong.
+    incs = []
+    for inc in INCLUDES:
+        incs += ["-isystem", str(ROOT / inc)]
+    cmd[1:1] = incs
     if target:
         cmd[1:1] = [f"--target={target}"]
-    for inc in INCLUDES:
-        cmd[1:1] = ["-isystem", str(ROOT / inc)]
 
     proc = subprocess.run(cmd, input=PROBE, capture_output=True, text=True,
                           cwd=ROOT)
@@ -340,7 +347,12 @@ def closure(gc: dict) -> list[str]:
 # on a low-mapped host. It is not survivable now: slots hold self-relative
 # offsets, so an undecoded one is a wild pointer. HSD_Joint::mtx (MtxPtr) is
 # how this was found.
-POINTER_TYPEDEFS = {"MtxPtr", "VecMtxPtr"}
+# uintptr_t appears where a field holds an *address* but is spelled as an
+# integer. Treating it as a pointer widens the slot and maps 0 to NULL, which
+# is what these fields hold in the file -- they are filled in at runtime
+# (Fighter_WaitAnimData::x14 gets `a_head + x4`, and a_head is a figatree
+# buffer from lbFile, not DAT-resident).
+POINTER_TYPEDEFS = {"MtxPtr", "VecMtxPtr", "uintptr_t"}
 
 # Typedefs that are a fixed-size array of scalars rather than one scalar.
 # Classifying one as DAT_U32 swaps its first four bytes and leaves the rest

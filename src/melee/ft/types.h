@@ -890,7 +890,7 @@ struct Fighter_WaitAnimData {
     s32 x8;
     union CmdUnion* xC;
     s32 x10_animCurrFlags;
-    u32 x14;
+    uintptr_t x14;
 };
 
 struct Fighter_CostumeStrings {

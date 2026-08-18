@@ -1589,6 +1589,14 @@ void ftData_80085A14(FighterKind kind)
         lbFile_800168A0(1, ftData_803C23E4[kind], &sp18, &sp10);
         a_head = sp18;
         HSD_ASSERT(0x974, a_head);
+        // NOT converted yet, deliberately. The table's length is not in the
+        // DAT (it is this count, which lives in the executable), so
+        // MELEE_PC_DAT_ARRAY() would be the tool, but struct
+        // Fighter_WaitAnimData is the wrong size. Converting with its
+        // 24-byte GameCube stride reads element 1 four bytes early: the
+        // element's x4, a pointer value,
+        // which is element 1's real x0. The struct is missing a member and
+        // needs decomp work before any of this can be converted.
         for (i = 0; i < (u32) ftData_Table_Unk0[kind].count; i++) {
             temp_r0 = temp_r27->xC[i].x8;
             if (temp_r0 != 0) {
@@ -1617,12 +1625,12 @@ void ftData_80085B10(Fighter* fp)
 
 void ftData_80085B98(Fighter* fp, int arg1, int arg2)
 {
-    u32 temp_r30;
+    uintptr_t temp_r30;
     int i;
     u32 temp_r0;
     struct Fighter_WaitAnimData* temp_r3;
 
-    temp_r30 = (u32) ftData_UnkIntPairs[fp->kind].data;
+    temp_r30 = (uintptr_t) ftData_UnkIntPairs[fp->kind].data;
     fp->x59C = HSD_ObjAlloc(&fighter_x59C_alloc_data);
     fp->x5A0 = HSD_ObjAlloc(&fighter_x59C_alloc_data);
     fp->x5A4 = 0;
@@ -1632,6 +1640,8 @@ void ftData_80085B98(Fighter* fp, int arg1, int arg2)
         HSD_ASSERTREPORT(0x9D2, 0, "Demo Status error! %d\n", arg2);
     }
     if (temp_r30 != 0U) {
+        // Same table, demo-mode counterpart; not converted for the same
+        // reason as ftData_80085A14's above.
         for (i = arg1; i <= arg2; i++) {
             temp_r3 = &fp->ft_data->x14[i];
             temp_r0 = temp_r3->x8;
@@ -1666,7 +1676,7 @@ void ftData_80085CD8(Fighter* fp, Fighter* arg1, int msid)
             if (temp_r3_2 != 0) {
                 temp_r3_3 = ftData_80086060(fp);
                 if ((temp_r3_3 != NULL) &&
-                    (temp_r3->x14 == (u32) temp_r3_3->x5A4))
+                    (temp_r3->x14 == (uintptr_t) temp_r3_3->x5A4))
                 {
                     memcpy(fp->x59C, temp_r3_3->x59C, temp_r3->x8);
                     temp_r4 = fp->x59C;
@@ -1719,7 +1729,7 @@ FigaTree* ftData_80085E50(Fighter* arg0, int msid)
             if (temp_r3_2 != 0) {
                 temp_r3_3 = ftData_80086060(arg0);
                 if ((temp_r3_3 != NULL) &&
-                    (temp_r3->x14 == (u32) temp_r3_3->x5A4))
+                    (temp_r3->x14 == (uintptr_t) temp_r3_3->x5A4))
                 {
                     memcpy(arg0->x59C, temp_r3_3->x59C, temp_r3->x8);
                     temp_r4 = arg0->x59C;

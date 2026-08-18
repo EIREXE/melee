@@ -187,6 +187,12 @@ void* melee_pc_dat_elem(const void* base, int type, int index);
 #define MELEE_PC_DAT_ELEM(T, base, i)                                         \
     ((T*) melee_pc_dat_elem((base), DAT_T_##T, (i)))
 
+/// @brief Converts a GameCube-side array of @p n elements in place. For arrays
+/// whose length the DAT does not record but the caller knows.
+void* melee_pc_dat_array(const void* p, int type, unsigned int count);
+#define MELEE_PC_DAT_ARRAY(T, p, n)                                           \
+    ((p) = melee_pc_dat_array((p), DAT_T_##T, (unsigned int) (n)))
+
 /// @brief As #MELEE_PC_DAT, for a symbol that is a NULL-terminated *table* of
 /// pointers rather than a single structure (LightList** and friends).
 void* melee_pc_dat_root_ptrnull(const void* p, int type);
@@ -293,6 +299,7 @@ void melee_pc_pump(void);
 #define MELEE_PC_DAT(T, p)
 #define MELEE_PC_DAT_PTRNULL(T, p)
 #define MELEE_PC_DAT_ELEM(T, base, i) (&(base)[i])
+#define MELEE_PC_DAT_ARRAY(T, p, n)
 #define MELEE_PC_ON_ARCHIVE_FREE(base, size) ((void) 0)
 #define MELEE_PC_IS_NOT_MAINRAM(a) ((u32) (a) < 0x80000000U)
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)
