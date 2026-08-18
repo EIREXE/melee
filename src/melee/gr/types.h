@@ -1995,10 +1995,12 @@ struct UnkStageDat_x8_t {
 };
 
 /// One row of #UnkStageDat::unk20, searched by Ground_801C43C4 -- which is
-/// handed a `DynamicModelDesc::anims[0]`, so this is that same type rather
-/// than an opaque pointer.
+/// handed a `LightList::anims[0]`, so this is that same type rather than an
+/// opaque pointer. Naming it matters beyond documentation on PC: the
+/// converter memoises by source address, so both sides only compare equal if
+/// they are converted as the same type.
 struct GroundShadowEntry {
-    HSD_AnimJoint* unk0;
+    HSD_LightAnim* unk0;
     u8 flag : 1;
 };
 

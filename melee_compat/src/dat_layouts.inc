@@ -780,7 +780,7 @@ static const DatField GrJoint_fields[] = {
 };
 
 static const DatField GroundShadowEntry_fields[] = {
-    {    0,    0, DAT_PTR        , DAT_T_HSD_AnimJoint         , 0, 0 }, // HSD_AnimJoint * unk0
+    {    0,    0, DAT_PTR        , DAT_T_HSD_LightAnim         , 0, 0 }, // HSD_LightAnim * unk0
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
