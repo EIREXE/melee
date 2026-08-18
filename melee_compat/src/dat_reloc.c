@@ -27,13 +27,12 @@
 
 #include "compat_report.h"
 
-#include <string.h>
-
 #include <melee_pc_dat_types.h>
 #include <melee_pc_gx.h>
+#include <string.h>
 
-// The converter uses more memory than was available on the GC, so we have to use the
-// normal memory allocator for this
+// The converter uses more memory than was available on the GC, so we have to
+// use the normal memory allocator for this
 void* malloc(size_t size);
 void free(void* p);
 
@@ -89,6 +88,9 @@ typedef enum {
     DAT_U16,
     DAT_U32,
     DAT_U64,
+    // aux raw bytes, copied through. Single bytes have no byte order, so this
+    // is for padding and for inline char/u8 arrays.
+    DAT_BYTES,
     DAT_PTR,
     // Pointer to an array of structs, terminated when the element field at
     // aux equals aux2.
@@ -98,8 +100,8 @@ typedef enum {
     DAT_ARR_COUNT,
     // As above, but an array of pointers rather than of structs.
     DAT_ARR_PTRCOUNT,
-    // Pointer to a NULL-terminated array of pointers. We need to keep the terminator
-    // otherwise melee will hang!!
+    // Pointer to a NULL-terminated array of pointers. We need to keep the
+    // terminator otherwise melee will hang!!
     DAT_ARR_PTRNULL,
     // Several fields share this offset. Only the discriminant says which is
     // live, and that is type-specific game logic, so a hand-written converter
@@ -328,8 +330,8 @@ static void* convert_array(const u8* gc, int type, u32 count)
 
     host = arena_alloc((size_t) count * ty->host_size);
     if (host == NULL) {
-        OSPanic(__FILE__, __LINE__, "melee_pc: out of memory converting %s[%u]",
-                ty->name, count);
+        OSPanic(__FILE__, __LINE__,
+                "melee_pc: out of memory converting %s[%u]", ty->name, count);
     }
     memset(host, 0, (size_t) count * ty->host_size);
     *slot = host;
@@ -370,6 +372,9 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
             memcpy(dst, &v, sizeof(v));
             break;
         }
+        case DAT_BYTES:
+            memcpy(dst, src, f->aux);
+            break;
         case DAT_PTR: {
             uintptr_t gcptr = rd_ptr(src);
             void* p;
@@ -393,7 +398,8 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
             void* p;
             if (gcptr != 0) {
                 while (read_scalar(e + n * et->gc_size + f->aux, tagk) !=
-                       f->aux2) {
+                       f->aux2)
+                {
                     n++;
                 }
                 // The terminator element is copied too: callers walk up to and
@@ -447,8 +453,9 @@ static void convert_fields(const u8* gc, u8* host, const DatType* ty)
                 u32 i;
                 p = arena_alloc((size_t) n * sizeof(void*));
                 if (p == NULL) {
-                    OSPanic(__FILE__, __LINE__,
-                            "melee_pc: out of memory converting pointer table");
+                    OSPanic(
+                        __FILE__, __LINE__,
+                        "melee_pc: out of memory converting pointer table");
                 }
                 for (i = 0; i < n; i++) {
                     uintptr_t ep = rd_ptr(tbl + i * 4);
@@ -562,7 +569,8 @@ static void conv_arm(const u8* gc, u8* host, u16 gc_off, u16 host_off,
 // entry points at an *array* of HSD_EnvelopeDesc terminated by a joint == NULL
 // element. loadEnvelopeDesc() (pobj.c:206) walks both:
 //
-//     while (*edesc_p) { ... while (edesc->joint) { ... edesc++; } edesc_p++; }
+//     while (*edesc_p) { ... while (edesc->joint) { ... edesc++; } edesc_p++;
+//     }
 //
 // Converting the arm as a single descriptor, as this used to, left the inner
 // arrays in GameCube layout -- 8 bytes per element instead of 16, big-endian
@@ -702,7 +710,7 @@ static bool lightdesc_union(const u8* gc, u8* host)
     u16 attnflags = (u16) GC_U16(10);
 
     switch (flags & 3u) { // LOBJ_TYPE_MASK = LOBJ_INFINITE | LOBJ_FLAGS_B1
-    case 2u: // LOBJ_POINT
+    case 2u:              // LOBJ_POINT
         conv_arm(gc, host, 24, 40,
                  (attnflags & 1u) ? DAT_T_HSD_LightAttn
                                   : DAT_T_HSD_LightPointDesc);
@@ -790,8 +798,7 @@ void* melee_pc_dat_root_ptrnull(const void* p, int type)
     *slot = host;
 
     for (i = 0; i < n; i++) {
-        host[i] =
-            melee_pc_dat_convert((const void*) rd_ptr(t + i * 4), type);
+        host[i] = melee_pc_dat_convert((const void*) rd_ptr(t + i * 4), type);
     }
     host[n] = NULL;
     return host;
@@ -840,11 +847,80 @@ static int selftest_sentinel_array(void)
 {
     static const u8 gc[24 * 3] = {
         // [0] attr = 9 (GX_VA_POS), stride 12
-        0,0,0,9,  0,0,0,1,  0,0,0,1,  0,0,0,4,  0, 0, 0,12,  0,0,0,0,
+        0,
+        0,
+        0,
+        9,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        12,
+        0,
+        0,
+        0,
+        0,
         // [1] attr = 10 (GX_VA_NRM), stride 6
-        0,0,0,10, 0,0,0,1,  0,0,0,0,  0,0,0,3,  0, 0, 0, 6,  0,0,0,0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0,
         // [2] attr = 0xFF (GX_VA_NULL) terminator
-        0,0,0,0xFF, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0, 0, 0, 0,  0,0,0,0,
+        0,
+        0,
+        0,
+        0xFF,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
     };
     const DatType* ty = &dat_types[DAT_T_HSD_VtxDescList];
     const u8* arr = convert_array(gc, DAT_T_HSD_VtxDescList, 3);
@@ -861,8 +937,8 @@ static int selftest_sentinel_array(void)
     memcpy(&s1, arr + 1 * ty->host_size + 18, 2);
 
     if (a0 != 9 || a1 != 10 || a2 != 0xFF) {
-        OSReport("dat selftest: array attrs = %u/%u/%u, want 9/10/255\n",
-                 a0, a1, a2);
+        OSReport("dat selftest: array attrs = %u/%u/%u, want 9/10/255\n", a0,
+                 a1, a2);
         fails++;
     }
     if (s0 != 12 || s1 != 6) {
@@ -909,8 +985,8 @@ int melee_pc_dat_selftest(void)
     melee_pc_mem1_allow_all();
 
     if (ty->gc_size != 24 || ty->host_size != 32) {
-        OSReport("dat selftest: unexpected sizes gc=%u host=%u\n",
-                 ty->gc_size, ty->host_size);
+        OSReport("dat selftest: unexpected sizes gc=%u host=%u\n", ty->gc_size,
+                 ty->host_size);
         fails++;
     }
 
@@ -948,7 +1024,8 @@ int melee_pc_dat_selftest(void)
 #undef CHECK
 
     // Same input must memoise to the same output.
-    if (melee_pc_dat_convert(gc, DAT_T_HSD_VtxDescList) != (const void*) host) {
+    if (melee_pc_dat_convert(gc, DAT_T_HSD_VtxDescList) != (const void*) host)
+    {
         OSReport("dat selftest: memoisation returned a different pointer\n");
         fails++;
     }

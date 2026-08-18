@@ -24,6 +24,8 @@ void it_8027870C(s32 arg0)
     } else {
         lbArchive_80017040(NULL, it_803F1ED8, &it_804D6D20, it_803F1EF0, 0);
     }
+    // The archive root: six 4-byte big-endian slots.
+    MELEE_PC_DAT(it_804D6D20_t, it_804D6D20);
     it_804D6D28 = it_804D6D20->x0;
     it_804D6D24 = it_804D6D20->x4;
     it_804D6D38 = it_804D6D20->x8;

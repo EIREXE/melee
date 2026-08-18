@@ -1,4 +1,5 @@
-// This is for functions that do not have an x86 counterpart, ppc specific crash handlers, etc
+// This is for functions that do not have an x86 counterpart, ppc specific
+// crash handlers, etc
 
 #include "compat_report.h"
 
@@ -12,7 +13,8 @@
 void db_SetupCrashHandler(void) {}
 void db_ClearFPUExceptions(void) {}
 
-// No idea what these are, so i'm just gonna ignore it since they appear to be insecuential
+// No idea what these are, so i'm just gonna ignore it since they appear to be
+// insecuential
 
 #define MN_NAME_SLOTS 64
 
@@ -42,23 +44,12 @@ int HSD_SynthSFXLoad(const char* filename, int bankID, int (*cb)(int, int),
                      int mode)
 {
     COMPAT_STUB();
-    (void) filename; (void) bankID; (void) cb; (void) mode;
+    (void) filename;
+    (void) bankID;
+    (void) cb;
+    (void) mode;
     return 0;
 }
-
-// And the matching wait. lbAudioAx_80027648() spins
-//
-//     while (fn_80027488() == 1) HSD_SynthSFXWaitForLoadCompletion(...);
-//
-// until every queued bank reports in. Nothing ever does with the load stubbed,
-// and the inner wait returns immediately because its pending counter is zero,
-// so the loop never even pumps interrupts, a closed spin with no way in from
-// outside. It has to be skipped rather than satisfied.
-void lbAudioAx_80027648(void)
-{
-    COMPAT_STUB();
-}
-
 
 // Video decoder stub
 
@@ -66,22 +57,49 @@ void lbMthp_8001F410(const char* filename, u32* rate_table, void* buf,
                      size_t heap_size, int loop)
 {
     COMPAT_STUB();
-    (void) filename; (void) rate_table; (void) buf; (void) heap_size;
+    (void) filename;
+    (void) rate_table;
+    (void) buf;
+    (void) heap_size;
     (void) loop;
 }
 
 void lbMthp_8001F578(void) {}
-s32 lbMthp_8001F5C4(void) { return 0; }
-s32 lbMthp_8001F5D4(void) { return 0; }
-s32 lbMthp_8001F5E4(void) { return 0; }
-s32 lbMthp_8001F5F4(void) { return 0; }
-s32 lbMthp_8001F604(void) { return 0; } // not playing
-void lbMthp_8001F614(s32 arg0) { (void) arg0; }
+s32 lbMthp_8001F5C4(void)
+{
+    return 0;
+}
+s32 lbMthp_8001F5D4(void)
+{
+    return 0;
+}
+s32 lbMthp_8001F5E4(void)
+{
+    return 0;
+}
+s32 lbMthp_8001F5F4(void)
+{
+    return 0;
+}
+s32 lbMthp_8001F604(void)
+{
+    return 0;
+} // not playing
+void lbMthp_8001F614(s32 arg0)
+{
+    (void) arg0;
+}
 HSD_SObj* lbMthp_8001F624(HSD_GObj* gobj, int w, int h)
 {
-    (void) gobj; (void) w; (void) h;
+    (void) gobj;
+    (void) w;
+    (void) h;
     return NULL;
 }
-void lbMthp_8001F67C(HSD_GObj* gobj, int arg1) { (void) gobj; (void) arg1; }
+void lbMthp_8001F67C(HSD_GObj* gobj, int arg1)
+{
+    (void) gobj;
+    (void) arg1;
+}
 void lbMthp_8001F800(void) {}
 void lbMthp_8001F87C(void) {}

@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 53 types, reached from the HSD_*LoadDesc entry points.
+// 66 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -313,6 +313,166 @@ static const DatField EF_DAT_Entry_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField GroundParam_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float y
+    {    4,    4, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x4
+    {    6,    6, DAT_BYTES      , DAT_T_NONE                  , 2, 0 }, // u8[2] x6_pad
+    {    8,    8, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x8
+    {   10,   10, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 xA
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x28
+    {   44,   44, DAT_BYTES      , DAT_T_NONE                  , 2, 0 }, // u8[2] x2C_pad
+    {   46,   46, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x2E
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x48
+    {   76,   76, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // bool x4C_fixed_cam
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x64
+    {  104,  104, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x68
+    {  106,  106, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[0]
+    {  108,  108, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[1]
+    {  110,  110, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[2]
+    {  112,  112, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[3]
+    {  114,  114, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[4]
+    {  116,  116, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[5]
+    {  118,  118, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[6]
+    {  120,  120, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[7]
+    {  122,  122, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[8]
+    {  124,  124, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[9]
+    {  126,  126, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[10]
+    {  128,  128, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[11]
+    {  130,  130, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[12]
+    {  132,  132, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[13]
+    {  134,  134, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[14]
+    {  136,  136, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[15]
+    {  138,  138, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[16]
+    {  140,  140, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[17]
+    {  142,  142, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[18]
+    {  144,  144, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[19]
+    {  146,  146, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[20]
+    {  148,  148, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[21]
+    {  150,  150, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[22]
+    {  152,  152, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[23]
+    {  154,  154, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[24]
+    {  156,  156, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[25]
+    {  158,  158, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[26]
+    {  160,  160, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[27]
+    {  162,  162, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[28]
+    {  164,  164, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[29]
+    {  166,  166, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[30]
+    {  168,  168, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[31]
+    {  170,  170, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[32]
+    {  172,  172, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[33]
+    {  174,  174, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[35] x6A[34]
+    {  176,  176, DAT_ARR_COUNT, DAT_T_StageParam, 180, 4 }, // stage_params[stage_param_count]
+    {  180,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 stage_param_count
+    {  184,  188, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  185,  189, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  186,  190, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  187,  191, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  188,  192, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  189,  193, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  190,  194, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  191,  195, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  192,  196, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  193,  197, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  194,  198, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  195,  199, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  196,  200, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  197,  201, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  198,  202, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  199,  203, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  200,  204, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  201,  205, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  202,  206, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  203,  207, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  204,  208, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  205,  209, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  206,  210, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  207,  211, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  208,  212, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  209,  213, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  210,  214, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  211,  215, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  212,  216, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  213,  217, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  214,  218, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  215,  219, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {  216,  220, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {  217,  221, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {  218,  222, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {  219,  223, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField it_804D6D20_t_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // ItemCommonData * x0
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // Article ** x4
+    {    8,   16, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // Article ** x8
+    {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // Article ** xC
+    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // it_804D6D40_t * x10
+    {   20,   40, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // Fighter_804D653C_t * x14
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField GroundItemData_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk0
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // Article * unk4
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField MapCollData_fields[] = {
+    {    0,    0, DAT_ARR_COUNT, DAT_T_Vec2, 4, 4 }, // verts[vert_count]
+    {    4,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int vert_count
+    {    8,   16, DAT_ARR_COUNT, DAT_T_MapLine, 12, 4 }, // lines[line_count]
+    {   12,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int line_count
+    {   16,   28, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 floor_start
+    {   18,   30, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 floor_count
+    {   20,   32, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 ceiling_start
+    {   22,   34, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 ceiling_count
+    {   24,   36, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 right_wall_start
+    {   26,   38, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 right_wall_count
+    {   28,   40, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 left_wall_start
+    {   30,   42, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 left_wall_count
+    {   32,   44, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 dynamic_start
+    {   34,   46, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 dynamic_count
+    {   36,   48, DAT_ARR_COUNT, DAT_T_MapJoint, 40, 4 }, // joints[joint_count]
+    {   40,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int joint_count
+    {   44,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x2C
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField UnkStageDat_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * unk0
+    {    4,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk4
+    {    8,   16, DAT_ARR_COUNT, DAT_T_UnkStageDat_x8_t, 12, 4 }, // unk8[unkC]
+    {   12,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unkC
+    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // HSD_Spline ** unk10
+    {   20,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk14
+    {   24,   48, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * unk18
+    {   28,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk1C
+    {   32,   64, DAT_ARR_COUNT, DAT_T_GroundShadowEntry, 36, 4 }, // unk20[unk24]
+    {   36,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk24
+    {   40,   80, DAT_ARR_PTRCOUNT, DAT_T_UnkStageDatInternal, 44, 4 }, // unk28[unk2C]
+    {   44,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk2C
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField HSD_VtxDescList_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttr attr
     {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttrType attr_type
@@ -502,6 +662,128 @@ static const DatField lbRefract_Param_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField StageParam_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // StKind stkind
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x10
+    {   20,   20, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x14
+    {   22,   22, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x16
+    {   24,   24, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x18
+    {   26,   26, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[0]
+    {   28,   28, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[1]
+    {   30,   30, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[2]
+    {   32,   32, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[3]
+    {   34,   34, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[4]
+    {   36,   36, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[5]
+    {   38,   38, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[6]
+    {   40,   40, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[7]
+    {   42,   42, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[8]
+    {   44,   44, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[9]
+    {   46,   46, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[10]
+    {   48,   48, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[11]
+    {   50,   50, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[12]
+    {   52,   52, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[13]
+    {   54,   54, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[14]
+    {   56,   56, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[15]
+    {   58,   58, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[16]
+    {   60,   60, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[17]
+    {   62,   62, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[18]
+    {   64,   64, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[19]
+    {   66,   66, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[20]
+    {   68,   68, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[21]
+    {   70,   70, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[22]
+    {   72,   72, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[23]
+    {   74,   74, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[24]
+    {   76,   76, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[25]
+    {   78,   78, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[26]
+    {   80,   80, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[27]
+    {   82,   82, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[28]
+    {   84,   84, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[29]
+    {   86,   86, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[30]
+    {   88,   88, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[31]
+    {   90,   90, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[32]
+    {   92,   92, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[33]
+    {   94,   94, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[34]
+    {   96,   96, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[35]
+    {   98,   98, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16[37] x1A[36]
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField MapJoint_fields[] = {
+    {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 floor_start
+    {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 floor_count
+    {    4,    4, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 ceiling_start
+    {    6,    6, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 ceiling_count
+    {    8,    8, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 right_wall_start
+    {   10,   10, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 right_wall_count
+    {   12,   12, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 left_wall_start
+    {   14,   14, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 left_wall_count
+    {   16,   16, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 dynamic_start
+    {   18,   18, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 dynamic_count
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float left_bound
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float bottom_bound
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float right_bound
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float top_bound
+    {   36,   36, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 vtx_start
+    {   38,   38, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 vtx_count
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField MapLine_fields[] = {
+    {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 v0_idx
+    {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 v1_idx
+    {    4,    4, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 prev_id0
+    {    6,    6, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 next_id0
+    {    8,    8, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 prev_id1
+    {   10,   10, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 next_id1
+    {   12,   12, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 hi_flags
+    {   14,   14, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 lo_flags
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField Vec2_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField UnkStageDat_x8_t_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_HSD_Joint             , 0, 0 }, // struct HSD_Joint * unk0
+    {    4,    8, DAT_ARR_PTRNULL, DAT_T_HSD_AnimJoint, 0, 0 }, // unk4[] until NULL
+    {    8,   16, DAT_ARR_PTRNULL, DAT_T_HSD_MatAnimJoint, 0, 0 }, // unk8[] until NULL
+    {   12,   24, DAT_ARR_PTRNULL, DAT_T_HSD_ShapeAnimJoint, 0, 0 }, // unkC[] until NULL
+    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // HSD_CameraDescPerspective * x10
+    {   20,   40, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x14
+    {   24,   48, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x18
+    {   28,   56, DAT_PTR        , DAT_T_HSD_FogDesc           , 0, 0 }, // HSD_FogDesc * x1C
+    {   32,   64, DAT_ARR_COUNT, DAT_T_GrJoint, 36, 4 }, // unk20[unk24]
+    {   36,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk24
+    {   40,   80, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x28
+    {   44,   88, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // s16 * x2C
+    {   48,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x30
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField UnkStageDatInternal_fields[] = {
+    {    0,    0, DAT_BYTES      , DAT_T_NONE                  , 4, 0 }, // u8[4] x0_fill
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 unk4
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField GrJoint_fields[] = {
+    {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x
+    {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 y
+    {    4,    4, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 z
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField GroundShadowEntry_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_HSD_AnimJoint         , 0, 0 }, // HSD_AnimJoint * unk0
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField HSD_ShapeSetDesc_fields[] = {
     {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 flags
     {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 nb_shape
@@ -609,6 +891,11 @@ static const DatType dat_types[] = {
     { "SceneDesc", 16, 32, SceneDesc_fields, 0 },
     { "lbRefract_Data", 8, 16, lbRefract_Data_fields, 0 },
     { "EF_DAT_Entry", 12, 24, EF_DAT_Entry_fields, 0 },
+    { "GroundParam", 220, 224, GroundParam_fields, 0 },
+    { "it_804D6D20_t", 24, 48, it_804D6D20_t_fields, 0 },
+    { "GroundItemData", 8, 16, GroundItemData_fields, 0 },
+    { "MapCollData", 48, 64, MapCollData_fields, 0 },
+    { "UnkStageDat", 48, 96, UnkStageDat_fields, 0 },
     { "HSD_VtxDescList", 24, 32, HSD_VtxDescList_fields, 0 },
     { "HSD_TexAnim", 24, 48, HSD_TexAnim_fields, 0 },
     { "HSD_SList", 8, 16, HSD_SList_fields, 0 },
@@ -634,6 +921,14 @@ static const DatType dat_types[] = {
     { "HSD_RvalueList", 8, 16, HSD_RvalueList_fields, 0 },
     { "Vec", 12, 12, Vec_fields, 0 },
     { "lbRefract_Param", 8, 8, lbRefract_Param_fields, 0 },
+    { "StageParam", 100, 100, StageParam_fields, 0 },
+    { "MapJoint", 40, 40, MapJoint_fields, 0 },
+    { "MapLine", 16, 16, MapLine_fields, 0 },
+    { "Vec2", 8, 8, Vec2_fields, 0 },
+    { "UnkStageDat_x8_t", 52, 104, UnkStageDat_x8_t_fields, 0 },
+    { "UnkStageDatInternal", 8, 8, UnkStageDatInternal_fields, 0 },
+    { "GrJoint", 6, 6, GrJoint_fields, 0 },
+    { "GroundShadowEntry", 8, 16, GroundShadowEntry_fields, 0 },
     { "HSD_ShapeSetDesc", 28, 48, HSD_ShapeSetDesc_fields, 0 },
     { "HSD_EnvelopeDesc", 8, 16, HSD_EnvelopeDesc_fields, 0 },
     { "HSD_PEDesc", 12, 12, HSD_PEDesc_fields, 0 },

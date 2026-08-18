@@ -130,10 +130,6 @@ set_source_files_properties(src/sysdolphin/baselib/synth.c
   TARGET_DIRECTORY melee_game
   PROPERTIES COMPILE_DEFINITIONS "HSD_SynthSFXLoad=HSD_SynthSFXLoad_disabled")
 
-set_source_files_properties(src/melee/lb/lbaudio_ax.c
-  TARGET_DIRECTORY melee_game
-  PROPERTIES COMPILE_DEFINITIONS "lbAudioAx_80027648=lbAudioAx_80027648_disabled")
-
 # aurora has to initialise first and the disc has to be open before DVDInit.
 # We rename it lets so pc_main.c can steal the entry point without editing the
 # source.

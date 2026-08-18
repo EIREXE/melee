@@ -46,14 +46,26 @@ void grDatFiles_801C6038(void* arg0, s32 arg1, s32 arg2)
                 lbArchive_80016DBC(r4, (void**) &temp_r3->unk4, "map_head", 0);
             phi_r28 = 0;
         }
+        // "map_head": model sets, per-stage tables and their counts, all
+        // straight out of the archive.
+        MELEE_PC_DAT(UnkStageDat, temp_r3->unk4);
         temp_r3->unk8 = 0;
         if (arg1 == 0) {
             stage_info.coll_data =
                 HSD_ArchiveGetPublicAddress(sp14, "coll_data");
+            // Three counted arrays (verts/lines/joints) plus scalars, all
+            // big-endian; mpLibLoad walks joints[] straight away.
+            MELEE_PC_DAT(MapCollData, stage_info.coll_data);
             stage_info.param =
                 HSD_ArchiveGetPublicAddress(sp14, "grGroundParam");
+            // Straight out of the archive, so every scalar is big-endian and
+            // stage_params is a 4-byte slot. Ground_801C28CC read
+            // stage_param_count as -14154228 without this.
+            MELEE_PC_DAT(GroundParam, stage_info.param);
             stage_info.itemdata =
                 HSD_ArchiveGetPublicAddress(sp14, "itemdata");
+            // A NULL-terminated table of pointers, walked by Ground_801C0800.
+            MELEE_PC_DAT_PTRNULL(GroundItemData, stage_info.itemdata);
             stage_info.ald_yaku_all =
                 HSD_ArchiveGetPublicAddress(sp14, "ALDYakuAll");
             stage_info.map_ptcl =

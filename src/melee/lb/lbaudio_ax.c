@@ -2314,6 +2314,18 @@ s32 fn_80027488(void)
 
 void lbAudioAx_80027648(void)
 {
+#ifdef MELEE_PC
+    // Spins until every queued SFX bank reports in. HSD_SynthSFXLoad is
+    // stubbed on PC and queues nothing, so nothing ever reports and the inner
+    // wait returns immediately without pumping interrupts, a closed spin
+    // with no way in from outside.
+    //
+    // This has to be skipped here rather than by renaming the symbol: a rename
+    // applies to the whole translation unit, so it only redirects *external*
+    // callers to a stub while lbAudioAx_8002785C, three functions down in this
+    // same file, keeps calling the real thing and hangs the match load.
+    return;
+#endif
     while (fn_80027488() == 1) {
         HSD_SynthSFXWaitForLoadCompletion(lb_800195D0);
     }

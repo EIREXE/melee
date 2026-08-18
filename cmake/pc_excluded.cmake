@@ -11,7 +11,6 @@ set(MELEE_PC_EXCLUDED
   src/melee/mn/mnvibration.c            # HSD_GObj_804D783C declared 'long' vs s32
 
   # functions with a return type and without a return statement
-  src/melee/mp/mplib.c                  # mpLib_DrawMatchingLines
   src/melee/mn/mnsnap.c                 # mnSnap_8025441C
 
   # Layout-dependent data, replaced by melee_compat

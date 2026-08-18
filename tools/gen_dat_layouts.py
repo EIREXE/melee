@@ -53,6 +53,11 @@ ROOTS = [
     # lbRefract_800222A4() looks this up as "lbRefData" in LbRf.dat.
     "lbRefract_Data",
     "EF_DAT_Entry",
+    "GroundParam",
+    "it_804D6D20_t",
+    "GroundItemData",
+    "MapCollData",
+    "UnkStageDat",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -97,6 +102,17 @@ EXTRA = [
     # The lbRefract_Data curve array. Two floats, so leaving it raw would feed
     # big-endian bit patterns to the refraction maths as parameters.
     "lbRefract_Param",
+    # One row per StKind, hanging off GroundParam::stage_params.
+    "StageParam",
+    # The three arrays hanging off MapCollData.
+    "MapJoint",
+    "MapLine",
+    "Vec2",
+    # Reached from UnkStageDat.
+    "UnkStageDat_x8_t",
+    "UnkStageDatInternal",
+    "GrJoint",
+    "GroundShadowEntry",
 ]
 
 # Runtime objects: HSD allocates these itself, already in host layout.
@@ -137,6 +153,20 @@ ARRAYS = {
     ("HSD_TexAnim", "imagetbl"): ("ptrcount", "n_imagetbl"),
     ("HSD_TexAnim", "tluttbl"): ("ptrcount", "n_tluttbl"),
     ("lbRefract_Data", "params"): ("count", "count"),
+    # Ground_801C28CC walks stage_params[0 .. stage_param_count).
+    ("GroundParam", "stage_params"): ("count", "stage_param_count"),
+    ("MapCollData", "verts"): ("count", "vert_count"),
+    ("MapCollData", "lines"): ("count", "line_count"),
+    ("MapCollData", "joints"): ("count", "joint_count"),
+    ("UnkStageDat", "unk8"): ("count", "unkC"),
+    # unk10 is HSD_Spline**, and HSD_Spline is a runtime object (NEVER), so
+    # the pointer is decoded but the splines are left raw.
+    ("UnkStageDat", "unk28"): ("ptrcount", "unk2C"),
+    ("UnkStageDat", "unk20"): ("count", "unk24"),
+    ("UnkStageDat_x8_t", "unk20"): ("count", "unk24"),
+    ("UnkStageDat_x8_t", "unk4"): ("ptrnull",),
+    ("UnkStageDat_x8_t", "unk8"): ("ptrnull",),
+    ("UnkStageDat_x8_t", "unkC"): ("ptrnull",),
 }
 
 PROBE = """
@@ -157,6 +187,9 @@ PROBE = """
 #include <melee/sc/types.h>
 #include <melee/lb/types.h>
 #include <melee/ef/types.h>
+#include <melee/gr/types.h>
+#include <melee/it/it_3F14.h>
+#include <melee/mp/types.h>
 """
 
 INCLUDES = [
@@ -243,6 +276,14 @@ def lookup(records: dict, name: str) -> dict | None:
 # the underlying record, so lookup() would miss them.
 ALIASES = {"Vec3": "Vec"}
 
+# Types clang never names in a record dump because they are typedefs of an
+# anonymous struct (`typedef struct { f32 x, y; } Vec2;` -- no tag, unlike
+# `struct Vec`). Declared by hand as {name: (size, [(field, ctype, offset)])};
+# identical on both targets, which is checked below like any other type.
+SYNTHETIC = {
+    "Vec2": (8, [("x", "f32", 0), ("y", "f32", 4)]),
+}
+
 
 def base_type(ctype: str) -> str:
     """Strip a pointer type to its record name, or "" if it is not one."""
@@ -290,6 +331,15 @@ POINTER_TYPEDEFS = {"MtxPtr", "VecMtxPtr"}
 # zeroed, so each is emitted as N separate elements instead.
 INLINE_SCALAR_ARRAYS = {"Mtx44": ("DAT_U32", 16, 4)}
 
+# Element kinds for inline arrays of scalars wider than a byte.
+WIDE_SCALAR_KINDS = {
+    "s16": ("DAT_U16", 2), "u16": ("DAT_U16", 2),
+    "short": ("DAT_U16", 2), "unsigned short": ("DAT_U16", 2),
+    "s32": ("DAT_U32", 4), "u32": ("DAT_U32", 4),
+    "int": ("DAT_U32", 4), "unsigned int": ("DAT_U32", 4),
+    "f32": ("DAT_U32", 4), "float": ("DAT_U32", 4),
+}
+
 # Everything else that may legitimately appear as a scalar field. The point of
 # listing them is that kind_for() must never silently fall back: an unknown
 # type is far more likely to be a new typedef than a new integer width, and
@@ -297,6 +347,10 @@ INLINE_SCALAR_ARRAYS = {"Mtx44": ("DAT_U32", 16, 4)}
 KNOWN_SCALARS = {
     "int", "unsigned int", "long", "unsigned long", "s32", "u32", "f32",
     "float", "enum_t",
+    # Enum typedefs. -fno-short-enums on both targets, so these are four
+    # bytes either side and swap like any other u32. Listed one by one rather
+    # than pattern-matched, so a new *pointer* typedef cannot slip in as one.
+    "StKind", "GrKind",
 }
 
 
@@ -333,6 +387,16 @@ def main() -> int:
     if not gc or not host:
         print("error: clang produced no layouts", file=sys.stderr)
         return 1
+
+    for nm, (size, fields) in SYNTHETIC.items():
+        rows = [{"name": f, "ctype": t, "off": o, "depth": 0}
+                for f, t, o in fields]
+        for tbl in (gc, host):
+            if nm in tbl:
+                print(f"error: {nm} is in SYNTHETIC but clang named it too",
+                      file=sys.stderr)
+                return 1
+            tbl[nm] = {"rows": rows, "size": size}
 
     types = closure(gc)
     ids = {name: i for i, name in enumerate(types)}
@@ -472,6 +536,28 @@ def main() -> int:
                 # base_type() is for pointers and returns "" here, so match
                 # the spelled type the same way kind_for() does.
                 base = r["ctype"].replace("const ", "").strip()
+                # Inline byte arrays -- padding, and char buffers. Single
+                # bytes have no byte order, so copy the run straight through
+                # rather than emitting one row per byte.
+                mb = re.fullmatch(r"(?:u8|s8|char|unsigned char|signed char)"
+                                  r"\s*\[(\d+)\]", base)
+                if mb:
+                    body.append(f"    {{ {goff:4}, {hoff:4}, "
+                                f"{'DAT_BYTES':15}, {'DAT_T_NONE':28}, "
+                                f"{mb.group(1)}, 0 }}, "
+                                f"// {r['ctype']} {r['name']}")
+                    continue
+                # Inline arrays of wider scalars. Each element still needs
+                # swapping, so emit one row per element.
+                ms = re.fullmatch(r"([A-Za-z_][\w ]*?)\s*\[(\d+)\]", base)
+                if ms and ms.group(1).strip() in WIDE_SCALAR_KINDS:
+                    ek, w = WIDE_SCALAR_KINDS[ms.group(1).strip()]
+                    for j in range(int(ms.group(2))):
+                        body.append(f"    {{ {goff + j * w:4}, "
+                                    f"{hoff + j * w:4}, {ek:15}, "
+                                    f"{'DAT_T_NONE':28}, 0, 0 }}, "
+                                    f"// {r['ctype']} {r['name']}[{j}]")
+                    continue
                 if base in INLINE_SCALAR_ARRAYS:
                     ek, n, w = INLINE_SCALAR_ARRAYS[base]
                     for j in range(n):
