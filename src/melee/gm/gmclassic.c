@@ -83,6 +83,24 @@ STATIC_ASSERT(sizeof(gmClassicSceneData) == 0x560);
 static gmClassic_80490880Data gmClassic_80490880;
 extern gmClassic_803DDEC8Data gmClassic_803DDEC8;
 
+/// gm_803DDC58_Scenes and gmClassic_803DDEC8 are adjacent on hardware, and the
+/// cast through #gmClassicSceneData is how that adjacency is modelled: it puts
+/// `matchups` at 26 * sizeof(GameScene) == 0x270 past the scene table.
+/// GameScene holds four pointers, so on a 64-bit host scenes[26] is no longer
+/// 0x270 -- and the two symbols are separate objects there in any case, so the
+/// cast reads whatever happens to follow the scene table. Name the real symbol
+/// instead. (STATIC_ASSERT is inert on PC, so the 0x560 assert never caught
+/// this.)
+#ifdef MELEE_PC
+#define SCENE_DATA_DECL                                                       \
+    gmClassic_803DDEC8Data* pc_matchups = &gmClassic_803DDEC8
+#define SCENE_MATCHUPS (*pc_matchups)
+#else
+#define SCENE_DATA_DECL                                                       \
+    gmClassicSceneData* scene_data = (gmClassicSceneData*) gm_803DDC58_Scenes
+#define SCENE_MATCHUPS (scene_data->matchups)
+#endif
+
 GameScene gm_803DDC58_Scenes[] = {
     {
         0x00,
@@ -383,8 +401,36 @@ GameScene gm_803DDC58_Scenes[] = {
     { -1 },
 };
 
+/// @param max Number of entries in @p matchups. The scan for the 0x148
+/// sentinel is otherwise unbounded, so a table without one runs `count` away
+/// and the `order[i] = i` loop below walks out of @p order and through
+/// whatever follows it in .bss
+#ifdef MELEE_PC
 static inline void gmClassic_InitMatchupOrder(const gmClassicMatchup* matchups,
-                                              u8* order)
+                                              u8* order, s32 max)
+{
+    s32 count;
+    s32 i;
+
+    for (count = 0; count < max && matchups[count].x00 != 0x148; count++) {
+    }
+
+    for (i = 0; i < count; i++) {
+        order[i] = i;
+    }
+
+    for (i = 0; i < count; i++) {
+        s32 swap_idx = HSD_Randi(count);
+        u8 tmp = order[i];
+        order[i] = order[swap_idx];
+        order[swap_idx] = tmp;
+    }
+}
+#else
+#define gmClassic_InitMatchupOrder(matchups, order, max)                      \
+    gmClassic_InitMatchupOrder_(matchups, order)
+static inline void
+gmClassic_InitMatchupOrder_(const gmClassicMatchup* matchups, u8* order)
 {
     s32 count;
     s32 i;
@@ -403,6 +449,7 @@ static inline void gmClassic_InitMatchupOrder(const gmClassicMatchup* matchups,
         order[swap_idx] = tmp;
     }
 }
+#endif
 
 static gmClassicMatchup* gmClassic_801B2BA4(gmClassicMatchup* arg0, u8* arg1,
                                             gm_803DDEC8Struct* arg2)
@@ -493,12 +540,12 @@ static gm_803DDEC8Struct* gmClassic_801B2D54(gm_803DDEC8Struct* arg0)
 {
     gmClassic_80490880Data* o = &gmClassic_80490880;
     gm_803DDEC8Struct* ptr;
-    gmClassicSceneData* scene_data = (gmClassicSceneData*) gm_803DDC58_Scenes;
+    SCENE_DATA_DECL;
 
     for (ptr = arg0; ptr->x0 != 0xD; ptr++) {
         if (ptr->x1 & 8) {
             gmClassicMatchup* result =
-                gmClassic_801B2BA4(scene_data->matchups.x2B0, o->x80, arg0);
+                gmClassic_801B2BA4(SCENE_MATCHUPS.x2B0, o->x80, arg0);
             if (result != NULL) {
                 ptr->xC = result;
             } else {
@@ -512,7 +559,7 @@ static gm_803DDEC8Struct* gmClassic_801B2D54(gm_803DDEC8Struct* arg0)
         u8 flags = ptr->x1;
         if ((flags & 2) && !(flags & 0x20)) {
             gmClassicMatchup* result =
-                gmClassic_801B2BA4(scene_data->matchups.x26C, o->x74, arg0);
+                gmClassic_801B2BA4(SCENE_MATCHUPS.x26C, o->x74, arg0);
             if (result != NULL) {
                 ptr->xC = result;
             } else {
@@ -526,7 +573,7 @@ static gm_803DDEC8Struct* gmClassic_801B2D54(gm_803DDEC8Struct* arg0)
         u8 flags = ptr->x1;
         if ((flags & 0x10) && !(flags & 0x20)) {
             gmClassicMatchup* result =
-                gmClassic_801B2BA4(scene_data->matchups.x1B8, o->x54, arg0);
+                gmClassic_801B2BA4(SCENE_MATCHUPS.x1B8, o->x54, arg0);
             if (result != NULL) {
                 ptr->xC = result;
             } else {
@@ -540,7 +587,7 @@ static gm_803DDEC8Struct* gmClassic_801B2D54(gm_803DDEC8Struct* arg0)
         u8 flags = ptr->x1;
         if (flags == 0 || flags == 4) {
             gmClassicMatchup* result =
-                gmClassic_801B2BA4(scene_data->matchups.x0CC, o->x2C, arg0);
+                gmClassic_801B2BA4(SCENE_MATCHUPS.x0CC, o->x2C, arg0);
             if (result != NULL) {
                 ptr->xC = result;
             } else {
@@ -569,7 +616,7 @@ static gm_803DDEC8Struct* gmClassic_801B2D54(gm_803DDEC8Struct* arg0)
 
     for (ptr = arg0; ptr->x0 != 0xD; ptr++) {
         if (ptr->x1 & 0x20) {
-            ptr->xC = scene_data->matchups.x0C0;
+            ptr->xC = SCENE_MATCHUPS.x0C0;
             return ptr;
         }
     }
@@ -579,24 +626,24 @@ static gm_803DDEC8Struct* gmClassic_801B2D54(gm_803DDEC8Struct* arg0)
 void gmClassic_OnLoad(void)
 {
     UnkAllstarData* data;
-    gmClassicSceneData* scene_data = (gmClassicSceneData*) gm_803DDC58_Scenes;
+    SCENE_DATA_DECL;
     gmClassic_80490880Data* o = &gmClassic_80490880;
     gm_803DDEC8Struct* entry;
     s32 i;
     PAD_STACK(32);
 
-    for (entry = scene_data->matchups.x00; entry->x0 != 0x0D; entry++) {
+    for (entry = SCENE_MATCHUPS.x00; entry->x0 != 0x0D; entry++) {
         entry->xC = NULL;
     }
 
-    gmClassic_InitMatchupOrder(scene_data->matchups.x2B0,
-                               gmClassic_80490880.x80);
-    gmClassic_InitMatchupOrder(scene_data->matchups.x26C,
-                               gmClassic_80490880.x74);
-    gmClassic_InitMatchupOrder(scene_data->matchups.x1B8,
-                               gmClassic_80490880.x54);
-    gmClassic_InitMatchupOrder(scene_data->matchups.x0CC,
-                               gmClassic_80490880.x2C);
+    gmClassic_InitMatchupOrder(SCENE_MATCHUPS.x2B0, gmClassic_80490880.x80,
+                               ARRAY_SIZE(SCENE_MATCHUPS.x2B0));
+    gmClassic_InitMatchupOrder(SCENE_MATCHUPS.x26C, gmClassic_80490880.x74,
+                               ARRAY_SIZE(SCENE_MATCHUPS.x26C));
+    gmClassic_InitMatchupOrder(SCENE_MATCHUPS.x1B8, gmClassic_80490880.x54,
+                               ARRAY_SIZE(SCENE_MATCHUPS.x1B8));
+    gmClassic_InitMatchupOrder(SCENE_MATCHUPS.x0CC, gmClassic_80490880.x2C,
+                               ARRAY_SIZE(SCENE_MATCHUPS.x0CC));
 
     data = gm_GetAllStarData();
     gmMainLib_8015CDC8();
