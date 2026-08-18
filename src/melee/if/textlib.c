@@ -353,13 +353,42 @@ int un_80302E00(struct un_80304138_objalloc_t_x8* arg0, int arg1)
     return ret;
 }
 
+#ifdef MELEE_PC
+/// Cap for the `x0 == 9` terminator scans, which are otherwise unbounded.
+/// Several of these menu tables are still zero-filled stubs on PC
+/// (build/undefined_stubs.c), and a table of zeroes has no terminator -- the
+/// walk then runs off the end of .bss and dereferences whatever it finds as a
+/// char*. With the cap a missing table reads as an over-long menu rather than
+/// a segfault. No real table comes close: the largest is 11 entries.
+#define DEVTEXT_MENU_MAX 256
+
+static bool devtext_menu_overrun(int guard, const void* table)
+{
+    if (guard <= DEVTEXT_MENU_MAX) {
+        return false;
+    }
+    OSReport("melee_pc: dev-text menu table at %p has no terminator -- is it "
+             "still an undefined_stubs.c placeholder?\n",
+             table);
+    return true;
+}
+#endif
+
 int un_80302EA4(struct un_80304138_objalloc_t_x8* arg0)
 {
     int i;
     int x = 1;
     int y = 1;
     int z = 1;
+#ifdef MELEE_PC
+    int guard = 0;
+#endif
     while (arg0->x0 != 9) {
+#ifdef MELEE_PC
+        if (devtext_menu_overrun(++guard, arg0)) {
+            break;
+        }
+#endif
         if ((unsigned int) arg0->x0 <= 1) {
             int len = DevText_StrLen(arg0->x8) + 1;
             if (len > z) {
@@ -839,6 +868,11 @@ void un_80303FD4(HSD_GObj* arg0, struct un_80304138_objalloc_t* arg1,
 
     while (arg1->x8[count].x0 != 9) {
         count++;
+#ifdef MELEE_PC
+        if (devtext_menu_overrun(count, arg1->x8)) {
+            break;
+        }
+#endif
     }
 
     size = un_80302EA4(new_var2 = arg1->x8);

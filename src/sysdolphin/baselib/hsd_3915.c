@@ -42,6 +42,24 @@ void DrawRectangle(f32 x_min, f32 y_min, f32 w, f32 h, GXColor* color)
 
     // Send the corners in clockwise order, starting with top left
 
+#ifdef MELEE_PC
+    // The write-gather pipe is a hardware register at 0xCC008000 and is not
+    // mapped in the host process, so a direct GXWGFifo store segfaults. aurora
+    // exposes the same vertex stream as typed calls; these emit exactly the
+    // f32,f32,u8,u8,u8,u8 per vertex that the stores below do.
+    {
+        u8 r = color->r, g = color->g, b = color->b, a = color->a;
+
+        GXPosition2f32(x_min, y_min);
+        GXColor4u8(r, g, b, a);
+        GXPosition2f32(x_max, y_min);
+        GXColor4u8(r, g, b, a);
+        GXPosition2f32(x_max, y_max);
+        GXColor4u8(r, g, b, a);
+        GXPosition2f32(x_min, y_max);
+        GXColor4u8(r, g, b, a);
+    }
+#else
     GXWGFifo.f32 = x_min;
     GXWGFifo.f32 = y_min;
     a = color->a;
@@ -74,6 +92,7 @@ void DrawRectangle(f32 x_min, f32 y_min, f32 w, f32 h, GXColor* color)
     GXWGFifo.u8 = b;
     GXWGFifo.u8 = a;
 
+#endif
     GXEnd();
 }
 
@@ -158,6 +177,11 @@ f32 DrawASCII(int chr, float x, float y, GXColor* color)
             py = (f32) ((f64) lbl_804D6074 * 0.9 + (f64) y);
             GXPosition2f32(px, py);
             GXColor4u8(color->r, color->g, color->b, color->a);
+            // GXEnd() is an empty inline on hardware, so these cost nothing
+            // there; aurora needs the primitive closed before the next
+            // GXBegin, and without them it aborts with "GXBegin: called
+            // without matching GXEnd".
+            GXEnd();
             return lbl_804D6070;
         }
         case ':': {
@@ -168,6 +192,7 @@ f32 DrawASCII(int chr, float x, float y, GXColor* color)
             GXPosition2f32((f32) ((f64) lbl_804D6070 * 0.3 + (f64) x),
                            (f32) ((f64) lbl_804D6074 * 0.7 + (f64) y));
             GXColor4u8(color->r, color->g, color->b, color->a);
+            GXEnd();
             return lbl_804D6070;
         }
         case '-':
@@ -220,6 +245,7 @@ f32 DrawASCII(int chr, float x, float y, GXColor* color)
         GXPosition2f32(lbl_804D6070 * (0.11F * (p1 >> 4)) + x,
                        lbl_804D6074 * (0.11F * (p1 & 0xF)) + y);
         GXColor4u8(color->r, color->g, color->b, color->a);
+        GXEnd();
     }
     return lbl_804D6070;
 }

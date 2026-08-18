@@ -4,6 +4,7 @@
 
 #include "gm/gm_1A3F.h"
 #include "if/soundtest.h"
+#include "if/types.h"
 
 #include "mn/forward.h"
 
@@ -15,6 +16,7 @@
 #include <sysdolphin/baselib/memory.h>
 #include <sysdolphin/baselib/random.h>
 #include <melee/db/db.h>
+#include <melee/db/dbsound.h>
 #include <melee/gm/gm_unsplit.h>
 #include <melee/gm/gmcamera.h>
 #include <melee/gm/gmmain_lib.h>
@@ -519,7 +521,67 @@ struct UnkUnloadData {
     UNK_T x4;
 };
 
+#ifdef MELEE_PC
+// @todo Properly decompile and upstream this
+static char db_menu_str_master[] = "Master";
+static char db_menu_str_nodebugrom[] = "No-Debug-Rom";
+static char db_menu_str_debugdevelop[] = "Debug-Develop";
+static char db_menu_str_debugrom[] = "Debug-Rom";
+static char db_menu_str_develop[] = "Develop";
+static char db_menu_str_off[] = "OFF";
+static char db_menu_str_on[] = "ON";
+static char db_menu_str_langjp[] = "GmLangTypeJP";
+static char db_menu_str_langus[] = "GmLangTypeUS";
+
+/// 803FA440: the five #DbLevel names, indexed by DbLevel.
+static char* db_menu_dblevel_names[] = {
+    db_menu_str_master,   db_menu_str_nodebugrom, db_menu_str_debugdevelop,
+    db_menu_str_debugrom, db_menu_str_develop,
+};
+/// 804D5880
+static char* db_menu_off_on[] = { db_menu_str_off, db_menu_str_on };
+/// 804D5888
+static char* db_menu_lang_names[] = { db_menu_str_langjp, db_menu_str_langus };
+
+// The two variables entries 3 and 4 edit. 0x803FA25C is the next word after
+// 0x803FA258, which the decomp already models as an int array.
+#define db_menu_language (&un_803FA258[0])
+#define db_menu_publicity (&un_803FA258[1])
+
+extern int un_803FA258[];
+extern char db_build_timestamp[];
+/* 4D6B88 */ extern int db_804D6B88;
+
+// The table is untyped data on hardware, so the callbacks it names do not all
+// have textlib's `int (*)(int)` signature. Cast at the point of use, as the
+// original data effectively does.
+#define DB_MENU_CB(f) ((int (*)(int))(void*) (f))
+
+// x0 is the entry kind: 0 label, 1 action, 2 enum picker (xC names, x10 the
+// variable, x18 how many), 3 toggle (x10 the flag), 9 terminator.
+struct un_80304138_objalloc_t_x8 un_803FA4E0[] = {
+    { 0, NULL, db_build_timestamp, NULL, NULL, 0.0f, 0.0f, 0.0f },
+    { 1, DB_MENU_CB(un_803001DC), "Versus Mode    >", NULL, NULL, 0.0f, 0.0f,
+      0.0f },
+    { 1, DB_MENU_CB(un_80301420), "Result Test", NULL, NULL, 0.0f, 0.0f,
+      0.0f },
+    { 2, DB_MENU_CB(un_80300218), "Language : ", db_menu_lang_names,
+      db_menu_language, 0.0f, 2.0f, 0.0f },
+    { 2, DB_MENU_CB(un_80300248), "Publicity: ", db_menu_off_on,
+      db_menu_publicity, 0.0f, 2.0f, 0.0f },
+    { 2, NULL, "DbLevel : ", db_menu_dblevel_names, &DbLevel, 0.0f, 5.0f,
+      0.0f },
+    { 3, NULL, "Ik Debug Flag :", NULL, &db_804D4AF8, 0.0f, 1.0f, 1.0f },
+    { 3, NULL, "New DefCalc :", NULL, &db_804D6B88, 0.0f, 1.0f, 1.0f },
+    { 1, DB_MENU_CB(un_80300290), "Global Data Edit >", NULL, NULL, 0.0f, 0.0f,
+      0.0f },
+    { 1, DB_MENU_CB(un_803002FC), "Mode Team Test >", NULL, NULL, 0.0f, 0.0f,
+      0.0f },
+    { 9, NULL, NULL, NULL, NULL, 0.0f, 0.0f, 0.0f },
+};
+#else
 extern UNK_T un_803FA4E0[];
+#endif
 extern UNK_T un_803FA790[];
 extern UNK_T un_803FC4CC[];
 
