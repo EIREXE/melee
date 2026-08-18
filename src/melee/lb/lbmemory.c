@@ -356,6 +356,9 @@ void lbMemory_8001564C(void)
 #ifdef MELEE_PC
     // Written through the array rather than as base+constant
     _p(free_heap) = &_p(x638_heap)[0];
+#ifdef MELEE_PC
+    // Same chain as below, through the array: `base + 0x638` assumes a 0x10
+    // Handle and stops landing on x638_heap[n] once pointers are 64-bit.
     _p(x638_heap)[0].x0_next = &_p(x638_heap)[1];
     _p(x638_heap)[1].x0_next = &_p(x638_heap)[2];
     _p(x638_heap)[2].x0_next = &_p(x638_heap)[3];

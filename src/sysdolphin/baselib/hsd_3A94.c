@@ -534,7 +534,11 @@ s32 fn_803AA790(void)
         entry->x0 = 0;
         return result;
     case 2:
+#ifdef MELEE_PC
         switch (((CardState*) arg0)->x28[entry->x8]) {
+#else
+        switch (((s32*) (arg0 + 0x28))[entry->x8]) {
+#endif
         case 0:
             result = fn_803AE7F8((struct CardState*) entry->x4, entry->x8,
                                  entry->xC, 1, (s32) entry->x14);

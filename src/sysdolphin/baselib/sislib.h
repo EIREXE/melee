@@ -4,7 +4,7 @@
 #include <placeholder.h>
 #include <platform.h>
 
-#include "sislib_font.h" // HSD_SisLib_FontAtlas, for the glyph count below
+#include "baselib/sislib_font.h" // HSD_SisLib_FontAtlas, for the glyph count below
 
 #include <stddef.h> // offsetof, for the layout asserts below
 

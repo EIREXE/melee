@@ -9,16 +9,17 @@ static inline void Locate(HSD_Archive* archive)
     u32* ptr;
 
     for (i = 0; i < archive->header.nb_reloc; i++) {
-        ptr = (u32*) (archive->data +
-                      MELEE_PC_BE32(archive->reloc_info[i].offset));
 #ifdef MELEE_PC
         // The slot cannot hold the resolved address: it is four bytes wide, and
         // storing a host address in it is what used to pin every archive below
         // 4GB. Store the distance from the slot to its target instead, which
         // is valid wherever the buffer is mapped.
+        ptr = (u32*) (archive->data +
+                      MELEE_PC_BE32(archive->reloc_info[i].offset));
         melee_pc_dat_store_ptr(ptr, archive->data + MELEE_PC_BE32(*ptr));
 #else
-        *ptr = MELEE_PC_BE32(MELEE_PC_BE32(*ptr) + (u32) archive->data);
+        ptr = (u32*) (archive->data + archive->reloc_info[i].offset);
+        *ptr += (u32) archive->data;
 #endif
     }
 }
@@ -34,7 +35,9 @@ s32 HSD_ArchiveParse(HSD_Archive* archive, u8* src, size_t file_size)
     memset(archive, 0, sizeof(HSD_Archive));
     archive->flags |= 1;
     memcpy(archive, src, sizeof(HSD_ArchiveHeader));
+#ifdef MELEE_PC
     MELEE_PC_ARCHIVE_HEADER_BE(&archive->header);
+#endif
 
     if (archive->header.file_size != file_size) {
         OSReport("HSD_ArchiveParse: byte-order mismatch! Please check data "

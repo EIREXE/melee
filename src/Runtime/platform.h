@@ -288,6 +288,15 @@ void melee_pc_pump(void);
 /// A GameCube pointer is already the 32-bit slot it is stored in.
 #define MELEE_PC_PTR32
 #define MELEE_PC_LAYOUT_ASSERT(cond)
+/// The GameCube reads its own archives; nothing to swap.
+#define MELEE_PC_ARCHIVE_HEADER_BE(h) ((void) 0)
+/// GXSetArray takes no buffer length on hardware, the GP reads whatever the
+/// stride and the index stream address. aurora's GXGeometry.h defines the same
+/// macro for the PC build, hence the guard.
+#ifndef GXSETARRAY
+#define GXSETARRAY(attr, data, size, stride, le)                              \
+    GXSetArray((attr), (data), (stride))
+#endif
 #endif
 
 #define RETURN_IF(cond)                                                       \

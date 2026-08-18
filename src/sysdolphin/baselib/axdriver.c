@@ -869,9 +869,13 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     j = i;
     while (i < AXDriver_804D77A8) {
         i++;
+#ifdef MELEE_PC
         *(u32*) ((u8*) AXDriver_804D77AC + j) =
             MELEE_PC_BE32(*(u32*) ((u8*) AXDriver_804D77AC + j)) +
             ((u32) AXDriver_804D7798 & ~3u);
+#else
+        *(u32*) ((u8*) AXDriver_804D77AC + j) += (u32) AXDriver_804D7798 & ~3u;
+#endif
         j += 4;
     }
 
@@ -895,9 +899,13 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     i = j;
     while (j < AXDriver_804D77B8) {
         j++;
+#ifdef MELEE_PC
         *(u32*) ((u8*) AXDriver_804D77BC + i) =
             MELEE_PC_BE32(*(u32*) ((u8*) AXDriver_804D77BC + i)) +
             ((u32) AXDriver_804D7798 & ~3u);
+#else
+        *(u32*) ((u8*) AXDriver_804D77BC + i) += (u32) AXDriver_804D7798 & ~3u;
+#endif
         i += 4;
     }
 
@@ -914,9 +922,13 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     i = j;
     while (j < AXDriver_804D77C0) {
         j++;
+#ifdef MELEE_PC
         *(u32*) ((u8*) AXDriver_804D77C4 + i) =
             MELEE_PC_BE32(*(u32*) ((u8*) AXDriver_804D77C4 + i)) +
             ((u32) AXDriver_804D7798 & ~3u);
+#else
+        *(u32*) ((u8*) AXDriver_804D77C4 + i) += (u32) AXDriver_804D7798 & ~3u;
+#endif
         i += 4;
     }
 }
