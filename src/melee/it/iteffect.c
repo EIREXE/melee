@@ -29,6 +29,11 @@ void it_8027870C(s32 arg0)
     it_804D6D28 = it_804D6D20->x0;
     it_804D6D24 = it_804D6D20->x4;
     it_804D6D38 = it_804D6D20->x8;
+    // A per-item-kind table of 4-byte slots that the game also *writes*
+    // through (it_8026B3F8 stores each article here), so it needs a widened
+    // host copy. Indexed by `kind - It_Kind_Kuriboh` up to the last kind.
+    MELEE_PC_DAT_PTRTABLE_RAW(it_804D6D38,
+                              It_Kind_Kyasarin_Egg - It_Kind_Kuriboh + 1);
     it_804D6D30 = it_804D6D20->xC;
     it_804D6D40 = it_804D6D20->x10;
     it_804D6D04 = it_804D6D20->x14;
