@@ -2052,6 +2052,8 @@ void Player_80036DD8(void)
 
     lbArchive_LoadSymbols(str_PdPmdat_start_of_data, (void**) &sp8,
                           str_plLoadCommonData, 0);
+    /* The symbol is a pointer slot in the file, not the table itself. */
+    MELEE_PC_DAT_PTRARRAY(pl_804D6470_t, sp8, 1);
     pl_804D6470 = *sp8;
 }
 

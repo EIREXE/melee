@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 117 types, reached from the HSD_*LoadDesc entry points.
+// 118 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -2012,6 +2012,107 @@ static const DatField ftData_x30_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField pl_804D6470_t_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xAC
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xBC
+    {  192,  192, DAT_BYTES      , DAT_T_NONE                  , 4, 0 }, // u8[4] xC0
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xC4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xC8
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xCC
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD0
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD4
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD8
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xE0
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int xE4
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE8
+    {  236,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xEC
+    {  240,  240, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 xF0
+    {  244,  244, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xF4
+    {  248,  248, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xF8
+    {  252,  252, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xFC
+    {  256,  256, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x100
+    {  260,  260, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x104
+    {  264,  264, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x108
+    {  268,  268, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10C
+    {  272,  272, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x110
+    {  276,  276, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x114
+    {  280,  280, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x118
+    {  284,  284, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x11C
+    {  288,  288, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x120
+    {  292,  292, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x124
+    {  296,  296, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x128
+    {  300,  300, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x12C
+    {  304,  304, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x130
+    {  308,  308, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x134
+    {  312,  312, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x138
+    {  316,  316, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x13C
+    {  320,  320, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x140
+    {  324,  324, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x144
+    {  328,  328, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x148
+    {  332,  332, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x14C
+    {  336,  336, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x150
+    {  340,  340, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x154
+    {  344,  344, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x158
+    {  348,  348, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x15C
+    {  352,  352, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x160
+    {  356,  356, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x164
+    {  360,  360, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x168
+    {  364,  364, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x16C
+    {  368,  368, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x170
+    {  372,  372, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x174
+    {  376,  376, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int x178
+    {  380,  380, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x17C
+    {  384,  384, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x180
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField ftData_x34_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Fighter_Part x0
     {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float scale
@@ -2737,6 +2838,7 @@ static const DatType dat_types[] = {
     { "MarsAttributes", 152, 152, MarsAttributes_fields, 0 },
     { "ftDynamics", 20, 40, ftDynamics_fields, 0 },
     { "ftData_x30", 8, 16, ftData_x30_fields, 0 },
+    { "pl_804D6470_t", 388, 388, pl_804D6470_t_fields, 0 },
     { "ftData_x34", 8, 8, ftData_x34_fields, 0 },
     { "ftCo_DatAttrs", 388, 388, ftCo_DatAttrs_fields, 0 },
     { "UnkFloat6_Camera", 24, 24, UnkFloat6_Camera_fields, 0 },

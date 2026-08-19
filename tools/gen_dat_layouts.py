@@ -97,6 +97,7 @@ ROOTS = [
     "MarsAttributes",
     "ftDynamics",
     "ftData_x30",
+    "pl_804D6470_t",
     "ftData_x34",
     "ftCo_DatAttrs",
     "UnkFloat6_Camera",
@@ -306,6 +307,7 @@ PROBE = """
 #include <melee/ft/chara/ftYoshi/types.h>
 #include <melee/ft/chara/ftZakoBoy/types.h>
 #include <melee/ft/chara/ftZelda/types.h>
+#include <melee/pl/types.h>
 """
 
 INCLUDES = [

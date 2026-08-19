@@ -593,7 +593,15 @@ int AXDriver_8038CFF4(int sound_id, u8 volume, u8 pan, int track, int channel)
     }
 
     v->x16 = sound_id;
+#ifdef MELEE_PC
+    /* Four-byte entries, so index them as such: u32** strides eight on the
+     * host.  The base is added here rather than in the fixup loop above. */
+    v->cmd_stream =
+        (u32*) ((u8*) ((uintptr_t) AXDriver_804D7798 & ~(uintptr_t) 3) +
+                ((u32*) AXDriver_804D77BC)[sample_idx]);
+#else
     v->cmd_stream = AXDriver_804D77BC[sample_idx];
+#endif
     v->x1A = 0xFF;
     v->volume = volume;
     v->x1C = 0x80;
@@ -885,6 +893,18 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     offset += 4;
     count = AXDriver_804D77B0;
     AXDriver_804D77B4 = count != 0 ? (u32*) ((u8*) ptr + offset) : NULL;
+#ifdef MELEE_PC
+    /* This one points straight into the file, so its entries are still
+     * big-endian.  A swapped bank offset usually reads back negative, slips
+     * past the `AXDriver_804D77B8 <= sample_idx` bound below as a signed
+     * comparison, and indexes the sample table off its front. */
+    {
+        s32 k;
+        for (k = 0; k < count; k++) {
+            AXDriver_804D77B4[k] = MELEE_PC_BE32(AXDriver_804D77B4[k]);
+        }
+    }
+#endif
     offset += count * 4;
 
     AXDriver_804D77B8 = MELEE_PC_BE32(*(s32*) ((u8*) ptr + offset));
@@ -900,9 +920,13 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     while (j < AXDriver_804D77B8) {
         j++;
 #ifdef MELEE_PC
+        /* Byte-swap only.  The hardware path folds the base address into the
+         * entry, but these slots are four bytes wide and a host pointer does
+         * not fit -- truncating one would work by luck as long as the sound
+         * heap happened to land below 4GB.  Leave the file's offset here and
+         * add the base where the entry is read. */
         *(u32*) ((u8*) AXDriver_804D77BC + i) =
-            MELEE_PC_BE32(*(u32*) ((u8*) AXDriver_804D77BC + i)) +
-            ((u32) AXDriver_804D7798 & ~3u);
+            MELEE_PC_BE32(*(u32*) ((u8*) AXDriver_804D77BC + i));
 #else
         *(u32*) ((u8*) AXDriver_804D77BC + i) += (u32) AXDriver_804D7798 & ~3u;
 #endif

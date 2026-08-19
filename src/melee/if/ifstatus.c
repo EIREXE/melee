@@ -739,6 +739,25 @@ HSD_GObj* ifStatus_802F5EC0(IfDamageState* state, s32 player_idx)
 
 HSD_GObj* ifStatus_802F6194(HSD_GObj* node, s32 n)
 {
+#ifdef MELEE_PC
+    /* Callers hand this an HSD_JObj* cast to HSD_GObj*.  On the GameCube the
+     * pun works by coincidence: HSD_GObj::next_gx and ::next sit at +0x10 and
+     * +0x8, exactly where HSD_JObj::child and ::next are, so the walk below
+     * returns the joint's nth child.  Host pointers are eight bytes and
+     * HSD_Obj is wider, so the two layouts no longer line up and the walk
+     * reads the wrong fields.  Do it with the real type instead. */
+    HSD_JObj* cur;
+    s32 idx;
+
+    if (node == NULL || n < 0) {
+        return NULL;
+    }
+    cur = ((HSD_JObj*) node)->child;
+    for (idx = 0; idx < n && cur != NULL; idx++) {
+        cur = cur->next;
+    }
+    return (HSD_GObj*) cur;
+#else
     HSD_GObj* gx_head;
     HSD_GObj* gx_next;
     HSD_GObj* gx_cur;
@@ -772,6 +791,7 @@ check_done:
         goto advance_node;
     }
     return gx_cur;
+#endif
 }
 
 static inline HSD_GObj* ifStatus_CreateMarkGObj(void)
