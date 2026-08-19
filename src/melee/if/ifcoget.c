@@ -135,5 +135,6 @@ void un_802FF1B4(void)
     un_803F9E08.x0_b1 = false;
     un_804D6DA0 = lbArchive_80016DBC("IfCoGet.dat", &un_804D6DA4,
                                      "ScInfCgt_scene_data", 0);
+    MELEE_PC_DAT(SceneDesc, un_804D6DA4);
     un_802FEFAC();
 }

@@ -192,6 +192,8 @@ void un_802FCBA0(void)
 
     archive = ifAll_GetArchive();
     lbArchive_LoadSections(*archive, (void**) &x, "ScInfPnm_scene_models", 0);
+    /* Only entry 0 is ever read. */
+    MELEE_PC_DAT_PTRARRAY(DynamicModelDesc, x, 1);
     un_804A1ED0.joint = x[0]->joint;
     if (x[0]->anims) {
         un_804A1ED0.animjoint = x[0]->anims[0];

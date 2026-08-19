@@ -905,6 +905,9 @@ void ifStock_802FAEC4(void)
     memzero(&ifStock_804A1774, sizeof(ifStock_804A1774));
     lbArchive_LoadSections(*ifAll_GetArchive(), (void**) &sp18, "Stc_scemdls",
                            0);
+    /* The file records no length for this table; the highest entry the stock
+     * HUD reaches is well under eight, and the slack costs a few words. */
+    MELEE_PC_DAT_PTRARRAY(DynamicModelDesc, sp18, 8);
     stock->x0 = sp18;
     stock->x4 = sp18[1];
     ifStock_804A1ACC.x108 = 0;

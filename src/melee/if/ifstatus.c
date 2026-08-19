@@ -897,9 +897,21 @@ void ifStatus_802F66A4(void)
     DynamicModelDesc** num;
     HSD_Archive** arch;
     s32 reset;
+#ifdef MELEE_PC
+    /* `reset` is deliberately read uninitialised -- that is what matches on
+     * hardware.  clang treats the read as undefined behaviour and, being free
+     * to assume the branch below is taken, folds away the whole tail of the
+     * function including the stores into `hud`.  Pin it so the stores live;
+     * zero is the only sane value, as resetting would undo them. */
+    reset = 0;
+#endif
     arch = ifAll_GetArchive();
     lbArchive_LoadSections(*arch, (void**) &num, num_models_name,
                            (void**) &mrk, mrk_models_name, 0);
+    /* Both symbols are a pointer *slot* in the file, not the descriptor
+     * itself, so widen the one-entry table and convert what it points at. */
+    MELEE_PC_DAT_PTRARRAY(DynamicModelDesc, num, 1);
+    MELEE_PC_DAT_PTRARRAY(DynamicModelDesc, mrk, 1);
     hud->unk258 = (*num)->joint;
     hud->jobj_desc_parent = (*num)->anims;
     hud->janim_selection_joints = (HSD_AnimJoint*) (*num)->matanims;

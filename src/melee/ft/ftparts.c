@@ -894,6 +894,14 @@ void ftParts_800753D4(Fighter* arg0, struct Fighter_804D6540_x0_t* arg1,
     u32 tree_depth;
     int dobj_index;
 
+#ifdef MELEE_PC
+    /* arg2 is an entry of the character's article table, straight out of
+     * PlXx.dat -- the table is widened at load time but its entries stay
+     * opaque, because they are not all the same type.  This one is a joint
+     * tree, walked below and handed to HSD_JObjLoadJoint. */
+    MELEE_PC_DAT(HSD_Joint, arg2);
+#endif
+
     sp6C = arg2;
     if (arg1->x3 != 0xFF) {
         s32 depth = 0;

@@ -173,6 +173,7 @@ set_source_files_properties(src/melee/ft/chara/ftCommon/ftCo_ThrownKirby.c
 add_library(melee_compat_impl STATIC
   melee_compat/src/ai_stubs.c
   melee_compat/src/audio_heap.c
+  melee_compat/src/dol_data.c
   melee_compat/src/card_work.c
   melee_compat/src/card_async.c
   melee_compat/src/sis_dat.c

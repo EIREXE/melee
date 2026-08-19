@@ -1498,6 +1498,13 @@ void ftData_8008572C(FighterKind kind)
                            ftData_Table_Unk0[kind].count);
         MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, gFtDataList[kind]->x14,
                            ftData_UnkIntPairs[kind].count);
+        // The per-character article table.  Its length is not recorded
+        // anywhere, each character's OnLoad just indexes the entries it
+        // knows about, so widen a fixed upper bound. The highest index any
+        // character reaches is 10
+        MELEE_PC_DAT_PTRTABLE_RAW(gFtDataList[kind]->x48_items, 16);
+        // ft_8007C630() reads exactly ARRAY_SIZE(fp->x1614) of these.
+        MELEE_PC_DAT_ARRAY(ftData_x38, gFtDataList[kind]->x38, 2);
     }
 }
 

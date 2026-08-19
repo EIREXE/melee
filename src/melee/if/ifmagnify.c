@@ -604,6 +604,9 @@ void ifMagnify_802FC870(void)
     archive = ifAll_GetArchive();
     lbArchive_LoadSections(*archive, (void**) &ifMagnify_804A1DE0,
                            ifMagnify_804D57E8, 0);
+    /* The symbol is a pointer slot in the file, which ifMagnify_802FC3C0()
+     * dereferences -- hence the DynamicModelDesc** cast there. */
+    MELEE_PC_DAT_PTRARRAY(DynamicModelDesc, ifMagnify_804A1DE0.model_desc, 1);
     i = 0;
     do {
         ifMagnify_802FC3C0(i);

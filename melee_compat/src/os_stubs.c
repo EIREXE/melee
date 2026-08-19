@@ -450,3 +450,9 @@ GXRenderModeObj GXNtsc480Prog;
 double __fabs(double x) { return __builtin_fabs(x); }
 float __fabsf(float x) { return __builtin_fabsf(x); }
 float __fnmsubs(float a, float b, float c) { return -(a * b - c); }
+
+// mwcc's sqrtf intrinsic.  The hardware compiler expands it to the Newton
+// refinement of frsqrte that math_ppc.h's sqrtf() reproduces, so route it
+// there rather than to the host libm: the two do not round alike, and game
+// code compares distances against tuned constants.
+float sqrtf__Ff(float x) { return sqrtf(x); }

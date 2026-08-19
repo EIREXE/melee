@@ -96,6 +96,17 @@ ROOTS = [
     "ftZelda_DatAttrs",
     "MarsAttributes",
     "ftDynamics",
+    "ftData_x30",
+    "ftData_x34",
+    "ftCo_DatAttrs",
+    "UnkFloat6_Camera",
+    "itPickup",
+    "FtSFX",
+    "ftData_x58_t",
+    "WaitStruct",
+    "ftData_x44_t",
+    "ftHurtboxInit",
+    "ftData_x38",
     "BoneDynamicsDesc",
     # FtPartsDesc::vis_table's rows, and the byte lists hanging off them.
     "FtPartsVisLookup",
@@ -229,6 +240,14 @@ ARRAYS = {
     # fixed array; ftCo_8009CF84 walks dynamicsNum of them, so it is converted
     # there rather than followed as one struct.
     ("ftDynamics", "ftDynamicBones"): ("raw",),
+    # ftColl_8007B320() reads both of these as counted arrays.
+    ("ftDynamics", "x8"): ("count", "x4"),
+    ("ftData_x30", "inits"): ("count", "count"),
+    # ft_8007C630() walks this as an array of ARRAY_SIZE(fp->x1614) == 2.  The
+    # count is in the executable, not the file, so leave the field alone here
+    # and let ftData_8008572C() convert it -- converting it as a single object
+    # would memoise a one-element buffer and strand element 1.
+    ("ftData", "x38"): ("raw",),
     ("FtPartsVisLookup", "x4"): ("count", "x0"),
     ("ftData", "xC"): ("raw",),
     ("ftData", "x14"): ("raw",),
@@ -484,6 +503,7 @@ KNOWN_SCALARS = {
     # bytes either side and swap like any other u32. Listed one by one rather
     # than pattern-matched, so a new *pointer* typedef cannot slip in as one.
     "StKind", "GrKind", "ItemKind", "FighterKind", "FtMotionId",
+    "Fighter_Part", "HurtHeight",
 }
 
 

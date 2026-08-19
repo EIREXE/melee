@@ -33,6 +33,8 @@ static bool ifTime_LoadModels(void)
     lbArchive_LoadSections(*ifAll_GetArchive(), (void*) &ScInfTim_scene_models,
                            "ScInfTim_scene_models",
                            &ifTime_data.countdown_timer_models, "tdsce", 0);
+    /* The symbol is a pointer slot in the file, not the descriptor itself. */
+    MELEE_PC_DAT_PTRARRAY(DynamicModelDesc, ScInfTim_scene_models, 1);
     if (*ScInfTim_scene_models != NULL) {
         ifTime_match_timer_models.joint = (**ScInfTim_scene_models).joint;
         ifTime_match_timer_models.anims = (**ScInfTim_scene_models).anims;

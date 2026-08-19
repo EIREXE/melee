@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 106 types, reached from the HSD_*LoadDesc entry points.
+// 117 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -501,7 +501,7 @@ static const DatField ftLoadCommonData_fields[] = {
 };
 
 static const DatField ftData_fields[] = {
-    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftCo_DatAttrs * x0
+    {    0,    0, DAT_PTR        , DAT_T_ftCo_DatAttrs         , 0, 0 }, // struct ftCo_DatAttrs * x0
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * ext_attr
     {    8,   16, DAT_PTR        , DAT_T_ftData_x8             , 0, 0 }, // struct ftData_x8 * x8
     {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct Fighter_WaitAnimData * xC (array, raw)
@@ -511,19 +511,19 @@ static const DatField ftData_fields[] = {
     {   28,   56, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x1C ** x1C
     {   32,   64, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct (unnamed at /home/deck/repos/doldecomp-melee2/src/melee/ft/types.h:633:15) * x20
     {   36,   72, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x24
-    {   40,   80, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // WaitStruct * x28
+    {   40,   80, DAT_PTR        , DAT_T_WaitStruct            , 0, 0 }, // WaitStruct * x28
     {   44,   88, DAT_PTR        , DAT_T_ftDynamics            , 0, 0 }, // struct ftDynamics * x2C
-    {   48,   96, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x30 * x30
-    {   52,  104, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x34 * x34
-    {   56,  112, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x38 * x38
-    {   60,  120, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct UnkFloat6_Camera * x3C
-    {   64,  128, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct itPickup * x40
-    {   68,  136, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // ftData_x44_t * x44
+    {   48,   96, DAT_PTR        , DAT_T_ftData_x30            , 0, 0 }, // struct ftData_x30 * x30
+    {   52,  104, DAT_PTR        , DAT_T_ftData_x34            , 0, 0 }, // struct ftData_x34 * x34
+    {   56,  112, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x38 * x38 (array, raw)
+    {   60,  120, DAT_PTR        , DAT_T_UnkFloat6_Camera      , 0, 0 }, // struct UnkFloat6_Camera * x3C
+    {   64,  128, DAT_PTR        , DAT_T_itPickup              , 0, 0 }, // struct itPickup * x40
+    {   68,  136, DAT_PTR        , DAT_T_ftData_x44_t          , 0, 0 }, // ftData_x44_t * x44
     {   72,  144, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void ** x48_items
-    {   76,  152, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // FtSFX * x4C_sfx
+    {   76,  152, DAT_PTR        , DAT_T_FtSFX                 , 0, 0 }, // FtSFX * x4C_sfx
     {   80,  160, DAT_PTR        , DAT_T_Vec2                  , 0, 0 }, // Vec2 * x50
     {   84,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x54
-    {   88,  176, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x58_t * x58
+    {   88,  176, DAT_PTR        , DAT_T_ftData_x58_t          , 0, 0 }, // struct ftData_x58_t * x58
     {   92,  184, DAT_PTR        , DAT_T_HSD_Joint             , 0, 0 }, // HSD_Joint * x5C
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
@@ -2001,8 +2001,224 @@ static const DatField ftDynamics_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int dynamicsNum
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // ArticleDynamicBones * ftDynamicBones (array, raw)
     {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
-    {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x38 * x8
+    {   12,   24, DAT_ARR_COUNT, DAT_T_ftData_x38, 8, 4 }, // x8[x4]
     {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // FigaTree *** x10
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x30_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int count
+    {    4,    8, DAT_ARR_COUNT, DAT_T_ftHurtboxInit, 0, 4 }, // inits[count]
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x34_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Fighter_Part x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float scale
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftCo_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float walk_accel_mul
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float walk_accel_base
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float walk_max_vel
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float slow_walk_max
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float mid_walk_point
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float fast_walk_min
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ground_friction
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float dash_initial_velocity
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float dash_accel_mul
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float dash_accel_base
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float dash_max_velocity
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float run_animation_scaling
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float max_run_brake_frames
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ground_max_horizontal_velocity
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jump_startup_time
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jump_h_initial_velocity
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jump_v_initial_velocity
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ground_to_air_jump_momentum_multiplier
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jump_h_max_velocity
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float hop_v_initial_velocity
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_jump_v_multiplier
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_jump_h_multiplier
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int max_jumps
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float gravity
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float terminal_velocity
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_drift_stick_mul
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float aerial_drift_base
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_drift_max
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float aerial_friction
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float fast_fall_velocity
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_max_horizontal_velocity
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jab_2_input_window
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jab_3_input_window
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float standing_turn_frames
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float weight
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float model_scaling
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float initial_shield_size
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float shield_break_initial_velocity
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int rapid_jab_window
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float clank_animation_length
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int hit_spark_variant
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int unused_0
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ledge_jump_horizontal_velocity
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ledge_jump_vertical_velocity
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float item_throw_velocity_multiplier
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float heavy_throw_velocity_multiplier
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_ground_speed_retention
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float size
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float kirby_b_star_damage
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float normal_landing_lag
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float landingairn_lag
+    {  236,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float landingairf_lag
+    {  240,  240, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float landingairb_lag
+    {  244,  244, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float landingairhi_lag
+    {  248,  248, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float landingairlw_lag
+    {  252,  252, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float name_tag_height
+    {  256,  256, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float passivewall_vel_x
+    {  260,  260, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float wall_jump_horizontal_velocity
+    {  264,  264, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float wall_jump_vertical_velocity
+    {  268,  268, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float passiveceil_vel_x
+    {  272,  272, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float trophy_scale
+    {  276,  276, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  280,  280, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  284,  284, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  288,  288, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  292,  292, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  296,  296, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  300,  300, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x12C
+    {  304,  304, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  308,  308, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  312,  312, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  316,  316, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x13C
+    {  320,  320, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float screw_attack_launch_velocity
+    {  324,  324, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x144
+    {  328,  328, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float wall_jump_min_approach_speed
+    {  332,  332, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float damageice_ice_size
+    {  336,  336, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x150_damageice_unk
+    {  340,  340, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x154_damageice_unk
+    {  344,  344, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float damageicejump_vel_y
+    {  348,  348, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float damageicejump_vel_x_mult
+    {  352,  352, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float respawn_platform_scale
+    {  356,  356, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float warp_star_hitbox_scale
+    {  360,  360, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x168
+    {  364,  364, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int camera_zoom_target_bone
+    {  368,  368, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  372,  372, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  376,  376, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  380,  380, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x17C
+    {  384,  384, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 weight_independent_throws_mask
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField UnkFloat6_Camera_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField itPickup_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 w
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 w
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 w
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField FtSFX_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // FtSFXArr * smash
+    {    4,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
+    {    8,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x8
+    {   12,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xC
+    {   16,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x10
+    {   20,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x14
+    {   24,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x18
+    {   28,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x1C
+    {   32,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x20
+    {   36,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x24
+    {   40,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x28
+    {   44,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x2C
+    {   48,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x30
+    {   52,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x34
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x58_t_fields[] = {
+    {    0,    0, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x0
+    {    1,    1, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x1
+    {    2,    2, DAT_BYTES      , DAT_T_NONE                  , 2, 0 }, // u8[2] pad_02
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x4
+    {    8,    8, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x8
+    {    9,    9, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x9
+    {   10,   10, DAT_BYTES      , DAT_T_NONE                  , 2, 0 }, // u8[2] pad_0A
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 xC
+    {   16,   16, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x10
+    {   17,   17, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x11
+    {   18,   18, DAT_BYTES      , DAT_T_NONE                  , 6, 0 }, // u8[6] pad_12
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x18
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField WaitStruct_fields[] = {
+    {    0,    0, DAT_UNION, DAT_T_NONE, 0, 0 }, // x | x
+    {    4,    8, DAT_UNION, DAT_T_NONE, 0, 0 }, // y | y
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x44_t_fields[] = {
+    {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 unk0
+    {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 unk2
+    {    4,    4, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 unk4
+    {    6,    6, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 unk6
+    {    8,    8, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 unk8
+    {   10,   10, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 unkA
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float unkC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ledge_snap_x
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ledge_snap_y
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float ledge_snap_height
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftHurtboxInit_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // Fighter_Part bone_idx
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // HurtHeight height
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 is_grabbable
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float scale
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x38_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -2520,6 +2736,17 @@ static const DatType dat_types[] = {
     { "ftZelda_DatAttrs", 168, 168, ftZelda_DatAttrs_fields, 0 },
     { "MarsAttributes", 152, 152, MarsAttributes_fields, 0 },
     { "ftDynamics", 20, 40, ftDynamics_fields, 0 },
+    { "ftData_x30", 8, 16, ftData_x30_fields, 0 },
+    { "ftData_x34", 8, 8, ftData_x34_fields, 0 },
+    { "ftCo_DatAttrs", 388, 388, ftCo_DatAttrs_fields, 0 },
+    { "UnkFloat6_Camera", 24, 24, UnkFloat6_Camera_fields, 0 },
+    { "itPickup", 48, 48, itPickup_fields, 0 },
+    { "FtSFX", 56, 64, FtSFX_fields, 0 },
+    { "ftData_x58_t", 28, 28, ftData_x58_t_fields, 0 },
+    { "WaitStruct", 8, 16, WaitStruct_fields, 1 },
+    { "ftData_x44_t", 28, 28, ftData_x44_t_fields, 0 },
+    { "ftHurtboxInit", 40, 40, ftHurtboxInit_fields, 0 },
+    { "ftData_x38", 20, 20, ftData_x38_fields, 0 },
     { "BoneDynamicsDesc", 24, 32, BoneDynamicsDesc_fields, 0 },
     { "FtPartsVisLookup", 8, 16, FtPartsVisLookup_fields, 0 },
     { "TempS", 8, 16, TempS_fields, 0 },
