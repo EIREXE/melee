@@ -58,6 +58,7 @@ ROOTS = [
     "GroundItemData",
     "MapCollData",
     "UnkStageDat",
+    "GroundJointMap",
     "ftLoadCommonData",
     "ftData",
     "Fighter_WaitAnimData",
@@ -220,6 +221,9 @@ ARRAYS = {
     ("MapCollData", "lines"): ("count", "line_count"),
     ("MapCollData", "joints"): ("count", "joint_count"),
     ("UnkStageDat", "unk8"): ("count", "unkC"),
+    # A bare big-endian s16 array whose length lives in the sibling count, so
+    # Ground_801C34AC() swaps it itself once it knows how many there are.
+    ("GroundJointMap", "pairs"): ("raw",),
     # unk10 is HSD_Spline**, a *table* of pointers that ground.c indexes as
     # `unk4->unk10[arg1]`. Since HSD_Spline became a converted type it would
     # otherwise be followed as a single spline, relaying out the first pointer

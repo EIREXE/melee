@@ -937,6 +937,21 @@ void Camera_8002A0C0(CameraBounds* bounds, CameraTransformState* state)
     input_y *= cm_80452C68.x2BC;
     half_view_height =
         bounds->z_pos * tanf(0.5f * (0.017453292f * state->fov));
+#ifdef MELEE_PC
+    /* cm_803BCB18, cm_803BCB3C, cm_803BCB50 and cm_803BCB64 are four separate
+     * statics that happen to sit back to back on hardware, which is what lets
+     * the struct above read them as one block.  Host sizes and alignment do
+     * not line up, so `data->desc` reads the wrong bytes -- and a zero
+     * viewport divides to NaN here and takes the whole camera with it.  Name
+     * the symbol it is really after. */
+    viewport_x_scale = cm_803BCB64.aspect *
+                       (half_view_height /
+                        (0.5f * (f32) (cm_803BCB64.viewport.xmax -
+                                       cm_803BCB64.viewport.xmin)));
+    viewport_y_scale = half_view_height /
+                       (0.5f * (f32) (cm_803BCB64.viewport.ymax -
+                                      cm_803BCB64.viewport.ymin));
+#else
     viewport_x_scale =
         data->desc.aspect *
         (half_view_height /
@@ -944,6 +959,7 @@ void Camera_8002A0C0(CameraBounds* bounds, CameraTransformState* state)
     viewport_y_scale =
         half_view_height /
         (0.5f * (f32) (data->desc.viewport.ymax - data->desc.viewport.ymin));
+#endif
     depth_factor_y = Stage_GetCamZoomRate();
     depth_factor_x = Stage_GetCamMaxDepth() - depth_factor_y;
 

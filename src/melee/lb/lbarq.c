@@ -2,6 +2,8 @@
 
 #include <placeholder.h>
 
+#include <stddef.h>
+
 #include <dolphin/ar.h>
 #include <dolphin/os.h>
 #include <baselib/debug.h>
@@ -43,7 +45,17 @@ static lbArqState lbArq_80014ABC(lbArqNode* arg0)
 static void lbArq_80014AC4(lbArqHandle* handle)
 {
     lbArqGlobal* global = &lbArq_804316C0;
+#ifdef MELEE_PC
+    /* The callback is handed the ARQRequest.  On hardware that overlays
+     * lbArqHandle so that `node` falls on ARQRequest::owner, a u32 into which
+     * lbArq_80014BD0() truncates the node pointer.  A host pointer neither
+     * fits in four bytes nor lands at that offset, so recover the node from
+     * the request it is embedded in instead. */
+    lbArqNode* node =
+        (lbArqNode*) ((u8*) handle - offsetof(lbArqNode, arq));
+#else
     lbArqNode* node = handle->node;
+#endif
     lbArqNode** prev;
     lbArqNode** tail;
     uintptr_t offset;
@@ -52,10 +64,17 @@ static void lbArq_80014AC4(lbArqHandle* handle)
     intr = OSDisableInterrupts();
 
     /* Remove from current list (indexed by state) */
+#ifdef MELEE_PC
+    /* 0x1E0 is where lbArqGlobal::list starts on the GameCube and the *4 is a
+     * GameCube pointer stride.  Neither survives eight-byte pointers, so index
+     * the array instead of rebuilding its address by hand. */
+    prev = &global->list[node->state];
+#else
     offset = node->state * 4;
     offset += 0x1E0;
     offset += (uintptr_t) global;
     prev = (lbArqNode**) offset;
+#endif
     while (*prev != node) {
         prev = &(*prev)->next;
     }

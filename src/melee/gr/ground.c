@@ -1940,6 +1940,9 @@ void Ground_801C34AC(s32 map_id, HSD_JObj* root, struct HSD_Joint* joint)
     if (entry_count == 0) {
         return;
     }
+    /* stage_dat->unk0 is a void* in the header; it is really an array of
+     * struct GroundJointMap, whose length the sibling count gives. */
+    MELEE_PC_DAT_ARRAY(GroundJointMap, stage_dat->unk0, entry_count);
     i = 0;
     entry = stage_dat->unk0;
     while (1) {
@@ -1954,6 +1957,8 @@ void Ground_801C34AC(s32 map_id, HSD_JObj* root, struct HSD_Joint* joint)
         i++;
     }
     count = entry->pair_count;
+    /* Two s16 per pair -- a walk target and the id to file the joint under. */
+    MELEE_PC_DAT_ARRAY(DatU16, entry->pairs, count * 2);
     pair = entry->pairs;
     for (j = count; j > 0; j--) {
         target = pair[0];

@@ -366,7 +366,16 @@ Vec3* lbVector_WorldToScreen(HSD_CObj* cobj, const Vec3* pos3d,
 {
     u8 _[16];
 
+#ifdef MELEE_PC
+    /* MTXPerspective() and MTXOrtho() write a 4x4.  The original declares a
+     * 3x4 and lets the extra sixteen bytes spill into the `_[16]` pad above,
+     * which is harmless on hardware; clang lays the frame out its own way and
+     * the spill lands on the stack canary.  Row stride is four floats either
+     * way, so every projMtx[i][j] below reads the same element. */
+    Mtx44 projMtx;
+#else
     Mtx projMtx;
+#endif
     float projection[7]; // projection params
     float viewport[6];   // viewport params
     Mtx m;

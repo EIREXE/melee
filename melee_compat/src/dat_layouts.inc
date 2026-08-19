@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 118 types, reached from the HSD_*LoadDesc entry points.
+// 119 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -470,6 +470,13 @@ static const DatField UnkStageDat_fields[] = {
     {   36,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk24
     {   40,   80, DAT_ARR_PTRCOUNT, DAT_T_UnkStageDatInternal, 44, 4 }, // unk28[unk2C]
     {   44,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk2C
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField GroundJointMap_fields[] = {
+    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * joint
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // s16 * pairs (array, raw)
+    {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 pair_count
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -2804,6 +2811,7 @@ static const DatType dat_types[] = {
     { "GroundItemData", 8, 16, GroundItemData_fields, 0 },
     { "MapCollData", 48, 64, MapCollData_fields, 0 },
     { "UnkStageDat", 48, 96, UnkStageDat_fields, 0 },
+    { "GroundJointMap", 12, 24, GroundJointMap_fields, 0 },
     { "ftLoadCommonData", 92, 184, ftLoadCommonData_fields, 0 },
     { "ftData", 96, 192, ftData_fields, 0 },
     { "Fighter_WaitAnimData", 24, 40, Fighter_WaitAnimData_fields, 0 },

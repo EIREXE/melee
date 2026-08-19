@@ -645,7 +645,12 @@ void fn_801852FC(HSD_GObj* gobj)
 void fn_80185408(int x, float arg8, float arg9, float argA, float argB)
 {
     u8 _[0x30];
+#ifdef MELEE_PC
+    /* MTXOrtho() writes a 4x4; see lbVector_WorldToScreen(). */
+    Mtx44 sp1C;
+#else
     Mtx sp1C;
+#endif
     GXSetNumChans(1);
     GXSetChanCtrl(GX_COLOR0A0, 0, GX_SRC_REG, GX_SRC_VTX, 0, GX_DF_NONE,
                   GX_AF_NONE);

@@ -2022,8 +2022,19 @@ struct GroundShadowEntry {
     u8 flag : 1;
 };
 
+/// One entry of UnkStageDat::unk0.  Ground_801C34AC() walks the stage's joint
+/// tree once per @c pairs entry, and files the joint it lands on into
+/// stage_info.x280[] under the id in the second half of the pair.  Declared
+/// here so the PC build can describe its layout; the walker keeps its own
+/// anonymous copy to stay matching.
+struct GroundJointMap {
+    void* joint;
+    s16* pairs;
+    s32 pair_count;
+};
+
 struct UnkStageDat {
-    void* unk0;
+    void* unk0; ///< struct GroundJointMap[unk4]
     s32 unk4;
 
     struct UnkStageDat_x8_t* unk8; // Suspect this may not be a consistent type
