@@ -872,6 +872,33 @@ void* melee_pc_dat_ptrarray(const void* p, int type, unsigned int count)
     return host;
 }
 
+// Widens a table of @p count pointers without converting what they point to.
+// For tables whose elements are arrays the caller sizes itself.
+void* melee_pc_dat_ptrtable_raw(const void* p, unsigned int count)
+{
+    const u8* tbl = (const u8*) p;
+    void** slot;
+    void** host;
+    unsigned int i;
+
+    if (p == NULL || !melee_pc_in_mem1(p) || count == 0) {
+        return (void*) p;
+    }
+    slot = memo_slot(p, 0x400);
+    if (*slot != NULL) {
+        return *slot;
+    }
+    host = arena_alloc((size_t) count * sizeof(void*));
+    if (host == NULL) {
+        OSPanic(__FILE__, __LINE__, "melee_pc: out of memory widening table");
+    }
+    *slot = host;
+    for (i = 0; i < count; i++) {
+        host[i] = (void*) rd_ptr(tbl + i * 4);
+    }
+    return host;
+}
+
 void* melee_pc_dat_root_ptrnull(const void* p, int type)
 {
     const u8* t;

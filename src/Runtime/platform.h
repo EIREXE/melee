@@ -200,6 +200,12 @@ void* melee_pc_dat_ptrarray(const void* p, int type, unsigned int count);
 #define MELEE_PC_DAT_PTRARRAY(T, p, n)                                        \
     ((p) = melee_pc_dat_ptrarray((p), DAT_T_##T, (unsigned int) (n)))
 
+/// @brief Widens a table of @p n pointers without converting the things pointed to,
+/// for tables whose elements are arrays the caller sizes itself.
+void* melee_pc_dat_ptrtable_raw(const void* p, unsigned int count);
+#define MELEE_PC_DAT_PTRTABLE_RAW(p, n)                                       \
+    ((p) = melee_pc_dat_ptrtable_raw((p), (unsigned int) (n)))
+
 /// @brief As #MELEE_PC_DAT, for a symbol that is a NULL-terminated *table* of
 /// pointers rather than a single structure (LightList** and friends).
 void* melee_pc_dat_root_ptrnull(const void* p, int type);
@@ -308,6 +314,7 @@ void melee_pc_pump(void);
 #define MELEE_PC_DAT_ELEM(T, base, i) (&(base)[i])
 #define MELEE_PC_DAT_ARRAY(T, p, n)
 #define MELEE_PC_DAT_PTRARRAY(T, p, n)
+#define MELEE_PC_DAT_PTRTABLE_RAW(p, n)
 #define MELEE_PC_ON_ARCHIVE_FREE(base, size) ((void) 0)
 #define MELEE_PC_IS_NOT_MAINRAM(a) ((u32) (a) < 0x80000000U)
 #define MELEE_PC_IS_MAINRAM(a) ((u32) (a) >= 0x80000000U)

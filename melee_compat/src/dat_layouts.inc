@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 73 types, reached from the HSD_*LoadDesc entry points.
+// 79 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -503,7 +503,7 @@ static const DatField ftLoadCommonData_fields[] = {
 static const DatField ftData_fields[] = {
     {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftCo_DatAttrs * x0
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * ext_attr
-    {    8,   16, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x8 * x8
+    {    8,   16, DAT_PTR        , DAT_T_ftData_x8             , 0, 0 }, // struct ftData_x8 * x8
     {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct Fighter_WaitAnimData * xC (array, raw)
     {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 (*)[2] x10
     {   20,   40, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct Fighter_WaitAnimData * x14 (array, raw)
@@ -556,6 +556,48 @@ static const DatField Fighter_804D6540_x0_t_fields[] = {
     {    1,    1, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x1
     {    2,    2, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x2
     {    3,    3, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x3
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField DatU16_fields[] = {
+    {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 v
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField FtPartsVisLookup_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0
+    {    4,    8, DAT_ARR_COUNT, DAT_T_TempS, 0, 4 }, // x4[x0]
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField TempS_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 * x4
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x8_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 model_num
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void *(*)[4] vis_table
+    {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x8
+    {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u16 ** xC
+    {   16,   32, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x10
+    {   17,   33, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x11
+    {   18,   34, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x12
+    {   19,   35, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x13
+    {   20,   36, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x14
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftData_x8_x8_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x8
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u16 ** xC
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField FtPartsDesc_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 model_num
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void *(*)[4] vis_table
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -999,6 +1041,12 @@ static const DatType dat_types[] = {
     { "FighterPartsTable", 12, 24, FighterPartsTable_fields, 0 },
     { "Fighter_804D6540_t", 8, 16, Fighter_804D6540_t_fields, 0 },
     { "Fighter_804D6540_x0_t", 4, 4, Fighter_804D6540_x0_t_fields, 0 },
+    { "DatU16", 2, 2, DatU16_fields, 0 },
+    { "FtPartsVisLookup", 8, 16, FtPartsVisLookup_fields, 0 },
+    { "TempS", 8, 16, TempS_fields, 0 },
+    { "ftData_x8", 24, 40, ftData_x8_fields, 0 },
+    { "ftData_x8_x8", 8, 16, ftData_x8_x8_fields, 0 },
+    { "FtPartsDesc", 8, 16, FtPartsDesc_fields, 0 },
     { "HSD_VtxDescList", 24, 32, HSD_VtxDescList_fields, 0 },
     { "HSD_TexAnim", 24, 48, HSD_TexAnim_fields, 0 },
     { "HSD_SList", 8, 16, HSD_SList_fields, 0 },

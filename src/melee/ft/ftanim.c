@@ -1007,8 +1007,14 @@ void ftAnim_80070200(Fighter* fp, ftData_x8_x8* r4, CostumeTObjList* r5,
     if (r5->n_costume_tobjs > ARRAY_SIZE(r5->costume_tobjs)) {
         HSD_ASSERTREPORT(1228, 0, "fighter tobj num over!\n");
     }
+    // xC is a u16** in the archive: a per-costume table of 4-byte slots, each
+    // pointing at n_costume_tobjs big-endian u16s. Widen the table, then
+    // byte-swap the row this costume uses.
+    MELEE_PC_DAT_PTRTABLE_RAW(
+        r4->xC, CostumeListsForeachCharacter[fp->kind].numCostumes);
     r5->x5D0 =
         r4->xC[fp->x619_costume_id] ? r4->xC[fp->x619_costume_id] : r4->xC[0];
+    MELEE_PC_DAT_ARRAY(DatU16, r5->x5D0, r5->n_costume_tobjs);
 
     for (i = 0; i < r5->n_costume_tobjs; i++) {
         r5->costume_tobjs[i] = ftParts_80075240(r6, r5->x5D0[i]);

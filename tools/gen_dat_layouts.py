@@ -67,6 +67,15 @@ ROOTS = [
     # ftParts_8007506C walks.
     "Fighter_804D6540_t",
     "Fighter_804D6540_x0_t",
+    # A bare u16 element, so scalar arrays with no type of their own can be
+    # byte-swapped with MELEE_PC_DAT_ARRAY().
+    "DatU16",
+    # FtPartsDesc::vis_table's rows, and the byte lists hanging off them.
+    "FtPartsVisLookup",
+    "TempS",
+    "ftData_x8",
+    "ftData_x8_x8",
+    "FtPartsDesc",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -189,6 +198,7 @@ ARRAYS = {
     # ftData's two wait-anim tables: sized by ftData_Table_Unk0[kind].count
     # and its demo twin, both in the executable rather than the file.
     ("Fighter_804D6540_t", "x0"): ("count", "x4"),
+    ("FtPartsVisLookup", "x4"): ("count", "x0"),
     ("ftData", "xC"): ("raw",),
     ("ftData", "x14"): ("raw",),
     # grAnime_801C7C1C indexes each entry as an array (`aj = &aj[arg2]`) and
@@ -222,6 +232,7 @@ PROBE = """
 #include <melee/it/it_3F14.h>
 #include <melee/mp/types.h>
 #include <melee/ft/fighter.h>
+#include <melee/ft/dobjlist.h>
 """
 
 INCLUDES = [
@@ -320,6 +331,9 @@ ALIASES = {"Vec3": "Vec"}
 # identical on both targets, which is checked below like any other type.
 SYNTHETIC = {
     "Vec2": (8, [("x", "f32", 0), ("y", "f32", 4)]),
+    # A bare big-endian u16, so MELEE_PC_DAT_ARRAY() can byte-swap a plain
+    # scalar array that the file gives no type of its own.
+    "DatU16": (2, [("v", "u16", 0)]),
 }
 
 

@@ -511,6 +511,10 @@ void ftParts_8007487C(FtPartsDesc* desc, FtPartsVis* vis, u32 costume_id,
     PAD_STACK(0x8);
 
     vis_table = desc->vis_table;
+    // Rows of four 4-byte slots in the archive, indexed by costume. Only this
+    // costume's row and row 0 are read below, so widening that far is enough
+    // -- the number of costumes is not in scope here.
+    MELEE_PC_DAT_PTRTABLE_RAW(vis_table, (costume_id + 1) * 4);
     vis->model_num = desc->model_num;
     if (vis->model_num > 11) {
         HSD_ASSERTREPORT(627, 0, "fighter parts model num over!\n");
@@ -525,6 +529,12 @@ void ftParts_8007487C(FtPartsDesc* desc, FtPartsVis* vis, u32 costume_id,
     vis->xC[3] =
         vis_table[costume_id][3] ? vis_table[costume_id][3] : vis_table[0][3];
     vis->xC[4] = 0;
+    // Each row entry is an array of model_num lookups; the length is in
+    // FtPartsDesc, not in the file next to the data.
+    MELEE_PC_DAT_ARRAY(FtPartsVisLookup, vis->xC[0], vis->model_num);
+    MELEE_PC_DAT_ARRAY(FtPartsVisLookup, vis->xC[1], vis->model_num);
+    MELEE_PC_DAT_ARRAY(FtPartsVisLookup, vis->xC[2], vis->model_num);
+    MELEE_PC_DAT_ARRAY(FtPartsVisLookup, vis->xC[3], vis->model_num);
     vis->cleared[0] = true;
     vis->cleared[1] = true;
     vis->cleared[2] = true;
