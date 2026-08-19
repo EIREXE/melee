@@ -131,7 +131,9 @@ void lbArq_80014BD0(unsigned int source, void* dest, size_t length,
 
     rp_tmp = rp;
     source_tmp = source;
-    ARQPostRequest(&rp->arq, (u32) rp_tmp, 1, 0, source_tmp, (u32) dest,
+    // dest is a main-RAM *address*; a u32 cast truncates it on a 64-bit host
+    // and the DMA then writes to nothing. Same four bytes on GameCube.
+    ARQPostRequest(&rp->arq, (u32) rp_tmp, 1, 0, source_tmp, (uintptr_t) dest,
                    length, (ARQCallback) lbArq_80014AC4);
 
     if (rp->callback == NULL) {

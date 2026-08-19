@@ -1490,6 +1490,14 @@ void ftData_8008572C(FighterKind kind)
         // PlXx.dat's per-character root, straight out of the archive: every
         // arm is a 4-byte big-endian slot.
         MELEE_PC_DAT(ftData, gFtDataList[kind]);
+        // The two wait-anim tables have to be converted here, not where they
+        // are first walked: Fighter_UnkInitLoad_80068914 copies ft_data->xC
+        // into fp->x24 before then, and would capture the raw pointer. Their
+        // lengths are not in the file, both counts live in the executable.
+        MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, gFtDataList[kind]->xC,
+                           ftData_Table_Unk0[kind].count);
+        MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, gFtDataList[kind]->x14,
+                           ftData_UnkIntPairs[kind].count);
     }
 }
 
@@ -1601,14 +1609,6 @@ void ftData_80085A14(FighterKind kind)
         lbFile_800168A0(1, ftData_803C23E4[kind], &sp18, &sp10);
         a_head = sp18;
         HSD_ASSERT(0x974, a_head);
-        // The table's length is not in the DAT -- it is this count, which
-        // lives in the executable -- so it is converted here rather than when
-        // gFtDataList[kind] was. ftData::xC is annotated "raw" in the layout
-        // generator for the same reason: left to the converter it would
-        // relayout element 0 alone and every later index would read whatever
-        // the arena allocated next.
-        MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, temp_r27->xC,
-                           ftData_Table_Unk0[kind].count);
         for (i = 0; i < (u32) ftData_Table_Unk0[kind].count; i++) {
             temp_r0 = temp_r27->xC[i].x8;
             if (temp_r0 != 0) {
@@ -1652,9 +1652,6 @@ void ftData_80085B98(Fighter* fp, int arg1, int arg2)
         HSD_ASSERTREPORT(0x9D2, 0, "Demo Status error! %d\n", arg2);
     }
     if (temp_r30 != 0U) {
-        // Same table, demo-mode counterpart, sized by its own count.
-        MELEE_PC_DAT_ARRAY(Fighter_WaitAnimData, fp->ft_data->x14,
-                           ftData_UnkIntPairs[fp->kind].count);
         for (i = arg1; i <= arg2; i++) {
             temp_r3 = &fp->ft_data->x14[i];
             temp_r0 = temp_r3->x8;
@@ -1702,7 +1699,7 @@ void ftData_80085CD8(Fighter* fp, Fighter* arg1, int msid)
                     }
                 } else {
                     temp_r4_2 = temp_r3->x14;
-                    if (temp_r4_2 < 0x80000000) {
+                    if (MELEE_PC_IS_NOT_MAINRAM(temp_r4_2)) {
                         lbArq_80014BD0(temp_r4_2, fp->x59C,
                                        OSRoundUp32B(temp_r3->x8), 0, 0);
                     } else {
@@ -1755,7 +1752,7 @@ FigaTree* ftData_80085E50(Fighter* arg0, int msid)
                     }
                 } else {
                     temp_r4_2 = temp_r3->x14;
-                    if (temp_r4_2 < 0x80000000) {
+                    if (MELEE_PC_IS_NOT_MAINRAM(temp_r4_2)) {
                         lbArq_80014BD0(temp_r4_2, arg0->x5A0,
                                        OSRoundUp32B(temp_r3->x8), 0, 0);
                     } else {
