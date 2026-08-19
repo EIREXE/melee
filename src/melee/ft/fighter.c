@@ -199,6 +199,10 @@ void Fighter_LoadCommonData(void)
     // anything the file records.
     MELEE_PC_DAT_PTRARRAY(FighterPartsTable, ftPartsTable, FTKIND_MAX);
     Fighter_804D6540 = pData[5];
+    // Indexed by fighter kind, like ftPartsTable. Left raw, ftParts_8007506C
+    // reads a garbage skip-list and ftParts_SetupParts then walks a different
+    // number of parts than ftPartsTable[kind]->parts_num.
+    MELEE_PC_DAT_PTRARRAY(Fighter_804D6540_t, Fighter_804D6540, FTKIND_MAX);
     Fighter_804D653C = pData[6];
     Fighter_804D6538 = pData[7];
     Fighter_804D6534 = pData[8];

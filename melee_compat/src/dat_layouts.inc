@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 71 types, reached from the HSD_*LoadDesc entry points.
+// 73 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -545,6 +545,20 @@ static const DatField FighterPartsTable_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField Fighter_804D6540_t_fields[] = {
+    {    0,    0, DAT_ARR_COUNT, DAT_T_Fighter_804D6540_x0_t, 4, 4 }, // x0[x4]
+    {    4,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField Fighter_804D6540_x0_t_fields[] = {
+    {    0,    0, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x0
+    {    1,    1, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x1
+    {    2,    2, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x2
+    {    3,    3, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x3
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField HSD_VtxDescList_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttr attr
     {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXAttrType attr_type
@@ -983,6 +997,8 @@ static const DatType dat_types[] = {
     { "ftData", 96, 192, ftData_fields, 0 },
     { "Fighter_WaitAnimData", 24, 40, Fighter_WaitAnimData_fields, 0 },
     { "FighterPartsTable", 12, 24, FighterPartsTable_fields, 0 },
+    { "Fighter_804D6540_t", 8, 16, Fighter_804D6540_t_fields, 0 },
+    { "Fighter_804D6540_x0_t", 4, 4, Fighter_804D6540_x0_t_fields, 0 },
     { "HSD_VtxDescList", 24, 32, HSD_VtxDescList_fields, 0 },
     { "HSD_TexAnim", 24, 48, HSD_TexAnim_fields, 0 },
     { "HSD_SList", 8, 16, HSD_SList_fields, 0 },

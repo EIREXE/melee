@@ -63,6 +63,10 @@ ROOTS = [
     "Fighter_WaitAnimData",
     # ftPartsTable's elements, indexed by fighter kind.
     "FighterPartsTable",
+    # Fighter_804D6540's elements: the per-kind part-skip lists that
+    # ftParts_8007506C walks.
+    "Fighter_804D6540_t",
+    "Fighter_804D6540_x0_t",
 ]
 
 # Reachable DAT types whose names do not end in "Desc", so the closure's name
@@ -184,6 +188,7 @@ ARRAYS = {
     ("HSD_Spline", "cv"): ("count", "numcv"),
     # ftData's two wait-anim tables: sized by ftData_Table_Unk0[kind].count
     # and its demo twin, both in the executable rather than the file.
+    ("Fighter_804D6540_t", "x0"): ("count", "x4"),
     ("ftData", "xC"): ("raw",),
     ("ftData", "x14"): ("raw",),
     # grAnime_801C7C1C indexes each entry as an array (`aj = &aj[arg2]`) and

@@ -1531,6 +1531,12 @@ void ftData_80085820(FighterKind kind, int costume_id)
             CostumeListsForeachCharacter[kind].costume_list[costume_id].x4 =
                 NULL;
         }
+        // Both come straight out of the costume archive. The model tree built
+        // from an unconverted joint is wrong in a way that only shows up much
+        // later, as ftParts_SetupParts walking a different number of parts
+        // than ftPartsTable[kind]->parts_num.
+        MELEE_PC_DAT(HSD_Joint, temp_r5->joint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, temp_r5->x4);
     }
 }
 
@@ -1554,6 +1560,12 @@ void ftData_800858E4(FighterKind kind, int costume_id)
             CostumeListsForeachCharacter[kind].costume_list[costume_id].x4 =
                 NULL;
         }
+        // Both come straight out of the costume archive. The model tree built
+        // from an unconverted joint is wrong in a way that only shows up much
+        // later, as ftParts_SetupParts walking a different number of parts
+        // than ftPartsTable[kind]->parts_num.
+        MELEE_PC_DAT(HSD_Joint, temp_r5->joint);
+        MELEE_PC_DAT(HSD_MatAnimJoint, temp_r5->x4);
     }
 }
 
