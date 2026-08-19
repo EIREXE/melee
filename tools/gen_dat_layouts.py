@@ -411,6 +411,9 @@ def kind_for(ctype: str) -> str:
     return ""  # unknown -- main() turns this into an error
 
 
+ARRAYS_USED = set()
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("-o", "--output", type=Path,
@@ -523,6 +526,8 @@ def main() -> int:
                 continue
 
             arr = ARRAYS.get((name, r["name"]))
+            if arr is not None:
+                ARRAYS_USED.add((name, r["name"]))
             pointee = base_type(r["ctype"])
             pid = f"DAT_T_{pointee}" if pointee in ids else "DAT_T_NONE"
 
@@ -663,6 +668,19 @@ def main() -> int:
             for off, arms in offs:
                 print(f"    {name} @{off}: {' | '.join(arms)}",
                       file=sys.stderr)
+
+    # An ARRAYS key that matches no field is silently ignored, which is the
+    # same invisible failure as an emptied macro: the annotation looks applied
+    # and the field is converted the default way. Renaming a field, or a type
+    # dropping out of the closure, both land here.
+    unused = sorted(set(ARRAYS) - ARRAYS_USED)
+    if unused:
+        print("error: ARRAYS entries that matched no field:", file=sys.stderr)
+        for owner, field in unused:
+            why = ("type not in the table"
+                   if owner not in ids else "no such field")
+            print(f"  ({owner!r}, {field!r}) -- {why}", file=sys.stderr)
+        return 1
 
     if args.check:
         for path, want in ((args.output, text), (args.enum_output, enum_text)):

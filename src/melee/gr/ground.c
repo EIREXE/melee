@@ -1329,6 +1329,11 @@ HSD_Spline* Ground_801C247C(s32 arg0, s32 arg1)
     UnkArchiveStruct* archive = grDatFiles_801C6330(arg0);
     HSD_ASSERT(2017, archive);
     if (archive->unk4 != NULL && arg1 < archive->unk4->unk14) {
+        // unk10 is a table of HSD_Spline* left raw by the layout generator --
+        // following it there would relayout the first pointer slot as though
+        // it were a spline. Converted here, where unk14 gives the length.
+        MELEE_PC_DAT_PTRARRAY(HSD_Spline, archive->unk4->unk10,
+                              archive->unk4->unk14);
         return archive->unk4->unk10[arg1];
     } else {
         return NULL;
