@@ -76,7 +76,7 @@ static void gmMain_8015FDA0(u32 arg) {}
 /// set debug level
 static void gmMain_8015FDA4(void)
 {
-    if (DVDConvertPathToEntrynum("/develop.ini") != -1) {
+    if (true || DVDConvertPathToEntrynum("/develop.ini") != -1) {
         db_804D6B20 = true;
         if (db_gameLaunchButtonState & HSD_PAD_X) {
             int level = DbLevel;
@@ -98,7 +98,7 @@ static void gmMain_8015FDA4(void)
                 break;
             }
             DbLevel = level;
-        } else if (db_gameLaunchButtonState & HSD_PAD_Y) {
+        } else if (true || db_gameLaunchButtonState & HSD_PAD_Y) {
             int level = DbLevel;
             switch (level) {
             case DbLKind_NoDebugRom:

@@ -29,6 +29,7 @@ void melee_pc_dvd_drain(void);
 void melee_pc_alarms_poll(void);
 void melee_pc_mark_game_thread(void);
 int melee_pc_dat_selftest(void);
+void melee_pc_debug_loop(void);
 
 // gmmain.c's main(), renamed by -Dmain=melee_main.
 int melee_main(void);
@@ -166,6 +167,7 @@ void melee_pc_frame_pump(void)
     }
 
     frame_open = aurora_begin_frame();
+    melee_pc_debug_loop();
 }
 
 int melee_pc_printf(const char* fmt, ...)

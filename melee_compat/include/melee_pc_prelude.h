@@ -14,6 +14,8 @@
 // This header keeps the fix entirely on
 // the PC side, where it cannot affect the PPC build.
 
+#ifndef __cplusplus
+
 #include <ctype.h>
 #include <stdarg.h>
 #include <stddef.h>
@@ -78,5 +80,7 @@ int melee_pc_dvd_read_async_prio(struct DVDFileInfo*, void*, s32, s32,
 
 float powf(float x, float y);
 float tanf(float x);
+
+#endif
 
 #endif
