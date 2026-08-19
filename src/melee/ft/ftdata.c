@@ -124,6 +124,7 @@
 #include "ftZelda/ftZd_SpecialLw.h"
 #include "ftZelda/ftZd_SpecialN.h"
 #include "ftZelda/ftZd_SpecialS.h"
+#include "lb/lbanim.h"
 #include "lb/lbarchive.h"
 #include "lb/lbarq.h"
 #include "lb/lbdvd.h"
@@ -1726,6 +1727,23 @@ void ftData_80085CD8(Fighter* fp, Fighter* arg1, int msid)
                     }
                 }
                 fp->x590 = HSD_ArchiveGetPublicAddress(&sp14, temp_r3->x0);
+#ifdef MELEE_PC
+                /* The animation blob was just parsed out of raw archive
+                 * bytes.  Neither of the tree's two arrays records a length:
+                 * `nodes` is a -1 terminated byte per joint saying how many
+                 * tracks that joint owns, and `tracks` is those runs laid end
+                 * to end, so count them here. */
+                MELEE_PC_DAT(FigaTree, fp->x590);
+                if (fp->x590 != NULL) {
+                    const s8* node = fp->x590->nodes;
+                    u32 track_count = 0;
+                    while (*node != -1) {
+                        track_count += (u32) *node++;
+                    }
+                    MELEE_PC_DAT_ARRAY(FigaTrack, fp->x590->tracks,
+                                       track_count);
+                }
+#endif
             } else {
                 fp->x590 = NULL;
             }

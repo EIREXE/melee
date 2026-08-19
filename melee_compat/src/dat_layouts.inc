@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 119 types, reached from the HSD_*LoadDesc entry points.
+// 121 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -2009,13 +2009,32 @@ static const DatField ftDynamics_fields[] = {
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // ArticleDynamicBones * ftDynamicBones (array, raw)
     {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
     {   12,   24, DAT_ARR_COUNT, DAT_T_ftData_x38, 8, 4 }, // x8[x4]
-    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // FigaTree *** x10
+    {   16,   32, DAT_PTR        , DAT_T_FigaTree              , 0, 0 }, // FigaTree *** x10
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
 static const DatField ftData_x30_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int count
     {    4,    8, DAT_ARR_COUNT, DAT_T_ftHurtboxInit, 0, 4 }, // inits[count]
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField FigaTree_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int type
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 flags
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 frames
+    {   12,   16, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // s8 * nodes (array, raw)
+    {   16,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // FigaTrack * tracks (array, raw)
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField FigaTrack_fields[] = {
+    {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 length
+    {    2,    2, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 startframe
+    {    4,    4, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 obj_type
+    {    5,    5, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 frac_value
+    {    6,    6, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 frac_slope
+    {    8,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // u8 * ad_head
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -2846,6 +2865,8 @@ static const DatType dat_types[] = {
     { "MarsAttributes", 152, 152, MarsAttributes_fields, 0 },
     { "ftDynamics", 20, 40, ftDynamics_fields, 0 },
     { "ftData_x30", 8, 16, ftData_x30_fields, 0 },
+    { "FigaTree", 20, 32, FigaTree_fields, 0 },
+    { "FigaTrack", 12, 16, FigaTrack_fields, 0 },
     { "pl_804D6470_t", 388, 388, pl_804D6470_t_fields, 0 },
     { "ftData_x34", 8, 8, ftData_x34_fields, 0 },
     { "ftCo_DatAttrs", 388, 388, ftCo_DatAttrs_fields, 0 },

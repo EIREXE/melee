@@ -98,6 +98,8 @@ ROOTS = [
     "MarsAttributes",
     "ftDynamics",
     "ftData_x30",
+    "FigaTree",
+    "FigaTrack",
     "pl_804D6470_t",
     "ftData_x34",
     "ftCo_DatAttrs",
@@ -224,6 +226,11 @@ ARRAYS = {
     # A bare big-endian s16 array whose length lives in the sibling count, so
     # Ground_801C34AC() swaps it itself once it knows how many there are.
     ("GroundJointMap", "pairs"): ("raw",),
+    # nodes is a -1 terminated byte list, one byte per joint saying how many
+    # tracks it owns; tracks is the concatenation of those runs.  Neither
+    # length is in the file, so ftData_80085CD8() sizes them itself.
+    ("FigaTree", "nodes"): ("raw",),
+    ("FigaTree", "tracks"): ("raw",),
     # unk10 is HSD_Spline**, a *table* of pointers that ground.c indexes as
     # `unk4->unk10[arg1]`. Since HSD_Spline became a converted type it would
     # otherwise be followed as a single spline, relaying out the first pointer
@@ -312,6 +319,7 @@ PROBE = """
 #include <melee/ft/chara/ftZakoBoy/types.h>
 #include <melee/ft/chara/ftZelda/types.h>
 #include <melee/pl/types.h>
+#include <melee/lb/lbanim.h>
 """
 
 INCLUDES = [
