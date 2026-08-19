@@ -81,6 +81,11 @@ void ftCo_8009CB40(Fighter* fp, ssize_t bone_idx, bool arg2, FigaTree* arg3)
 void ftCo_8009CF84(Fighter* fp)
 {
     ftData* data = fp->ft_data;
+    // ArticleDynamicBones is a bare fixed array, and only dynamicsNum of it is
+    // ever walked, so the pointer is left raw by the layout generator and the
+    // rows converted here where the count is in scope.
+    MELEE_PC_DAT_ARRAY(BoneDynamicsDesc, data->x2C->ftDynamicBones,
+                       data->x2C->dynamicsNum);
     fp->dynamics_num = data->x2C->dynamicsNum;
     if (fp->dynamics_num >= Ft_Dynamics_NumMax) {
         HSD_ASSERTREPORT(109, 0, "fighter dynamics num over!\n");

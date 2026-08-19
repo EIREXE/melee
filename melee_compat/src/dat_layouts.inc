@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 79 types, reached from the HSD_*LoadDesc entry points.
+// 81 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -512,7 +512,7 @@ static const DatField ftData_fields[] = {
     {   32,   64, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct (unnamed at /home/deck/repos/doldecomp-melee2/src/melee/ft/types.h:633:15) * x20
     {   36,   72, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x24
     {   40,   80, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // WaitStruct * x28
-    {   44,   88, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftDynamics * x2C
+    {   44,   88, DAT_PTR        , DAT_T_ftDynamics            , 0, 0 }, // struct ftDynamics * x2C
     {   48,   96, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x30 * x30
     {   52,  104, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x34 * x34
     {   56,  112, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x38 * x38
@@ -561,6 +561,25 @@ static const DatField Fighter_804D6540_x0_t_fields[] = {
 
 static const DatField DatU16_fields[] = {
     {    0,    0, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // u16 v
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftDynamics_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int dynamicsNum
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // ArticleDynamicBones * ftDynamicBones (array, raw)
+    {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
+    {   12,   24, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct ftData_x38 * x8
+    {   16,   32, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // FigaTree *** x10
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField BoneDynamicsDesc_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // enum_t bone_id
+    {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // struct DynamicsData * data
+    {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // unsigned int count
+    {   12,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   16,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   20,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
@@ -1042,6 +1061,8 @@ static const DatType dat_types[] = {
     { "Fighter_804D6540_t", 8, 16, Fighter_804D6540_t_fields, 0 },
     { "Fighter_804D6540_x0_t", 4, 4, Fighter_804D6540_x0_t_fields, 0 },
     { "DatU16", 2, 2, DatU16_fields, 0 },
+    { "ftDynamics", 20, 40, ftDynamics_fields, 0 },
+    { "BoneDynamicsDesc", 24, 32, BoneDynamicsDesc_fields, 0 },
     { "FtPartsVisLookup", 8, 16, FtPartsVisLookup_fields, 0 },
     { "TempS", 8, 16, TempS_fields, 0 },
     { "ftData_x8", 24, 40, ftData_x8_fields, 0 },

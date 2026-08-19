@@ -70,6 +70,8 @@ ROOTS = [
     # A bare u16 element, so scalar arrays with no type of their own can be
     # byte-swapped with MELEE_PC_DAT_ARRAY().
     "DatU16",
+    "ftDynamics",
+    "BoneDynamicsDesc",
     # FtPartsDesc::vis_table's rows, and the byte lists hanging off them.
     "FtPartsVisLookup",
     "TempS",
@@ -198,6 +200,10 @@ ARRAYS = {
     # ftData's two wait-anim tables: sized by ftData_Table_Unk0[kind].count
     # and its demo twin, both in the executable rather than the file.
     ("Fighter_804D6540_t", "x0"): ("count", "x4"),
+    # ftDynamicBones points at ArticleDynamicBones, whose only member is a
+    # fixed array; ftCo_8009CF84 walks dynamicsNum of them, so it is converted
+    # there rather than followed as one struct.
+    ("ftDynamics", "ftDynamicBones"): ("raw",),
     ("FtPartsVisLookup", "x4"): ("count", "x0"),
     ("ftData", "xC"): ("raw",),
     ("ftData", "x14"): ("raw",),
@@ -556,7 +562,9 @@ def main() -> int:
             # untyped one panics at runtime the first time the game touches
             # that field. Catch it here, where the fix is obvious, instead of
             # several frames deep in a converter backtrace.
-            if arr and pid == "DAT_T_NONE":
+            # "raw" is the exception: it exists precisely to *not* follow the
+            # pointee, so having no element type is the point.
+            if arr and arr[0] != "raw" and pid == "DAT_T_NONE":
                 print(f"error: {name}.{r['name']}: annotated as an array of "
                       f"'{pointee}', but that type is not in the table -- it "
                       f"is missing from EXTRA/ROOTS or wrongly listed in "
