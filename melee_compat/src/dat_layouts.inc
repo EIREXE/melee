@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 81 types, reached from the HSD_*LoadDesc entry points.
+// 106 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -564,6 +564,1439 @@ static const DatField DatU16_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField ftCaptain_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_stick_range_y_neg
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_stick_range_y_pos
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_angle_diff
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_vel_x
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_vel_mul
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_gr_vel_x
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_grav
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_terminal_vel
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_unk0
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_unk1
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_unk2
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_unk3
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_unk4
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_unk5
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_miss_landing_lag
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_hit_landing_lag
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_air_friction_mul
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_horz_vel
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_freefall_air_spd_mul
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_landing_lag
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_unk0
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_unk1
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_input_var
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_unk2
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_catch_grav
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 specialhi_air_var
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 speciallw_unk1
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_flame_particle_angle
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_on_hit_spd_modifier
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 speciallw_unk2
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_ground_lag_mul
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_landing_lag_mul
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_ground_traction
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_air_landing_traction
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftCrazyHand_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD4
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD8
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE0
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE4
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE8
+    {  236,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xEC
+    {  240,  240, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xF0
+    {  244,  244, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xF4
+    {  248,  248, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xF8
+    {  252,  252, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xFC
+    {  256,  256, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x100
+    {  260,  260, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x104
+    {  264,  264, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x108
+    {  268,  268, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10C
+    {  272,  272, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  276,  276, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  280,  280, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  284,  284, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  288,  288, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x120
+    {  292,  292, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x124
+    {  296,  296, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x128
+    {  300,  300, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  304,  304, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  308,  308, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  312,  312, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  316,  316, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  320,  320, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftDonkeyAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 motion_state
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_motion_state
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20_TURN_SPEED
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24_JUMP_STARTUP_LAG
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28_LANDING_LAG
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x2C_MAX_ARM_SWINGS
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x30_DAMAGE_PER_SWING
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34_PUNCH_HORIZONTAL_VEL
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38_LANDING_LAG
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C_MIN_STICK_X_MOMENTUM
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40_MOMENTUM_TRANSITION_MODIFIER
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44_AERIAL_GRAVITY
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48_UNKNOWN
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C_AERIAL_VERTICAL_VELOCITY
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50_AERIAL_GRAVITY
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54_GROUNDED_HORIZONTAL_VELOCITY
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_AERIAL_HORIZONTAL_VELOCITY
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_GROUNDED_MOBILITY
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60_AERIAL_MOBILITY
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64_LANDING_LAG
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftFox_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0_FOX_BLASTER_UNK1
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4_FOX_BLASTER_UNK2
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8_FOX_BLASTER_UNK3
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC_FOX_BLASTER_UNK4
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_FOX_BLASTER_ANGLE
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_FOX_BLASTER_VEL
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_FOX_BLASTER_LANDING_LAG
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind x1C_FOX_BLASTER_SHOT_ITKIND
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind x20_FOX_BLASTER_GUN_ITKIND
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24_FOX_ILLUSION_GRAVITY_DELAY
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28_FOX_ILLUSION_GROUND_VEL_X
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C_FOX_ILLUSION_UNK1
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30_FOX_ILLUSION_UNK2
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34_FOX_ILLUSION_GROUND_END_VEL_X
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38_FOX_ILLUSION_GROUND_FRICTION
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C_FOX_ILLUSION_AIR_END_VEL_X
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40_FOX_ILLUSION_AIR_MUL_X
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44_FOX_ILLUSION_FALL_ACCEL
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48_FOX_ILLUSION_TERMINAL_VELOCITY
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C_FOX_ILLUSION_FREEFALL_MOBILITY
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50_FOX_ILLUSION_LANDING_LAG
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54_FOX_FIREFOX_GRAVITY_DELAY
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_FOX_FIREFOX_VEL_X
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_FOX_FIREFOX_AIR_MOMENTUM_PRESERVE_X
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60_FOX_FIREFOX_FALL_ACCEL
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64_FOX_FIREFOX_DIRECTION_STICK_RANGE_MIN
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68_FOX_FIREFOX_DURATION
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x6C_FOX_FIREFOX_BOUNCE_VAR
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70_FOX_FIREFOX_DURATION_END
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74_FOX_FIREFOX_SPEED
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78_FOX_FIREFOX_REVERSE_ACCEL
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C_FOX_FIREFOX_GROUND_MOMENTUM_END
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80_FOX_FIREFOX_UNK2
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84_FOX_FIREFOX_BOUND_VEL_X
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88_FOX_FIREFOX_FACING_STICK_RANGE_MIN
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C_FOX_FIREFOX_FREEFALL_MOBILITY
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90_FOX_FIREFOX_LANDING_LAG
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94_FOX_FIREFOX_BOUND_ANGLE
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98_FOX_REFLECTOR_RELEASE_LAG
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C_FOX_REFLECTOR_TURN_FRAMES
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0_FOX_REFLECTOR_UNK1
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA4_FOX_REFLECTOR_GRAVITY_DELAY
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA8_FOX_REFLECTOR_MOMENTUM_PRESERVE_X
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xAC_FOX_REFLECTOR_FALL_ACCEL
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_bone_id
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_max_damage
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_size
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_damage_mul
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_speed_mul
+    {  208,  208, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x20_behavior
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftGameWatchAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0_GAMEWATCH_WIDTH
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // GXColor[4] x4_GAMEWATCH_COLOR
+    {   20,   20, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 r
+    {   21,   21, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 g
+    {   22,   22, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 b
+    {   23,   23, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 a
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_GAMEWATCH_CHEF_LOOPFRAME
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_GAMEWATCH_CHEF_MAX
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20_GAMEWATCH_JUDGE_MOMENTUM_PRESERVE
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24_GAMEWATCH_JUDGE_MOMENTUM_MUL
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28_GAMEWATCH_JUDGE_VEL_Y
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C_GAMEWATCH_JUDGE_FRICTION1
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30_GAMEWATCH_JUDGE_FRICTION2
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[0].v
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[1].v
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[2].v
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[3].v
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[4].v
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[5].v
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[6].v
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[7].v
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // x34_GAMEWATCH_JUDGE_ROLL[8].v
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_GAMEWATCH_RESCUE_STICK_RANGE
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_GAMEWATCH_RESCUE_ANGLE_UNK
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60_GAMEWATCH_RESCUE_LANDING
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64_GAMEWATCH_PANIC_MOMENTUM_PRESERVE
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68_GAMEWATCH_PANIC_MOMENTUM_MUL
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C_GAMEWATCH_PANIC_FALL_ACCEL
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70_GAMEWATCH_PANIC_VEL_Y_MAX
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74_GAMEWATCH_PANIC_DAMAGE_ADD
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78_GAMEWATCH_PANIC_DAMAGE_MUL
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C_GAMEWATCH_PANIC_TURN_FRAMES
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0_bone_id
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_size
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftIceClimberAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C_gravity
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50_gravity
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54_terminal_vel
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_terminal_vel
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xAC
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xBC
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC0
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC8
+    {  204,  204, DAT_BYTES      , DAT_T_NONE                  , 4, 0 }, // u8[4] _CC
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD0
+    {  212,  212, DAT_BYTES      , DAT_T_NONE                  , 88, 0 }, // u8[88] _D4
+    {  300,  300, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x12C
+    {  304,  304, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x130
+    {  308,  308, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x134
+    {  312,  312, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x138
+    {  316,  316, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x13C
+    {  320,  320, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x140
+    {  324,  324, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x144
+    {  328,  328, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x148
+    {  332,  332, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14C
+    {  336,  336, DAT_BYTES      , DAT_T_NONE                  , 12, 0 }, // u8[12] _150
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftKb_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 jumpaerial_turn_duration
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_horizontal_momentum_backwards
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_horizontal_momentum_forwards
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_momentum_from_turning
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_horizontal_momentum
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_jump1_vertical_momentum
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_jump2_vertical_momentum
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_jump3_vertical_momentum
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_jump4_vertical_momentum
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float jumpaerial_jump5_vertical_momentum
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 jumpaerial_number_of_jumps
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 jumpaerial_first_jump_action_state
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 jumpaerial_final_jump_action_state
+    {   52,   52, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 jumpaerial_unk
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_x_offset_inhaled
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_y_offset_inhaled
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_z_offset_inhaled
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gravity_of_inhaled
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_velocity_outer_grab_box
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_velocity_inner_grab_box
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_inhale_velocity
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_inhale_resistance
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_duration_divisor
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_base_duration
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_star_deceleration_rate
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_star_duration_divisor
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_star_base_duration
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_frames_in_swallow_star
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_spit_spin
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_x_axis_range_walk
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_y_axis_range_jump
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_walk_speed
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_jump_height
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_stop_momentum
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ground_spit_initial_horizontal_velocity
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_spit_deceleration_rate
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_spit_out_release_angle
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_swallow_star_vertical_velocity
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_swallow_star_gravity
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_opponent_horizontal_velocity
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_opponent_vertical_velocity
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ability_loss_star_x
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ability_loss_star_y
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ability_loss_star_z
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_odds_lose_ability_on_hit
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_unk1
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_swallow_star_y_release
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_unk2
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_unk3
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_unk4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_unk5
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_aerial_vertical_momentum
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_landing_lag
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_vertical_momentum
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_horizontal_momentum
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_projectile_spawn_x
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_projectile_spawn_y
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_reverse_upb_stick_range
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_unk
+    {  236,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 speciallw_max_time_in_stone
+    {  240,  240, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 speciallw_min_time_in_stone
+    {  244,  244, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_min_slant_angle_slide
+    {  248,  248, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_max_slant_angle_slide
+    {  252,  252, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_slide_acceleration
+    {  256,  256, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_slide_max_speed
+    {  260,  260, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_gravity
+    {  264,  264, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 speciallw_hp
+    {  268,  268, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 speciallw_resistance
+    {  272,  272, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 speciallw_unk
+    {  276,  276, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float speciallw_freefall_toggle
+    {  280,  280, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_kp_b_button_check_frequency
+    {  284,  284, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_fuel_recharge_rate
+    {  288,  288, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_flame_size_recharge_rate
+    {  292,  292, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_max_fuel
+    {  296,  296, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_spew_flame_velocity
+    {  300,  300, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_flame_scale
+    {  304,  304, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_lowest_charge_graphic_size
+    {  308,  308, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 specialn_kp_screen_shake_frequency
+    {  312,  312, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_breath_x_offset
+    {  316,  316, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_kp_breath_y_offset
+    {  320,  320, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_gk_b_button_check_frequency
+    {  324,  324, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_fuel_recharge_rate
+    {  328,  328, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_flame_size_recharge_rate
+    {  332,  332, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_max_fuel
+    {  336,  336, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_spew_flame_velocity
+    {  340,  340, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_flame_scale
+    {  344,  344, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_lowest_charge_graphic_size
+    {  348,  348, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_gk_screen_shake_frequency
+    {  352,  352, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_breath_x_offset
+    {  356,  356, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gk_breath_y_offset
+    {  360,  360, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ss_charge_time
+    {  364,  364, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ss_aerial_shot_recoil
+    {  368,  368, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 specialn_ss_frames_per_charge_level
+    {  372,  372, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ss_freefall_toggle
+    {  376,  376, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pe_friction
+    {  380,  380, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pe_air_horizontal_momentum_preservation
+    {  384,  384, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pe_air_initial_vertical_momentum
+    {  388,  388, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pe_fall_acceleration
+    {  392,  392, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pe_unk2
+    {  396,  396, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pe_unk3
+    {  400,  400, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int specialn_dk_swings_to_full_charge
+    {  404,  404, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_dk_damage_increase_per_swing
+    {  408,  408, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_dk_grounded_punch_horizontal_velocity
+    {  412,  412, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_dk_freefall_toggle
+    {  416,  416, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int specialn_ns_frames_to_loop_charge_ground
+    {  420,  420, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int specialn_ns_frames_to_loop_charge_air
+    {  424,  424, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int specialn_ns_falling_acceleration_delay
+    {  428,  428, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int specialn_ns_charge_release_delay
+    {  432,  432, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ns_unk1
+    {  436,  436, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ns_gravity
+    {  440,  440, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ns_unk2
+    {  444,  444, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ns_freefall_toggle
+    {  448,  448, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  452,  452, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  456,  456, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  460,  460, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  464,  464, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairn_pk_landing_lag
+    {  468,  468, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind specialn_pk_itkind
+    {  472,  472, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind specialairn_pk_itkind
+    {  476,  476, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  480,  480, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  484,  484, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  488,  488, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  492,  492, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairn_pc_landing_lag
+    {  496,  496, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind specialn_pc_itkind
+    {  500,  500, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind specialairn_pc_itkind
+    {  504,  504, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ca_x_axis_range
+    {  508,  508, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ca_y_axis_range
+    {  512,  512, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ca_angle_difference
+    {  516,  516, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ca_forward_momentum
+    {  520,  520, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ca_additional_vertical_momentum
+    {  524,  524, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gn_x_axis_range
+    {  528,  528, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gn_y_axis_range
+    {  532,  532, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gn_angle_difference
+    {  536,  536, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gn_forward_momentum
+    {  540,  540, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gn_additional_vertical_momentum
+    {  544,  544, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_unk1
+    {  548,  548, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_unk2
+    {  552,  552, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_unk3
+    {  556,  556, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_unk4
+    {  560,  560, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_launch_angle
+    {  564,  564, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_launch_speed
+    {  568,  568, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fx_freefall_toggle
+    {  572,  572, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_fx_blaster_projectile_id
+    {  576,  576, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_fx_blaster_item_id
+    {  580,  580, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_unk1
+    {  584,  584, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_unk2
+    {  588,  588, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_unk3
+    {  592,  592, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_unk4
+    {  596,  596, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_launch_angle
+    {  600,  600, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_launch_speed
+    {  604,  604, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_fc_freefall_toggle
+    {  608,  608, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_fc_blaster_projectile_id
+    {  612,  612, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_fc_blaster_item_id
+    {  616,  616, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_lk_max_charge
+    {  620,  620, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_lk_arrow_charge_speed
+    {  624,  624, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_lk_freefall_toggle
+    {  628,  628, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_lk_bow_item_loader_id
+    {  632,  632, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_lk_bow_item_id
+    {  636,  636, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_cl_max_charge
+    {  640,  640, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_cl_arrow_charge_speed
+    {  644,  644, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_cl_freefall_toggle
+    {  648,  648, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_cl_bow_item_loader_id
+    {  652,  652, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_cl_bow_item_id
+    {  656,  656, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_sk_graphic_x_offset_ground
+    {  660,  660, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_sk_graphic_y_offset_ground
+    {  664,  664, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_sk_graphic_x_offset_air
+    {  668,  668, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_sk_graphic_y_offset_air
+    {  672,  672, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_sk_freefall_toggle
+    {  676,  676, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_zd_unk1
+    {  680,  680, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_zd_frames_before_gravity
+    {  684,  684, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_zd_horizontal_momentum_preservation
+    {  688,  688, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_zd_fall_acceleration
+    {  692,  692, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_pr_duration
+    {  696,  696, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_pr_unk
+    {  700,  700, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_air_height_offset_at_start
+    {  704,  704, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_bounciness
+    {  708,  708, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk1
+    {  712,  712, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_gravity_during_roll
+    {  716,  716, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_base_speed
+    {  720,  720, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_max_speed
+    {  724,  724, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk2
+    {  728,  728, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_air_x_axis_momentum
+    {  732,  732, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_air_y_axis_momentum
+    {  736,  736, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_air_initial_momentum
+    {  740,  740, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_max_momentum
+    {  744,  744, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_spinning_speed
+    {  748,  748, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_spinning_speed_turn
+    {  752,  752, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_pr_delay_per_smoke
+    {  756,  756, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk3
+    {  760,  760, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_bounce1
+    {  764,  764, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_bounce2
+    {  768,  768, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_base_damage
+    {  772,  772, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_damage_multiplier
+    {  776,  776, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_horizontal_bounce_momentum_on_hit
+    {  780,  780, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_vertical_bounce_momentum_on_hit
+    {  784,  784, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_forward_momentum_from_stick
+    {  788,  788, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk4
+    {  792,  792, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk5
+    {  796,  796, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_pr_unk6
+    {  800,  800, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_charge_rate1
+    {  804,  804, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_charge_time
+    {  808,  808, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_charge_rate2
+    {  812,  812, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_charge_spin_animation
+    {  816,  816, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk7
+    {  820,  820, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk8
+    {  824,  824, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_some_speed_var
+    {  828,  828, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_spin_anim_speed_after_collision
+    {  832,  832, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_air_speed
+    {  836,  836, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_turn_rate_related
+    {  840,  840, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk9
+    {  844,  844, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk10
+    {  848,  848, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk11
+    {  852,  852, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_unk12
+    {  856,  856, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pr_freefall_toggle
+    {  860,  860, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 charge_iterations
+    {  864,  864, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 base_damage
+    {  868,  868, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 additional_damage_per_iteration
+    {  872,  872, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_horizontal_momentum_preservation
+    {  876,  876, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_horizontal_deceleration_rate
+    {  880,  880, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 charge_iterations
+    {  884,  884, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 base_damage
+    {  888,  888, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 additional_damage_per_iteration
+    {  892,  892, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_horizontal_momentum_preservation
+    {  896,  896, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_horizontal_deceleration_rate
+    {  900,  900, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_mt_charge_time
+    {  904,  904, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_mt_ground_horizontal_momentum
+    {  908,  908, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_mt_air_horizontal_momentum
+    {  912,  912, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_mt_loops_to_full_charge
+    {  916,  916, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 specialn_mt_frames_to_transition
+    {  920,  920, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_mt_freefall_toggle
+    {  924,  924, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pp_air_vertical_momentum
+    {  928,  928, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pp_landing_lag
+    {  932,  932, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pp_x_spawn
+    {  936,  936, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_pp_y_spawn
+    {  940,  940, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_initial_horizontal_momentum
+    {  944,  944, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_initial_vertical_momentum
+    {  948,  948, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_damage_multiplier
+    {  952,  952, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_unk
+    {  956,  956, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_growth_time
+    {  960,  960, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_base_duration
+    {  964,  964, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_egg_breakout_resistance
+    {  968,  968, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_frames_reduced_per_input
+    {  972,  972, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_unk1
+    {  976,  976, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_unk2
+    {  980,  980, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 specialn_ys_iframes_on_release
+    {  984,  984, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_horizontal_velocity_on_breakout
+    {  988,  988, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_vertical_velocity_on_breakout
+    {  992,  992, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_ys_unk3
+    {  996,  996, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gw_frame_on_repeat
+    { 1000, 1000, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_gw_max_sausages_per_use
+    { 1004, 1004, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0_bone_id
+    { 1008, 1008, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    { 1012, 1012, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    { 1016, 1016, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    { 1020, 1020, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_size
+    { 1024, 1024, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_bone_id
+    { 1028, 1028, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_max_damage
+    { 1032, 1032, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    { 1036, 1036, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    { 1040, 1040, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    { 1044, 1044, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_size
+    { 1048, 1048, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_damage_mul
+    { 1052, 1052, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_speed_mul
+    { 1056, 1056, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x20_behavior
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftKoopaAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 unk50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftLk_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_anim_rate
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_pos_y_offset
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairhi_drift_stick_mul
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairhi_drift_max_mul
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialhi_grav_mul
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float attackairlw_hit_vel_y
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float attackairlw_hit_anim_frame_start
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float attackairlw_hit_anim_frame_end
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32[3] attackairlw_anim_flags[0]
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32[3] attackairlw_anim_flags[1]
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32[3] attackairlw_anim_flags[2]
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x0
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x4
+    {  108,  108, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x8
+    {  109,  109, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x9
+    {  110,  110, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xA
+    {  111,  111, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xB
+    {  112,  112, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xC
+    {  113,  113, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xD
+    {  114,  114, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xE
+    {  115,  115, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xF
+    {  116,  116, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x10
+    {  117,  117, DAT_BYTES      , DAT_T_NONE                  , 3, 0 }, // u8[3] pad_x11
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x14
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x90
+    {  148,  152, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x94
+    {  152,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x98
+    {  156,  168, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * x9C
+    {  160,  176, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * xA0
+    {  164,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xA4
+    {  168,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA8
+    {  172,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xAC
+    {  176,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xB0
+    {  180,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4
+    {  184,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xB8
+    {  188,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xBC
+    {  192,  212, DAT_BYTES      , DAT_T_NONE                  , 4, 0 }, // u8[4] xC0_filler
+    {  196,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0_bone_id
+    {  200,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  204,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  208,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  212,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_size
+    {  216,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD8
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftLuigiAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0_LUIGI_GREENMISSILE_UNK1
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4_LUIGI_GREENMISSILE_SMASH
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8_LUIGI_GREENMISSILE_CHARGE_RATE
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC_LUIGI_GREENMISSILE_MAX_CHARGE_FRAMES
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_LUIGI_GREENMISSILE_DAMAGE_TILT
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_LUIGI_GREENMISSILE_DAMAGE_SLOPE
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_LUIGI_GREENMISSILE_TRACTION
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_LUIGI_GREENMISSILE_UNK2
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20_LUIGI_GREENMISSILE_FALLING_SPEED
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24_LUIGI_GREENMISSILE_VEL_X
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28_LUIGI_GREENMISSILE_MUL_X
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C_LUIGI_GREENMISSILE_VEL_Y
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30_LUIGI_GREENMISSILE_MUL_Y
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34_LUIGI_GREENMISSILE_GRAVITY_START
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38_LUIGI_GREENMISSILE_FRICTION_END
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C_LUIGI_GREENMISSILE_X_DECEL
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40_LUIGI_GREENMISSILE_GRAVITY_MUL
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44_LUIGI_GREENMISSILE_MISFIRE_CHANCE
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48_LUIGI_GREENMISSILE_MISFIRE_VEL_X
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C_LUIGI_GREENMISSILE_MISFIRE_VEL_Y
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50_LUIGI_SUPERJUMP_FREEFALL_MOBILITY
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54_LUIGI_SUPERJUMP_LANDING_LAG
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_LUIGI_SUPERJUMP_REVERSE_STICK_RANGE
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_LUIGI_SUPERJUMP_MOMENTUM_STICK_RANGE
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60_LUIGI_SUPERJUMP_ANGLE_DIFF
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64_LUIGI_SUPERJUMP_VEL_X
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68_LUIGI_SUPERJUMP_GRAVITY_START
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C_LUIGI_SUPERJUMP_VEL_Y
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70_LUIGI_CYCLONE_TAP_MOMENTUM
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74_LUIGI_CYCLONE_MOMENTUM_X_GROUND
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78_LUIGI_CYCLONE_MOMENTUM_X_AIR
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C_LUIGI_CYCLONE_MOMENTUM_X_MUL_GROUND
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80_LUIGI_CYCLONE_MOMENTUM_X_MUL_AIR
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84_LUIGI_CYCLONE_FRICTION_END
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x88_LUIGI_CYCLONE_UNK
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C_LUIGI_CYCLONE_TAP_Y_VEL_MAX
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90_LUIGI_CYCLONE_TAP_GRAVITY
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x94_LUIGI_CYCLONE_LANDING_LAG
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftMario_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float vel_x_decay
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float grav
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float terminal_vel
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind cape_kind
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float freefall_mobility
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float landing_lag
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float reverse_stick_range
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float momentum_stick_range
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float angle_diff
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float vel_x
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float grav
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float vel_mul
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float vel_y
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float momentum_x
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_momentum_x
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float momentum_x_mul
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float air_momentum_x_mul
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float friction_end
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 unk0
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float tap_y_vel_max
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float tap_grav
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 landing_lag
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_bone_id
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_max_damage
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_size
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_damage_mul
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_speed_mul
+    {  128,  128, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x20_behavior
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftMasterHand_SpecialAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD4
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD8
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE0
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE4
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE8
+    {  236,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xEC
+    {  240,  240, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xF0
+    {  244,  244, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xF4
+    {  248,  248, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xF8
+    {  252,  252, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xFC
+    {  256,  256, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x100
+    {  260,  260, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x104
+    {  264,  264, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x108
+    {  268,  268, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10C
+    {  272,  272, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  276,  276, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  280,  280, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  284,  284, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  288,  288, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x120
+    {  292,  292, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  296,  296, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  300,  300, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  304,  304, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  308,  308, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  312,  312, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  316,  316, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  320,  320, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  324,  324, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x144
+    {  328,  328, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x148
+    {  332,  332, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14C
+    {  336,  336, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x150
+    {  340,  340, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x154
+    {  344,  344, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x158
+    {  348,  348, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x15C
+    {  352,  352, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x160
+    {  356,  356, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x164
+    {  360,  360, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x168
+    {  364,  364, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x16C
+    {  368,  368, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x170
+    {  372,  372, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x174
+    {  376,  376, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x178
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftMewtwoAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0_MEWTWO_SHADOWBALL_CHARGE_CYCLES
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4_MEWTWO_SHADOWBALL_GROUND_RECOIL_X
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8_MEWTWO_SHADOWBALL_AIR_RECOIL_X
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xC_MEWTWO_SHADOWBALL_CHARGE_ITERATIONS
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x10_MEWTWO_SHADOWBALL_RELEASE_LAG
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_MEWTWO_SHADOWBALL_LANDING_LAG
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_MEWTWO_CONFUSION_AIR_BOOST
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_bone_id
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_max_damage
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_size
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_damage_mul
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_speed_mul
+    {   60,   60, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x20_behavior
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40_MEWTWO_TELEPORT_VEL_DIV_X
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44_MEWTWO_TELEPORT_VEL_DIV_Y
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48_MEWTWO_TELEPORT_GRAVITY
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C_MEWTWO_TELEPORT_TERMINAL_VELOCITY
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x50_MEWTWO_TELEPORT_DURATION
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54_MEWTWO_TELEPORT_UNK2
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_MEWTWO_TELEPORT_STICK_RANGE_MIN
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_MEWTWO_TELEPORT_MOMENTUM
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60_MEWTWO_TELEPORT_MOMENTUM_ADD
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64_MEWTWO_TELEPORT_DRIFT
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x68_MEWTWO_TELEPORT_ANGLE_CLAMP
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C_MEWTWO_TELEPORT_MOMENTUM_END_MUL
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70_MEWTWO_TELEPORT_FREEFALL_MOBILITY
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74_MEWTWO_TELEPORT_LANDING_LAG
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78_MEWTWO_DISABLE_GRAVITY
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C_MEWTWO_DISABLE_TERMINAL_VELOCITY
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80_MEWTWO_DISABLE_OFFSET_X
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84_MEWTWO_DISABLE_OFFSET_Y
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftNessAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x0_PKFLASH_TIMER1_LOOPFRAMES
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_PKFLASH_TIMER2_LOOPFRAMES
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x8_PKFLASH_GRAVITY_DELAY
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xC_PKFLASH_MINCHARGEFRAMES
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_PKFLASH_UNK1
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_PKFLASH_FALL_ACCEL
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_PKFLASH_UNK2
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_PKFLASH_LANDING_LAG
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20_PKFIRE_AERIAL_LAUNCH_TRAJECTORY
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24_PKFIRE_AERIAL_VELOCITY
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28_PKFIRE_GROUNDED_LAUNCH_TRAJECTORY
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C_PKFIRE_GROUNDED_VELOCITY
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30_PKFIRE_SPAWN_X
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34_PKFIRE_SPAWN_Y
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38_PKFIRE_LANDING_LAG
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C_PK_THUNDER_UNK1
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x40_PK_THUNDER_LOOP1
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x44_PK_THUNDER_LOOP2
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x48_PK_THUNDER_GRAVITY_DELAY
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C_PK_THUNDER_UNK2
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50_PK_THUNDER_FALL_ACCEL
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54_PK_THUNDER_2_MOMENTUM
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_PK_THUNDER_2_UNK1
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_PK_THUNDER_2_DECELERATION_RATE
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60_PK_THUNDER_2_KNOCKDOWN_ANGLE
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64_PK_THUNDER_2_WALLHUG_ANGLE
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68_PK_THUNDER_2_UNK2
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C_PK_THUNDER_2_FREEFALL_ANIM_BLEND
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70_PK_THUNDER_2_LANDING_LAG
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74_PSI_MAGNET_RELEASE_LAG
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78_PSI_MAGNET_UNK1
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C_PSI_MAGNET_UNK2
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80_PSI_MAGNET_UNK3
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x84_PSI_MAGNET_FRAMES_BEFORE_GRAVITY
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88_PSI_MAGNET_MOMENTUM_PRESERVATION
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C_PSI_MAGNET_FALL_ACCEL
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90_PSI_MAGNET_UNK4
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94_PSI_MAGNET_HEAL_MUL
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0_bone_id
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_size
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xAC_YOYO_CHARGE_DURATION
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB0_YOYO_DAMAGE_MUL
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4_YOYO_REHIT_RATE
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_bone_id
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_max_damage
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_size
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_damage_mul
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_speed_mul
+    {  216,  216, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x20_behavior
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftPe_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float floatfallf_anim_start
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float floatfallb_anim_start
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float floatfall_anim_start_offset
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int speciallw_item_table_count
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // speciallw_item_table[0].randi_max
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // speciallw_item_table[0].kind
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // speciallw_item_table[1].randi_max
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // speciallw_item_table[1].kind
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // speciallw_item_table[2].randi_max
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // speciallw_item_table[2].kind
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_start_accel
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_start_vel_x
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_vel_x
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_smash_vel_x
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_vel_y
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50_gravity
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58_gravity
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C_terminal_vel
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_end_vel_x
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_end_vel_y
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairn_vel_x_div
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairn_vel_y
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0_bone_id
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_size
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftPikachuAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialairn_landing_lag
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind specialn_itkind
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // ItemKind specialairn_itkind
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_start_friction
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_start_gravity
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xAC
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xBC
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC0
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC8
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xCC
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD0
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xD4
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xD8
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float top
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float bottom
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  236,  236, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  240,  240, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  244,  244, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftPurinAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_BYTES      , DAT_T_NONE                  , 4, 0 }, // u8[4] _48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_BYTES      , DAT_T_NONE                  , 8, 0 }, // u8[8] _60
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xAC
+    {  176,  176, DAT_BYTES      , DAT_T_NONE                  , 4, 0 }, // u8[4] _B0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xBC
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC0
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC8
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xCC
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD0
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD4
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD8
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE0
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE4
+    {  232,  232, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * xE8
+    {  236,  240, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * xEC
+    {  240,  248, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xF0
+    {  244,  252, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xF4
+    {  248,  256, DAT_BYTES      , DAT_T_NONE                  , 8, 0 }, // u8[8] _F8
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftSeakAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float self_vel_y
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x70
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftSs_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float top
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float bottom
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xAC
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xBC
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xC0
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xC4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xC8
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 xCC
+    {  208,  208, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * xD0
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftSandbagAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_pair0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_pair1
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField s32_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 v
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftYoshiAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_start_gravity
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specials_start_terminal_vel
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x84
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x88
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8C
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x90
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x94
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x98
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x9C
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA0
+    {  164,  164, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xA4
+    {  168,  168, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xA8
+    {  172,  172, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xAC
+    {  176,  176, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB0
+    {  180,  180, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB4
+    {  184,  184, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xB8
+    {  188,  188, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xBC
+    {  192,  192, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC0
+    {  196,  196, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC4
+    {  200,  200, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC8
+    {  204,  204, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xCC
+    {  208,  208, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD0
+    {  212,  212, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD4
+    {  216,  216, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xD8
+    {  220,  220, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int xDC
+    {  224,  224, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE0
+    {  228,  228, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE4
+    {  232,  232, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xE8
+    {  236,  236, DAT_BYTES      , DAT_T_NONE                  , 40, 0 }, // u8[40] pad_xEC
+    {  276,  276, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x114
+    {  280,  280, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x118
+    {  284,  284, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x11C
+    {  288,  288, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x120
+    {  292,  292, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x124
+    {  296,  296, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x128
+    {  300,  300, DAT_BYTES      , DAT_T_NONE                  , 12, 0 }, // u8[12] x12C
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftZakoboyAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x0
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField ftZelda_DatAttrs_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float xC
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x10
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x64
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x68
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x6C
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x70
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x74
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x78
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x7C
+    {  128,  128, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x80
+    {  132,  132, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // u32 x0_bone_id
+    {  136,  136, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 x4_max_damage
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  152,  152, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14_size
+    {  156,  156, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18_damage_mul
+    {  160,  160, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C_speed_mul
+    {  164,  164, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x20_behavior
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
+static const DatField MarsAttributes_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0
+    {    4,    4, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x4
+    {    8,    8, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x8
+    {   12,   12, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_friction
+    {   16,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float specialn_start_friction
+    {   20,   20, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x14
+    {   24,   24, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {   28,   28, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    {   32,   32, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x20
+    {   36,   36, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x24
+    {   40,   40, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x28
+    {   44,   44, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x2C
+    {   48,   48, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x30
+    {   52,   52, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x34
+    {   56,   56, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x38
+    {   60,   60, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x3C
+    {   64,   64, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x40
+    {   68,   68, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x44
+    {   72,   72, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x48
+    {   76,   76, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x4C
+    {   80,   80, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x50
+    {   84,   84, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x54
+    {   88,   88, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x58
+    {   92,   92, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x5C
+    {   96,   96, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x60
+    {  100,  100, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x0_bone_id
+    {  104,  104, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x
+    {  108,  108, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 y
+    {  112,  112, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 z
+    {  116,  116, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x10_size
+    {  120,  120, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x0
+    {  124,  124, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // f32 x4
+    {  128,  128, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x8
+    {  129,  129, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x9
+    {  130,  130, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xA
+    {  131,  131, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xB
+    {  132,  132, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xC
+    {  133,  133, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xD
+    {  134,  134, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xE
+    {  135,  135, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 xF
+    {  136,  136, DAT_U8         , DAT_T_NONE                  , 0, 0 }, // u8 x10
+    {  137,  137, DAT_BYTES      , DAT_T_NONE                  , 3, 0 }, // u8[3] pad_x11
+    {  140,  140, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int x14
+    {  144,  144, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x18
+    {  148,  148, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float x1C
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField ftDynamics_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // int dynamicsNum
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // ArticleDynamicBones * ftDynamicBones (array, raw)
@@ -1061,6 +2494,31 @@ static const DatType dat_types[] = {
     { "Fighter_804D6540_t", 8, 16, Fighter_804D6540_t_fields, 0 },
     { "Fighter_804D6540_x0_t", 4, 4, Fighter_804D6540_x0_t_fields, 0 },
     { "DatU16", 2, 2, DatU16_fields, 0 },
+    { "ftCaptain_DatAttrs", 140, 140, ftCaptain_DatAttrs_fields, 0 },
+    { "ftCrazyHand_DatAttrs", 324, 324, ftCrazyHand_DatAttrs_fields, 0 },
+    { "ftDonkeyAttributes", 116, 116, ftDonkeyAttributes_fields, 0 },
+    { "ftFox_DatAttrs", 212, 212, ftFox_DatAttrs_fields, 0 },
+    { "ftGameWatchAttributes", 148, 148, ftGameWatchAttributes_fields, 0 },
+    { "ftIceClimberAttributes", 348, 348, ftIceClimberAttributes_fields, 0 },
+    { "ftKb_DatAttrs", 1060, 1060, ftKb_DatAttrs_fields, 0 },
+    { "ftKoopaAttributes", 160, 160, ftKoopaAttributes_fields, 0 },
+    { "ftLk_DatAttrs", 220, 240, ftLk_DatAttrs_fields, 0 },
+    { "ftLuigiAttributes", 152, 152, ftLuigiAttributes_fields, 0 },
+    { "ftMario_DatAttrs", 132, 132, ftMario_DatAttrs_fields, 0 },
+    { "ftMasterHand_SpecialAttrs", 380, 380, ftMasterHand_SpecialAttrs_fields, 0 },
+    { "ftMewtwoAttributes", 136, 136, ftMewtwoAttributes_fields, 0 },
+    { "ftNessAttributes", 220, 220, ftNessAttributes_fields, 0 },
+    { "ftPe_DatAttrs", 192, 192, ftPe_DatAttrs_fields, 0 },
+    { "ftPikachuAttributes", 248, 248, ftPikachuAttributes_fields, 0 },
+    { "ftPurinAttributes", 256, 264, ftPurinAttributes_fields, 0 },
+    { "ftSeakAttributes", 116, 116, ftSeakAttributes_fields, 0 },
+    { "ftSs_DatAttrs", 212, 216, ftSs_DatAttrs_fields, 0 },
+    { "ftSandbagAttributes", 8, 8, ftSandbagAttributes_fields, 0 },
+    { "s32", 4, 4, s32_fields, 0 },
+    { "ftYoshiAttributes", 312, 312, ftYoshiAttributes_fields, 0 },
+    { "ftZakoboyAttributes", 4, 4, ftZakoboyAttributes_fields, 0 },
+    { "ftZelda_DatAttrs", 168, 168, ftZelda_DatAttrs_fields, 0 },
+    { "MarsAttributes", 152, 152, MarsAttributes_fields, 0 },
     { "ftDynamics", 20, 40, ftDynamics_fields, 0 },
     { "BoneDynamicsDesc", 24, 32, BoneDynamicsDesc_fields, 0 },
     { "FtPartsVisLookup", 8, 16, FtPartsVisLookup_fields, 0 },

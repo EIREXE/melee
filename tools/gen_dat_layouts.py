@@ -70,6 +70,31 @@ ROOTS = [
     # A bare u16 element, so scalar arrays with no type of their own can be
     # byte-swapped with MELEE_PC_DAT_ARRAY().
     "DatU16",
+    "ftCaptain_DatAttrs",
+    "ftCrazyHand_DatAttrs",
+    "ftDonkeyAttributes",
+    "ftFox_DatAttrs",
+    "ftGameWatchAttributes",
+    "ftIceClimberAttributes",
+    "ftKb_DatAttrs",
+    "ftKoopaAttributes",
+    "ftLk_DatAttrs",
+    "ftLuigiAttributes",
+    "ftMario_DatAttrs",
+    "ftMasterHand_SpecialAttrs",
+    "ftMewtwoAttributes",
+    "ftNessAttributes",
+    "ftPe_DatAttrs",
+    "ftPikachuAttributes",
+    "ftPurinAttributes",
+    "ftSeakAttributes",
+    "ftSs_DatAttrs",
+    "ftSandbagAttributes",
+    "s32",
+    "ftYoshiAttributes",
+    "ftZakoboyAttributes",
+    "ftZelda_DatAttrs",
+    "MarsAttributes",
     "ftDynamics",
     "BoneDynamicsDesc",
     # FtPartsDesc::vis_table's rows, and the byte lists hanging off them.
@@ -239,6 +264,29 @@ PROBE = """
 #include <melee/mp/types.h>
 #include <melee/ft/fighter.h>
 #include <melee/ft/dobjlist.h>
+#include <melee/ft/chara/ftCaptain/types.h>
+#include <melee/ft/chara/ftCrazyHand/types.h>
+#include <melee/ft/chara/ftDonkey/types.h>
+#include <melee/ft/chara/ftFox/types.h>
+#include <melee/ft/chara/ftGameWatch/types.h>
+#include <melee/ft/chara/ftKirby/types.h>
+#include <melee/ft/chara/ftKoopa/types.h>
+#include <melee/ft/chara/ftLink/types.h>
+#include <melee/ft/chara/ftLuigi/types.h>
+#include <melee/ft/chara/ftMario/types.h>
+#include <melee/ft/chara/ftMars/types.h>
+#include <melee/ft/chara/ftMasterHand/types.h>
+#include <melee/ft/chara/ftMewtwo/types.h>
+#include <melee/ft/chara/ftNess/types.h>
+#include <melee/ft/chara/ftPeach/types.h>
+#include <melee/ft/chara/ftPikachu/types.h>
+#include <melee/ft/chara/ftPopo/types.h>
+#include <melee/ft/chara/ftPurin/types.h>
+#include <melee/ft/chara/ftSamus/types.h>
+#include <melee/ft/chara/ftSeak/types.h>
+#include <melee/ft/chara/ftYoshi/types.h>
+#include <melee/ft/chara/ftZakoBoy/types.h>
+#include <melee/ft/chara/ftZelda/types.h>
 """
 
 INCLUDES = [
@@ -249,6 +297,7 @@ INCLUDES = [
     "src/Runtime",
     "src/sysdolphin",
     "src/melee",
+    "src/melee/ft/chara",
 ]
 
 RECORD_RE = re.compile(r"^\s*(\d+) \| (struct|union) (\w+)$")
@@ -264,6 +313,9 @@ def dump_layouts(target: str | None) -> dict:
     row would otherwise be converted as if it were a scalar.
     """
     cmd = ["clang", "-fsyntax-only", "-std=gnu99", "-w",
+           # MELEE_PC_PTR32 is __ptr32, which needs the MS extensions the PC
+           # build already enables.
+           "-fms-extensions",
            "-DMELEE_PC", "-DAURORA", "-DTARGET_PC", "-DBUGFIX",
            "-Xclang", "-fdump-record-layouts-complete", "-x", "c", "-"]
     # Order matters and must match the real build: melee_compat/include
@@ -279,6 +331,14 @@ def dump_layouts(target: str | None) -> dict:
 
     proc = subprocess.run(cmd, input=PROBE, capture_output=True, text=True,
                           cwd=ROOT)
+    # -w silences warnings but not errors, and a header that fails to open
+    # just means its types quietly never appear in the table. Treat any
+    # diagnostic as fatal: a missing type here is a silent miscompile later.
+    if proc.returncode != 0 or "error:" in proc.stderr:
+        print("error: the layout probe did not compile:", file=sys.stderr)
+        for line in proc.stderr.splitlines()[:20]:
+            print("  " + line, file=sys.stderr)
+        sys.exit(1)
 
     records: dict[str, dict] = {}
     cur = None
@@ -330,6 +390,10 @@ def lookup(records: dict, name: str) -> dict | None:
 # Typedef names that clang prints in field types but that are not the name of
 # the underlying record, so lookup() would miss them.
 ALIASES = {"Vec3": "Vec"}
+RENAMES = {
+    "_ftSamusAttributes": "ftSs_DatAttrs",
+    "_ftCrazyHandAttributes": "ftCrazyHand_DatAttrs",
+}
 
 # Types clang never names in a record dump because they are typedefs of an
 # anonymous struct (`typedef struct { f32 x, y; } Vec2;` -- no tag, unlike
@@ -340,6 +404,12 @@ SYNTHETIC = {
     # A bare big-endian u16, so MELEE_PC_DAT_ARRAY() can byte-swap a plain
     # scalar array that the file gives no type of its own.
     "DatU16": (2, [("v", "u16", 0)]),
+    # Declared inside ftSb_Init.c, so the probe TU cannot include it.  Two
+    # plain u32s, laid out identically under both ABIs.
+    "ftSandbagAttributes": (8, [("x0_pair0", "u32", 0), ("x0_pair1", "u32", 4)]),
+    # ftZakoGirl's "attribute struct" is a bare s32 -- PUSH_ATTRS() names the
+    # scalar type directly, so give it a one-field record to byte-swap.
+    "s32": (4, [("v", "s32", 0)]),
 }
 
 
@@ -413,7 +483,7 @@ KNOWN_SCALARS = {
     # Enum typedefs. -fno-short-enums on both targets, so these are four
     # bytes either side and swap like any other u32. Listed one by one rather
     # than pattern-matched, so a new *pointer* typedef cannot slip in as one.
-    "StKind", "GrKind",
+    "StKind", "GrKind", "ItemKind", "FighterKind", "FtMotionId",
 }
 
 
@@ -463,6 +533,14 @@ def main() -> int:
                       file=sys.stderr)
                 return 1
             tbl[nm] = {"rows": rows, "size": size}
+
+    # Samus' attribute struct is "typedef struct _ftSamusAttributes {...}
+    # ftSs_DatAttrs;" -- clang names records by their tag, but call sites use
+    # the typedef, so emit it under the name PUSH_ATTRS actually passes.
+    for frm, to in RENAMES.items():
+        for tbl in (gc, host):
+            if frm in tbl:
+                tbl[to] = tbl.pop(frm)
 
     types = closure(gc)
     ids = {name: i for i, name in enumerate(types)}
@@ -631,6 +709,31 @@ def main() -> int:
                                 f"{mb.group(1)}, 0 }}, "
                                 f"// {r['ctype']} {r['name']}")
                     continue
+                # Inline arrays of *structs*: emit the element type's own
+                # rows once per element, at each target's stride. clang dumps
+                # the element record separately, so its layout is already
+                # known on both sides.
+                mr = re.fullmatch(r"(?:struct |union )?([A-Za-z_]\w*)"
+                                  r"\s*\[(\d+)\]", base)
+                if mr and mr.group(1) in gc and mr.group(1) in host:
+                    en, cnt = mr.group(1), int(mr.group(2))
+                    eg, eh = gc[en], host[en]
+                    ehl = {id(x): y for x, y in zip(eg["rows"], eh["rows"])}
+                    for j in range(cnt):
+                        for er in eg["rows"]:
+                            ek = kind_for(er["ctype"])
+                            if not ek:
+                                print(f"error: {name}.{r['name']}: element "
+                                      f"field {en}.{er['name']} has unknown "
+                                      f"type '{er['ctype']}'", file=sys.stderr)
+                                return 1
+                            body.append(
+                                f"    {{ {goff + j * eg['size'] + er['off']:4},"
+                                f" {hoff + j * eh['size'] + ehl[id(er)]['off']:4}, "
+                                f"{ek:15}, {'DAT_T_NONE':28}, 0, 0 }}, "
+                                f"// {r['name']}[{j}].{er['name']}")
+                    continue
+
                 # Inline arrays of wider scalars. Each element still needs
                 # swapping, so emit one row per element.
                 ms = re.fullmatch(r"([A-Za-z_][\w ]*?)\s*\[(\d+)\]", base)

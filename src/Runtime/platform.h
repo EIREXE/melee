@@ -180,6 +180,11 @@ void melee_pc_archive_header_be(struct HSD_ArchiveHeader* h);
 void* melee_pc_dat_root(const void* p, int type);
 #define MELEE_PC_DAT(T, p) ((p) = melee_pc_dat_root((p), DAT_T_##T))
 
+/// @brief As #MELEE_PC_DAT, but usable where only an expression fits -- inside
+/// a declaration's initializer, say, where a statement would split a run of
+/// declarations and C89 compilers reject that. Yields the converted pointer.
+#define MELEE_PC_DAT_EXPR(T, p) MELEE_PC_DAT(T, p)
+
 /// @brief Converts element @p i of a GameCube-side array of @p T, given its
 /// base. For arrays whose length the DAT does not record: the call site has
 /// the index, so it converts just that element. Plain indexing elsewhere.
@@ -310,6 +315,7 @@ void melee_pc_pump(void);
 #define MELEE_PC_BE32(x) (x)
 #define MELEE_PC_BE16(x) (x)
 #define MELEE_PC_DAT(T, p)
+#define MELEE_PC_DAT_EXPR(T, p) (p)
 #define MELEE_PC_DAT_PTRNULL(T, p)
 #define MELEE_PC_DAT_ELEM(T, base, i) (&(base)[i])
 #define MELEE_PC_DAT_ARRAY(T, p, n)

@@ -26,7 +26,12 @@
 #define PUSH_ATTRS(fp, attributeName)                                         \
     do {                                                                      \
         void* backup = (fp)->dat_attrs_backup;                                \
-        attributeName* src = (attributeName*) (fp)->ft_data->ext_attr;        \
+        /* ext_attr is this character's attribute struct straight out of the  \
+         * DAT. Naming the type here means every character gets converted,    \
+         * and a character whose struct is not described is a build error     \
+         * rather than silently byte-swapped wrong. */                        \
+        attributeName* src = (attributeName*) MELEE_PC_DAT_EXPR(              \
+            attributeName, (fp)->ft_data->ext_attr);                          \
         void** da = &(fp)->dat_attrs;                                         \
         *(attributeName*) (fp)->dat_attrs_backup = *src;                      \
         *da = backup;                                                         \
