@@ -13,7 +13,7 @@ typedef __builtin_va_list __va_list;
 #define va_copy(dst, src) __builtin_va_copy(dst, src)
 
 // Some sources (src/melee/ef/efalt.c) bypass va_arg and use MSL's internals
-// directly, as `*(t*) __va_arg(list, _var_arg_typeof(t))`. 
+// directly, as `*(t*) __va_arg(list, _var_arg_typeof(t))`.
 // See melee_compat/src/varargs.c for the limits of this
 #ifndef _var_arg_typeof
 #define _var_arg_typeof(e) 0

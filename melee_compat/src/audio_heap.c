@@ -1,10 +1,10 @@
 // Workaround for the HSD_Synth_804D6018
 //
-// synth.static.h defines the audio heap handle as private to synth.c, while initialize.c
-// declares the same name `extern` and stores the heap it creates into it.
-// They result in two different objects, so HSD_OSInit creates the audio heap and
-// synth.c never sees it, the first HSD_AudioMalloc calls
-// and gets nullptr.
+// synth.static.h defines the audio heap handle as private to synth.c, while
+// initialize.c declares the same name `extern` and stores the heap it creates
+// into it. They result in two different objects, so HSD_OSInit creates the
+// audio heap and synth.c never sees it, the first HSD_AudioMalloc calls and
+// gets nullptr.
 //
 // The real fix is to make that one shared global, which changes what the
 // decomp asserts about the original symbol.
@@ -20,8 +20,8 @@
 // Two properties are needed of these blocks, and only one of them is free.
 //
 // Alignment: OSAllocFromHeap hands back 32-byte-aligned blocks and the DMA
-// layer relies on it -- HSD_DevComRequest asserts `dest % 32 == 0`. Host malloc
-// only promises 16, so ask for the alignment explicitly.
+// layer relies on it -- HSD_DevComRequest asserts `dest % 32 == 0`. Host
+// malloc only promises 16, so ask for the alignment explicitly.
 //
 // Address range: axdriver.c:873 narrows an audio-heap pointer to 32 bits when
 // it relocates its own tables (`(u32) AXDriver_804D7798 & ~3u`), so a block
@@ -71,10 +71,16 @@ static void* audio_alloc(size_t size)
     return p;
 }
 
-static void audio_free(void* p) { free(p); }
+static void audio_free(void* p)
+{
+    free(p);
+}
 
 // Heap handles are indices, so a negative one was never initialised.
-static bool bad_heap(OSHeapHandle heap) { return heap < 0; }
+static bool bad_heap(OSHeapHandle heap)
+{
+    return heap < 0;
+}
 
 void* melee_pc_alloc_from_heap(OSHeapHandle heap, u32 size)
 {

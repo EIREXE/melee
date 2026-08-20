@@ -449,8 +449,7 @@ static void setupArrayDesc(HSD_VtxDescList* desc_list)
         for (desc = desc_list; desc->attr != GX_VA_NULL; desc++) {
             if (desc->attr_type != GX_DIRECT) {
                 GXSETARRAY(desc->attr, desc->vertex,
-                           melee_pc_array_size(desc->attr_type,
-                                               desc->stride,
+                           melee_pc_array_size(desc->attr_type, desc->stride,
                                                desc->vertex),
                            desc->stride, false);
             }
@@ -500,8 +499,7 @@ static void setupShapeAnimArrayDesc(HSD_VtxDescList* desc_list)
                 break;
             default:
                 GXSETARRAY(desc->attr, desc->vertex,
-                           melee_pc_array_size(desc->attr_type,
-                                               desc->stride,
+                           melee_pc_array_size(desc->attr_type, desc->stride,
                                                desc->vertex),
                            desc->stride, false);
             }

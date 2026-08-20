@@ -2,12 +2,13 @@
 //
 // hsd_4D11.c reserves these as five separate .bss objects, and the card code
 // walks straight across the boundaries: it takes hsd_804D1138 as the base of a
-// CardContext and indexes past the end of it, so hsd_804D1148 is that context's
-// command ring and hsd_804D2348 is the queue at offsetof(CardContext, x1210).
-// On GameCube that works because the linker placed them back to back in that
-// order. Nothing makes separate objects adjacent on a PC, so hsd_4D11.c is
-// excluded from this build (cmake/pc_excluded.cmake) and the run is reproduced
-// here as one object with the original names aliased into it.
+// CardContext and indexes past the end of it, so hsd_804D1148 is that
+// context's command ring and hsd_804D2348 is the queue at
+// offsetof(CardContext, x1210). On GameCube that works because the linker
+// placed them back to back in that order. Nothing makes separate objects
+// adjacent on a PC, so hsd_4D11.c is excluded from this build
+// (cmake/pc_excluded.cmake) and the run is reproduced here as one object with
+// the original names aliased into it.
 //
 // The offsets come from the structures rather than from a table of constants.
 // Only the .set directives still spell them out, because file-scope asm cannot
@@ -15,14 +16,13 @@
 // supposed to describe, and a field that changes width breaks the build here
 // instead of corrupting the queue at runtime.
 
+#include <stddef.h>
 #include <baselib/hsd_3A94.h>
 
-#include <stddef.h>
-
 typedef struct MeleePcCardWork {
-    /* 0x0000 */ CardContext ctx;  // hsd_804D1138 / _1148 / _2348
-    /* 0x1510 */ u8 jpeg[0x828];   // hsd_804D2648, a JpegWork (hsd_3B34.c)
-    /* 0x1D38 */ u8 x2E70[2084];   // hsd_804D2E70
+    /* 0x0000 */ CardContext ctx; // hsd_804D1138 / _1148 / _2348
+    /* 0x1510 */ u8 jpeg[0x828];  // hsd_804D2648, a JpegWork (hsd_3B34.c)
+    /* 0x1D38 */ u8 x2E70[2084];  // hsd_804D2E70
 } MeleePcCardWork;
 
 // Aligned well past anything in here.

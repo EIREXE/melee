@@ -7,8 +7,8 @@
 #ifndef _DOLPHIN_AXFX_H_
 #define _DOLPHIN_AXFX_H_
 
-#include <dolphin/types.h>
 #include <dolphin/ax.h>
+#include <dolphin/types.h>
 
 struct AXFX_REVSTD_DELAYLINE {
     /* 0x00 */ long inPoint;

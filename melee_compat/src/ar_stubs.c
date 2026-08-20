@@ -9,7 +9,6 @@
 #include "compat_report.h"
 
 #include <string.h>
-
 #include <dolphin/ar.h>
 
 #define ARAM_SIZE (16 * 1024 * 1024)
@@ -27,7 +26,10 @@ u32 ARInit(u32* stack_index_addr, u32 num_entries)
     return aram_top;
 }
 
-u32 ARGetSize(void) { return ARAM_SIZE; }
+u32 ARGetSize(void)
+{
+    return ARAM_SIZE;
+}
 
 u32 ARAlloc(u32 length)
 {
@@ -51,7 +53,10 @@ u32 ARFree(u32* length)
 
 // aurora declares ARGetBaseAddress as returning u32; the emulated block is
 // addressed from offset 0, so that is what callers get.
-u32 ARGetBaseAddress(void) { return 0; }
+u32 ARGetBaseAddress(void)
+{
+    return 0;
+}
 
 // Completion callbacks are deferred, not run inline.
 //
@@ -75,14 +80,17 @@ static u32 arq_pending_count;
 unsigned long melee_pc_dbg_arq_posted;
 unsigned long melee_pc_dbg_arq_done;
 
-unsigned long melee_pc_arq_pending(void) { return arq_pending_count; }
+unsigned long melee_pc_arq_pending(void)
+{
+    return arq_pending_count;
+}
 
 // Bounded nesting rather than none. An ARQ callback runs melee's DevCom chain,
 // which spins waiting for a *later* ARQ completion, so a drain that refuses to
-// re-enter deadlocks there. Nesting is safe here specifically because the entry
-// is popped before its callback runs: a nested drain can only ever see work
-// the outer one has not claimed, and every level makes progress.
-// The cap is just for safety, to prevent deadlocks.
+// re-enter deadlocks there. Nesting is safe here specifically because the
+// entry is popped before its callback runs: a nested drain can only ever see
+// work the outer one has not claimed, and every level makes progress. The cap
+// is just for safety, to prevent deadlocks.
 #define ARQ_MAX_DEPTH 16
 
 void melee_pc_arq_drain(void)
@@ -123,7 +131,10 @@ static void arq_defer(ARQCallback cb, ARQRequest* req)
     arq_pending_count++;
 }
 
-void ARQInit(void) { arq_pending_count = 0; }
+void ARQInit(void)
+{
+    arq_pending_count = 0;
+}
 
 // Converts ARQ offset to a real address
 static void* aram_resolve(uintptr_t addr)

@@ -7,10 +7,10 @@
 #include <melee/gr/forward.h>
 #include <melee/lb/forward.h> // IWYU pragma: export
 #include <sysdolphin/baselib/forward.h>
-#include <sysdolphin/baselib/hsd_3A94.h> // CardState, overlaid inside lb_80432A68_t
 
 #include <dolphin/gx.h>
 #include <dolphin/mtx.h>
+#include <sysdolphin/baselib/hsd_3A94.h> // CardState, overlaid inside lb_80432A68_t
 
 struct HitResult {
     HSD_JObj* bone;

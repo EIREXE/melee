@@ -16,48 +16,97 @@
 
 // --- DB -------------------------------------------------------------------
 
-BOOL DBIsDebuggerPresent(void) { return false; }
+BOOL DBIsDebuggerPresent(void)
+{
+    return false;
+}
 
 // --- MCC ------------------------------------------------------------------
 
 int MCCInit(enum MCC_EXI ch, u8 timeout, MCC_CBSysEvent cb)
 {
     COMPAT_STUB();
-    (void) ch; (void) timeout; (void) cb;
+    (void) ch;
+    (void) timeout;
+    (void) cb;
     return -1;
 }
 void MCCExit(void) {}
-int MCCEnumDevices(MCC_CBEnumDevices cb) { (void) cb; return -1; }
-u8 MCCGetFreeBlocks(enum MCC_MODE mode) { (void) mode; return 0; }
-u8 MCCGetLastError(void) { return 0; }
-int MCCGetConnectionStatus(enum MCC_CHANNEL ch, enum MCC_CONNECT* connect)
+int MCCEnumDevices(MCC_CBEnumDevices cb)
 {
-    (void) ch; (void) connect;
+    (void) cb;
     return -1;
 }
-int MCCNotify(enum MCC_CHANNEL ch, u32 notify) { (void) ch; (void) notify; return -1; }
-int MCCStreamOpen(enum MCC_CHANNEL ch, u8 blockSize) { (void) ch; (void) blockSize; return -1; }
+u8 MCCGetFreeBlocks(enum MCC_MODE mode)
+{
+    (void) mode;
+    return 0;
+}
+u8 MCCGetLastError(void)
+{
+    return 0;
+}
+int MCCGetConnectionStatus(enum MCC_CHANNEL ch, enum MCC_CONNECT* connect)
+{
+    (void) ch;
+    (void) connect;
+    return -1;
+}
+int MCCNotify(enum MCC_CHANNEL ch, u32 notify)
+{
+    (void) ch;
+    (void) notify;
+    return -1;
+}
+int MCCStreamOpen(enum MCC_CHANNEL ch, u8 blockSize)
+{
+    (void) ch;
+    (void) blockSize;
+    return -1;
+}
 
 // --- THP ------------------------------------------------------------------
 
-BOOL THPInit(void) { COMPAT_STUB(); return false; }
-s32 THPDec_8032F8D4(u32 file, void* out) { (void) file; (void) out; return -1; }
+BOOL THPInit(void)
+{
+    COMPAT_STUB();
+    return false;
+}
+s32 THPDec_8032F8D4(u32 file, void* out)
+{
+    (void) file;
+    (void) out;
+    return -1;
+}
 s32 THPDec_8032FD40(THPDec_8032FD40_Data* arg0, u16 height)
 {
-    (void) arg0; (void) height;
+    (void) arg0;
+    (void) height;
     return -1;
 }
 void THPDec_80331340(s32 a, void* b, void* c, void* d)
 {
-    (void) a; (void) b; (void) c; (void) d;
+    (void) a;
+    (void) b;
+    (void) c;
+    (void) d;
 }
 void THPDec_803313D0(s32 a, void* b, void* c, void* d, u32 e)
 {
-    (void) a; (void) b; (void) c; (void) d; (void) e;
+    (void) a;
+    (void) b;
+    (void) c;
+    (void) d;
+    (void) e;
 }
-s32 THPVideoDecode(void* file, void* tileY, void* tileU, void* tileV, void* work)
+s32 THPVideoDecode(void* file, void* tileY, void* tileU, void* tileV,
+                   void* work)
 {
-    (void) file; (void) tileY; (void) tileU; (void) tileV; (void) work;
+    (void) file;
+    (void) tileY;
+    (void) tileU;
+    (void) tileV;
+    (void) work;
     return -1;
 }
 
@@ -66,13 +115,16 @@ s32 THPVideoDecode(void* file, void* tileY, void* tileU, void* tileV, void* work
 void GXSetTevClampMode(int tev_stage, int mode)
 {
     // Fixed-function TEV clamping; aurora's shader-based TEV always clamps.
-    (void) tev_stage; (void) mode;
+    (void) tev_stage;
+    (void) mode;
 }
 
 void GXInitFogAdjTable(GXFogAdjTable* table, u16 width, f32 projmtx[4][4])
 {
     COMPAT_STUB();
-    (void) table; (void) width; (void) projmtx;
+    (void) table;
+    (void) width;
+    (void) projmtx;
 }
 
 void GXWaitDrawDone(void)
@@ -102,8 +154,8 @@ void melee_pc_missing(const char* name)
         lenient = getenv("MELEE_PC_STUB_CONTINUE") != NULL;
     }
     if (!lenient) {
-        OSPanic(__FILE__, __LINE__,
-                "melee_pc: unimplemented function: %s", name);
+        OSPanic(__FILE__, __LINE__, "melee_pc: unimplemented function: %s",
+                name);
     }
 
     for (i = 0; i < n_seen; i++) {
@@ -129,13 +181,41 @@ void PADSetSamplingRate(u32 msec)
 //
 // memory on pc is cache-coherent so there is nothing to do
 
-void DCFlushRange(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
-void DCStoreRange(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
-void DCInvalidateRange(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
-void DCFlushRangeNoSync(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
-void DCStoreRangeNoSync(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
-void DCZeroRange(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
-void ICInvalidateRange(void* addr, u32 nBytes) { (void) addr; (void) nBytes; }
+void DCFlushRange(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
+void DCStoreRange(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
+void DCInvalidateRange(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
+void DCFlushRangeNoSync(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
+void DCStoreRangeNoSync(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
+void DCZeroRange(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
+void ICInvalidateRange(void* addr, u32 nBytes)
+{
+    (void) addr;
+    (void) nBytes;
+}
 
 // --- VI -------------------------------------------------------------------
 

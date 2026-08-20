@@ -1,27 +1,25 @@
 // PC entry point
-// this sets up aurora and any ancilliary stuff and then hands it off to the real
-// game main()
+// this sets up aurora and any ancilliary stuff and then hands it off to the
+// real game main()
 
+#include "compat_pc.h"
+
+#include <execinfo.h>
+#include <malloc.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dolphin/os.h>
 #include <aurora/aurora.h>
 #include <aurora/dvd.h>
 #include <aurora/event.h>
 #include <aurora/main.h>
-
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <sys/mman.h>
-#include <execinfo.h>
-#include <malloc.h>
-#include <signal.h>
-#include <unistd.h>
 
-#include "compat_pc.h"
-
-#include <dolphin/os.h>
-
-// Declared here rather than via <melee_pc_gx.h>: this file is built with normal libc
-// and melee_compat/include carries the MSL-shadowing headers that
+// Declared here rather than via <melee_pc_gx.h>: this file is built with
+// normal libc and melee_compat/include carries the MSL-shadowing headers that
 // the game sources need but this one must not see.
 void melee_pc_set_mem1(const void* start, unsigned int size);
 void melee_pc_arq_drain(void);
@@ -115,7 +113,8 @@ static void map_os_globals(void)
 
     if (p == MAP_FAILED || p != OS_GLOBALS_BASE) {
         melee_pc_printf("melee_pc: could not map OS globals at %p; reads of "
-                        "0x800000F8 will crash\n", OS_GLOBALS_BASE);
+                        "0x800000F8 will crash\n",
+                        OS_GLOBALS_BASE);
         return;
     }
 
@@ -148,7 +147,8 @@ void melee_pc_frame_pump(void)
     }
 
     for (event = aurora_update(); event != NULL && event->type != AURORA_NONE;
-         ++event) {
+         ++event)
+    {
         switch (event->type) {
         case AURORA_EXIT:
             exiting = true;
@@ -186,8 +186,8 @@ static void log_callback(AuroraLogLevel level, const char* module,
 {
     static const char* names[] = { "DEBUG", "INFO", "WARN", "ERROR", "FATAL" };
     (void) len;
-    melee_pc_printf("[%s] [%s] %s\n",
-                    level <= LOG_FATAL ? names[level] : "?", module, message);
+    melee_pc_printf("[%s] [%s] %s\n", level <= LOG_FATAL ? names[level] : "?",
+                    module, message);
 }
 
 static const char* find_disc(int argc, char* argv[])

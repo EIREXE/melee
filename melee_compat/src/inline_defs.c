@@ -5,14 +5,12 @@
 // so every call from a TU that did not inline it is left undefined at link
 // time.
 
+#include <math_ppc.h>
+#include <baselib/jobj.h>
+#include <baselib/lobj.h>
 #include <melee/ft/inlines.h>
 #include <melee/gm/inlines.h>
 #include <melee/vi/vi.h>
-
-#include <baselib/jobj.h>
-#include <baselib/lobj.h>
-
-#include <math_ppc.h>
 
 // ctype.h and sqrtf are not listed here: melee_compat's replacements for those
 // two headers make them `static inline`, so each TU keeps its own copy and no

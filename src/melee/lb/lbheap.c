@@ -10,8 +10,6 @@
 #include <baselib/memory.h>
 #include <melee/lb/lbmemory.h>
 
-#include <stddef.h> // offsetof
-
 struct lbHeap_HeapDesc {
     u32 idx;
     u32 type;

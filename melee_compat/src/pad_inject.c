@@ -1,9 +1,9 @@
 // Scripted controller input, for driving the game without a human.
 //
 // Most of what is left to port sits behind menus, and reaching it by hand
-// is a bit of a pain specially if you are running multiple copies of the game to try for data races
-// This wraps PADRead and ORs in button presses from a script, so a run can be told to
-// press Start at frame 300 and A at frame 420
+// is a bit of a pain specially if you are running multiple copies of the game
+// to try for data races This wraps PADRead and ORs in button presses from a
+// script, so a run can be told to press Start at frame 300 and A at frame 420
 
 #include "compat_report.h"
 
@@ -111,7 +111,8 @@ static void parse_script(void)
     }
 
     if (event_count > 0) {
-        melee_pc_printf("melee_pc: scripted input, %d event(s)\n", event_count);
+        melee_pc_printf("melee_pc: scripted input, %d event(s)\n",
+                        event_count);
     }
 }
 

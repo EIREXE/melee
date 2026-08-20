@@ -944,13 +944,13 @@ void Camera_8002A0C0(CameraBounds* bounds, CameraTransformState* state)
      * not line up, so `data->desc` reads the wrong bytes -- and a zero
      * viewport divides to NaN here and takes the whole camera with it.  Name
      * the symbol it is really after. */
-    viewport_x_scale = cm_803BCB64.aspect *
-                       (half_view_height /
-                        (0.5f * (f32) (cm_803BCB64.viewport.xmax -
-                                       cm_803BCB64.viewport.xmin)));
-    viewport_y_scale = half_view_height /
-                       (0.5f * (f32) (cm_803BCB64.viewport.ymax -
-                                      cm_803BCB64.viewport.ymin));
+    viewport_x_scale =
+        cm_803BCB64.aspect *
+        (half_view_height / (0.5f * (f32) (cm_803BCB64.viewport.xmax -
+                                           cm_803BCB64.viewport.xmin)));
+    viewport_y_scale =
+        half_view_height /
+        (0.5f * (f32) (cm_803BCB64.viewport.ymax - cm_803BCB64.viewport.ymin));
 #else
     viewport_x_scale =
         data->desc.aspect *

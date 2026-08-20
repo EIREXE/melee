@@ -10,10 +10,10 @@ static inline void Locate(HSD_Archive* archive)
 
     for (i = 0; i < archive->header.nb_reloc; i++) {
 #ifdef MELEE_PC
-        // The slot cannot hold the resolved address: it is four bytes wide, and
-        // storing a host address in it is what used to pin every archive below
-        // 4GB. Store the distance from the slot to its target instead, which
-        // is valid wherever the buffer is mapped.
+        // The slot cannot hold the resolved address: it is four bytes wide,
+        // and storing a host address in it is what used to pin every archive
+        // below 4GB. Store the distance from the slot to its target instead,
+        // which is valid wherever the buffer is mapped.
         ptr = (u32*) (archive->data +
                       MELEE_PC_BE32(archive->reloc_info[i].offset));
         melee_pc_dat_store_ptr(ptr, archive->data + MELEE_PC_BE32(*ptr));
@@ -84,14 +84,14 @@ void* HSD_ArchiveGetPublicAddress(HSD_Archive* archive, const char* symbols)
     u32 i;
 
     for (i = 0; i < archive->header.nb_public; i++) {
-        int comparison =
-            strcmp(archive->symbols +
-                       MELEE_PC_BE32(archive->public_info[i].symbol),
-                   symbols);
+        int comparison = strcmp(
+            archive->symbols + MELEE_PC_BE32(archive->public_info[i].symbol),
+            symbols);
 
         if (comparison == 0) {
             // If both strings are equal, we've found the node
-            return archive->data + MELEE_PC_BE32(archive->public_info[i].offset);
+            return archive->data +
+                   MELEE_PC_BE32(archive->public_info[i].offset);
         }
     }
 

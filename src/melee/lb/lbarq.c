@@ -3,7 +3,6 @@
 #include <placeholder.h>
 
 #include <stddef.h>
-
 #include <dolphin/ar.h>
 #include <dolphin/os.h>
 #include <baselib/debug.h>
@@ -51,8 +50,7 @@ static void lbArq_80014AC4(lbArqHandle* handle)
      * lbArq_80014BD0() truncates the node pointer.  A host pointer neither
      * fits in four bytes nor lands at that offset, so recover the node from
      * the request it is embedded in instead. */
-    lbArqNode* node =
-        (lbArqNode*) ((u8*) handle - offsetof(lbArqNode, arq));
+    lbArqNode* node = (lbArqNode*) ((u8*) handle - offsetof(lbArqNode, arq));
 #else
     lbArqNode* node = handle->node;
 #endif

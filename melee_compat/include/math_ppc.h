@@ -3,7 +3,10 @@
 
 double sqrt(double x);
 
-static inline double melee_pc_rsqrt_est(double x) { return 1.0 / sqrt(x); }
+static inline double melee_pc_rsqrt_est(double x)
+{
+    return 1.0 / sqrt(x);
+}
 #define __frsqrte melee_pc_rsqrt_est
 
 static inline float sqrtf(float x)

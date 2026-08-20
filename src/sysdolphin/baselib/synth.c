@@ -182,8 +182,8 @@ static void HSD_SynthSFXHeaderLoadCallback(int result, int length, void* addr,
         HSD_Synth_804D6028[0] = HSD_DevComRequest(
             HSD_Synth_804C2A60[0].entrynum, OSRoundUp32B(header_size + 0x10),
             hsd_SynthSFXBank[HSD_Synth_804C2A60[0].bankID],
-            MELEE_PC_BE32(hsd_SynthSFXLoadBuf[1]), 0x23, 1, HSD_SynthSFXSampleLoadCallback,
-            NULL);
+            MELEE_PC_BE32(hsd_SynthSFXLoadBuf[1]), 0x23, 1,
+            HSD_SynthSFXSampleLoadCallback, NULL);
         return;
     }
     HSD_Synth_804D7730 = NULL;

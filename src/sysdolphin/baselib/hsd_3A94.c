@@ -528,7 +528,7 @@ s32 fn_803AA790(void)
                              entry->xC, 1, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                ((CardCallback) entry->x14)(entry->x8, result);
+                (entry->x14)(entry->x8, result);
             }
         }
         entry->x0 = 0;
@@ -558,7 +558,7 @@ s32 fn_803AA790(void)
         }
         if (result < 0) {
             if (entry->x14 != NULL) {
-                ((CardCallback) entry->x14)(entry->x8, result);
+                (entry->x14)(entry->x8, result);
             }
         }
         entry->x0 = 0;
@@ -568,7 +568,7 @@ s32 fn_803AA790(void)
                              entry->x10, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                ((CardCallback) entry->x14)(0, result);
+                (entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -578,7 +578,7 @@ s32 fn_803AA790(void)
             fn_803B21E8(entry->x4, entry->xC, entry->x10, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                ((CardCallback) entry->x14)(0, result);
+                (entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -587,7 +587,7 @@ s32 fn_803AA790(void)
         result = fn_803ADE4C(arg0, entry->x8, (s32) entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                ((CardCallback) entry->x14)(0, result);
+                (entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -597,7 +597,7 @@ s32 fn_803AA790(void)
                              entry->x10, entry->x14);
         if (result < 0) {
             if (entry->x14 != NULL) {
-                ((CardCallback) entry->x14)(0, result);
+                (entry->x14)(0, result);
             }
         }
         entry->x0 = 0;
@@ -887,7 +887,7 @@ void hsd_803AAA48(void)
                     }
                 }
                 if (ctx->x8 != 0) {
-                    ((CardCallback) ctx->x8)(ctx->xC, hsd_804D7988);
+                    (ctx->x8)(ctx->xC, hsd_804D7988);
                 }
                 ctx->x0 = 0;
             }

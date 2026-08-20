@@ -1271,7 +1271,8 @@ loop_3:
         HSD_SisLib_803A7684(text, (u8*) cursor, 0x85U);
         /* fallthrough */
     case 8:
-        cursor = (u8*) (uintptr_t) MELEE_PC_BE32(*(u32*) ((u8*) cursor + 1)) - 1;
+        cursor =
+            (u8*) (uintptr_t) MELEE_PC_BE32(*(u32*) ((u8*) cursor + 1)) - 1;
         goto block_33;
     case 14:
         HSD_SisLib_803A7684(text, (u8*) cursor, 0x83U);
@@ -1289,7 +1290,8 @@ loop_3:
     case 10:
         if ((text->alloc_data == NULL) || (kern_enabled == 0)) {
             HSD_SisLib_803A7684(text, (u8*) cursor, 0x81U);
-            text->x78.x = (f32) (s16) MELEE_PC_BE16(*(u16*) ((u8*) cursor + 1)) / 256.0F;
+            text->x78.x =
+                (f32) (s16) MELEE_PC_BE16(*(u16*) ((u8*) cursor + 1)) / 256.0F;
         }
         cursor = (u8*) cursor + 4;
         goto block_33;
@@ -1834,7 +1836,7 @@ void HSD_SisLib_803A84BC(HSD_GObj* gobj, int pass)
             if (text->render_callback != NULL) {
                 // Widened before the call: the field is a 32-bit slot on PC and
                 // LLVM cannot emit a call through one. A no-op on GameCube.
-                ((HSD_TextRenderCallback) text->render_callback)(gobj);
+                ( text->render_callback)(gobj);
             }
         }
         GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);

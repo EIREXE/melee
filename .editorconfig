@@ -28,6 +28,17 @@ indent_style = tab
 [*.go]
 indent_style = tab
 
+[.gitmodules]
+indent_style = tab
+
+[{*.cmake,CMakeLists.txt}]
+indent_size = 2
+
+[*.py]
+# PEP 8 continuation lines are often aligned to an opening delimiter, which
+# isn't necessarily a multiple of the base indent size.
+indent_size = unset
+
 [*.md]
 indent_style = unset
 

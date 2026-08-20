@@ -1,6 +1,5 @@
-#include "melee_pc_gx.h"
-
 #include "compat_report.h"
+#include "melee_pc_gx.h"
 
 #include <dolphin/gx.h>
 #include <dolphin/os.h>
@@ -38,7 +37,10 @@ static void ensure_mem1(void)
 // address, would reject every one of them and hand back nullptr
 static bool mem1_check_off;
 
-void melee_pc_mem1_allow_all(void) { mem1_check_off = true; }
+void melee_pc_mem1_allow_all(void)
+{
+    mem1_check_off = true;
+}
 
 bool melee_pc_in_mem1(const void* p)
 {

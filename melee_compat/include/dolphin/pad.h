@@ -1,8 +1,8 @@
 #ifndef MELEE_COMPAT_DOLPHIN_PAD_H
 #define MELEE_COMPAT_DOLPHIN_PAD_H
 
-// Aurora's <dolphin/pad.h> declares the PAD API but not the special button masks
-// matches extern/dolphin/include/dolphin/pad.h.
+// Aurora's <dolphin/pad.h> declares the PAD API but not the special button
+// masks matches extern/dolphin/include/dolphin/pad.h.
 
 #include_next <dolphin/pad.h>
 
@@ -34,7 +34,6 @@
 #define PAD_ANY_LEFT (1ULL << 38)
 #define PAD_ANY_RIGHT (1ULL << 39)
 #endif
-
 
 // Not declared by aurora's pad.h.
 void PADSetSamplingRate(u32 msec);

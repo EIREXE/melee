@@ -120,8 +120,7 @@ s32 melee_pc_card_mount_async(s32 chan, void* workArea,
                               CARDCallback attachCallback)
 {
     CARD_WRAP(chan, attachCallback,
-              CARDMountAsync(chan, workArea, detachCallback,
-                             card_trampoline));
+              CARDMountAsync(chan, workArea, detachCallback, card_trampoline));
 }
 
 s32 melee_pc_card_check_async(s32 chan, CARDCallback callback)
@@ -137,9 +136,9 @@ s32 melee_pc_card_format_async(s32 chan, CARDCallback callback)
 s32 melee_pc_card_create_async(s32 chan, const char* fileName, u32 size,
                                CARDFileInfo* fileInfo, CARDCallback callback)
 {
-    CARD_WRAP(chan, callback,
-              CARDCreateAsync(chan, fileName, size, fileInfo,
-                              card_trampoline));
+    CARD_WRAP(
+        chan, callback,
+        CARDCreateAsync(chan, fileName, size, fileInfo, card_trampoline));
 }
 
 s32 melee_pc_card_delete_async(s32 chan, const char* fileName,

@@ -864,7 +864,8 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     offset = count * 4 + 4;
     AXDriver_804D77A4 = ptr;
 
-    AXDriver_804D77A8 = MELEE_PC_BE32(*(s32*) ((u8*) AXDriver_804D7798 + offset));
+    AXDriver_804D77A8 =
+        MELEE_PC_BE32(*(s32*) ((u8*) AXDriver_804D7798 + offset));
     offset += 4;
     if (AXDriver_804D77A8 != 0) {
         ptr = (u8*) AXDriver_804D7798 + offset;
@@ -934,7 +935,8 @@ void AXDriver_8038DA70(const char* path, void (*callback)(void))
     }
 
     offset += AXDriver_804D77B8 * 4;
-    AXDriver_804D77C0 = MELEE_PC_BE32(*(s32*) ((u8*) AXDriver_804D7798 + offset));
+    AXDriver_804D77C0 =
+        MELEE_PC_BE32(*(s32*) ((u8*) AXDriver_804D7798 + offset));
     offset += 4;
     if (AXDriver_804D77C0 != 0) {
         ptr = (u8*) AXDriver_804D7798 + offset;

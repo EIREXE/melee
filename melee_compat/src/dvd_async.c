@@ -44,7 +44,10 @@ static void dvd_lock(void)
     }
 }
 
-static void dvd_unlock(void) { __atomic_clear(&lock_flag, __ATOMIC_RELEASE); }
+static void dvd_unlock(void)
+{
+    __atomic_clear(&lock_flag, __ATOMIC_RELEASE);
+}
 
 // Runs on aurora's DVD worker thread. Does nothing but hand the result over.
 static void dvd_tramp(s32 result, DVDFileInfo* info)

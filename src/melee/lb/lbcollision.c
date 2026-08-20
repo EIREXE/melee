@@ -2236,7 +2236,8 @@ void lbColl_80008FC8(Vec3 arg0, Vec3 arg1, GXColor* arg2, GXColor* arg3,
     if (!isSmall(var_f31)) {
         GXClearVtxDesc();
         GXSETARRAY(GX_VA_POS, lbl_803B9DA0, sizeof(lbl_803B9DA0), 6, true);
-        GXSETARRAY(GX_VA_NRM, lbColl_803B9EC0, sizeof(lbColl_803B9EC0), 6, true);
+        GXSETARRAY(GX_VA_NRM, lbColl_803B9EC0, sizeof(lbColl_803B9EC0), 6,
+                   true);
         GXSetVtxDesc(GX_VA_POS, GX_INDEX8);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA4, 0xE);
         GXSetVtxDesc(GX_VA_NRM, GX_INDEX8);
@@ -2365,7 +2366,8 @@ void lbColl_800096B4(MtxPtr arg0, Vec3 arg1, Vec3 arg2, GXColor* arg3,
     if (!isSmall(var_f31)) {
         GXClearVtxDesc();
         GXSETARRAY(GX_VA_POS, lbl_803B9DA0, sizeof(lbl_803B9DA0), 6, true);
-        GXSETARRAY(GX_VA_NRM, lbColl_803B9EC0, sizeof(lbColl_803B9EC0), 6, true);
+        GXSETARRAY(GX_VA_NRM, lbColl_803B9EC0, sizeof(lbColl_803B9EC0), 6,
+                   true);
         GXSetVtxDesc(GX_VA_POS, GX_INDEX8);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_TEX_ST, GX_RGBA4, 0xE);
         GXSetVtxDesc(GX_VA_NRM, GX_INDEX8);

@@ -205,8 +205,8 @@ void* melee_pc_dat_ptrarray(const void* p, int type, unsigned int count);
 #define MELEE_PC_DAT_PTRARRAY(T, p, n)                                        \
     ((p) = melee_pc_dat_ptrarray((p), DAT_T_##T, (unsigned int) (n)))
 
-/// @brief Widens a table of @p n pointers without converting the things pointed to,
-/// for tables whose elements are arrays the caller sizes itself.
+/// @brief Widens a table of @p n pointers without converting the things
+/// pointed to, for tables whose elements are arrays the caller sizes itself.
 void* melee_pc_dat_ptrtable_raw(const void* p, unsigned int count);
 #define MELEE_PC_DAT_PTRTABLE_RAW(p, n)                                       \
     ((p) = melee_pc_dat_ptrtable_raw((p), (unsigned int) (n)))

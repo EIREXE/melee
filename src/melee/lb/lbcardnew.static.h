@@ -41,7 +41,7 @@ struct lb_80432A68_t {
     // through the result.
     /* 0x0A8 */ s32 unk_A8; // CardState::x0
     /* 0x0AC */ u8 pad_AC[offsetof(CardState, x28) - sizeof(s32)];
-    /* 0x0D0 */ int xD0[9];  // CardState::x28
+    /* 0x0D0 */ int xD0[9];          // CardState::x28
     /* 0x0F4 */ volatile int xF4[9]; // CardState::x4C
     /* 0x118 */ u8 pad_500[sizeof(CardState) - offsetof(CardState, x4C) -
                            9 * sizeof(int)];

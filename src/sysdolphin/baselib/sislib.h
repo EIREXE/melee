@@ -4,18 +4,15 @@
 #include <placeholder.h>
 #include <platform.h>
 
-#include "baselib/sislib_font.h" // HSD_SisLib_FontAtlas, for the glyph count below
-
-#include <stddef.h> // offsetof, for the layout asserts below
-
 #include "baselib/archive.h"
 #include "baselib/cobj.h"
 
 #include "baselib/forward.h"
 
-#include "baselib/sislib_font.h" // HSD_SisLib_FontAtlas, below
+#include "baselib/sislib_font.h" // HSD_SisLib_FontAtlas, for the glyph count below
 #include "dolphin/gx/GXStruct.h"
 
+#include <stddef.h> // offsetof, for the layout asserts below
 #include <dolphin/mtx.h>
 
 typedef struct _TextGlyphTexture {
@@ -92,8 +89,8 @@ struct HSD_Text {
     UNK_T MELEE_PC_PTR32 x60;       ///< position in text buffer
     SisBlock* MELEE_PC_PTR32 alloc_data;
     char* MELEE_PC_PTR32 string_buffer; ///< raw string buffer
-    u16 x6C;             ///< string length?
-    u16 x6E;             ///< alloc size?
+    u16 x6C;                            ///< string length?
+    u16 x6E;                            ///< alloc size?
     f32 current_width;
     f32 current_height;
     Vec2 x78;

@@ -4,12 +4,11 @@
 // leaving them to tools/gen_undefined_stubs.py would kill the game instantly.
 // Each does the least that is correct on a PC.
 
-#include "compat_report.h"
 #include "compat_pc.h"
-
-#include <stdarg.h>
+#include "compat_report.h"
 
 #include <math.h>
+#include <stdarg.h>
 
 // MSL's headers do not declare these; the PC build links the host libc.
 // (stdout rather than stderr: `stderr` is a macro in MSL's stdio.h, and
@@ -73,7 +72,7 @@ void OSPanic(const char* file, int line, const char* msg, ...)
     OSVReport(msg, args);
     va_end(args);
     OSReport("\n");
-    fflush(0);  // abort() does not flush, and the message is the whole point
+    fflush(0); // abort() does not flush, and the message is the whole point
     abort();
 }
 
@@ -87,8 +86,8 @@ void OSPanic(const char* file, int line, const char* msg, ...)
 // Per-thread, and delivery restricted to the game's own thread.
 //
 // aurora runs disc reads on a worker thread and calls
-// melee's DVD completion callbacks from it, so two threads interleave here, which resulted
-// in a big deadlock
+// melee's DVD completion callbacks from it, so two threads interleave here,
+// which resulted in a big deadlock
 //
 //   main:   OSDisableInterrupts()      prev=true,  irq=false
 //   worker: OSDisableInterrupts()      prev=false, irq=false
@@ -103,7 +102,10 @@ static __thread bool irq_enabled = true;
 static __thread bool is_game_thread;
 
 // Called from melee_pc's entry point before melee_main().
-void melee_pc_mark_game_thread(void) { is_game_thread = true; }
+void melee_pc_mark_game_thread(void)
+{
+    is_game_thread = true;
+}
 
 // Counters for the crash/hang snapshot in pc_main.c. A hang that leaves these
 // frozen means the game is spinning somewhere that never re-enables
@@ -122,8 +124,8 @@ static void deliver_interrupts(void)
 
     // Disc first: a DVD completion posts the ARAM transfer that finishes the
     // request, so draining it here lets the whole chain advance in one pass.
-    melee_pc_dvd_drain();     // stands in for the DI completion interrupt
-    melee_pc_arq_drain();     // stands in for the ARAM DMA completion
+    melee_pc_dvd_drain(); // stands in for the DI completion interrupt
+    melee_pc_arq_drain(); // stands in for the ARAM DMA completion
 
     if (in_delivery) {
         melee_pc_dbg_deliver_blocked++;
@@ -131,13 +133,16 @@ static void deliver_interrupts(void)
     }
     in_delivery = true;
     melee_pc_dbg_deliver++;
-    melee_pc_card_drain();    // stands in for the memory card's EXI completion
-    melee_pc_alarms_poll();   // stands in for the decrementer/alarm interrupt
-    melee_pc_vi_poll();       // stands in for the VI vertical-retrace interrupt
+    melee_pc_card_drain();  // stands in for the memory card's EXI completion
+    melee_pc_alarms_poll(); // stands in for the decrementer/alarm interrupt
+    melee_pc_vi_poll();     // stands in for the VI vertical-retrace interrupt
     in_delivery = false;
 }
 
-void melee_pc_pump(void) { deliver_interrupts(); }
+void melee_pc_pump(void)
+{
+    deliver_interrupts();
+}
 
 BOOL OSDisableInterrupts(void)
 {
@@ -165,7 +170,8 @@ BOOL OSEnableInterrupts(void)
 }
 
 // The alarm and VI schedulers need a clock, and aurora's OSGetTime() is the
-// wrong one to use for it, for two reasons, it's expensive as hell and it's not monotonic.
+// wrong one to use for it, for two reasons, it's expensive as hell and it's
+// not monotonic.
 
 struct melee_pc_timespec {
     long tv_sec;
@@ -188,9 +194,9 @@ static OSTime melee_pc_now(void)
 #define MAX_ALARMS 16
 
 static struct {
-    OSAlarm* alarm;         // identity; NULL means the slot is free
-    OSTime next;            // absolute time of the next firing
-    OSTime period;          // 0 for a one-shot
+    OSAlarm* alarm; // identity; NULL means the slot is free
+    OSTime next;    // absolute time of the next firing
+    OSTime period;  // 0 for a one-shot
     OSAlarmHandler handler;
 } alarm_slots[MAX_ALARMS];
 
@@ -287,22 +293,52 @@ void OSCancelAlarm(OSAlarm* alarm)
 
 // --- System state ---------------------------------------------------------
 
-s32 OSCheckActiveThreads(void) { return 0; }
-u32 OSGetConsoleSimulatedMemSize(void) { return 24 * 1024 * 1024; }
-u32 OSGetResetCode(void) { return 0; }
-BOOL OSGetResetSwitchState(void) { return false; }
+s32 OSCheckActiveThreads(void)
+{
+    return 0;
+}
+u32 OSGetConsoleSimulatedMemSize(void)
+{
+    return 24 * 1024 * 1024;
+}
+u32 OSGetResetCode(void)
+{
+    return 0;
+}
+BOOL OSGetResetSwitchState(void)
+{
+    return false;
+}
 void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu)
 {
     COMPAT_STUB();
-    (void) reset; (void) resetCode; (void) forceMenu;
+    (void) reset;
+    (void) resetCode;
+    (void) forceMenu;
 }
-u32 OSSaveContext(OSContext* context) { (void) context; return 0; }
+u32 OSSaveContext(OSContext* context)
+{
+    (void) context;
+    return 0;
+}
 
 // Console settings that live in the GameCube's RTC/SRAM. Fixed values here.
-u32 OSGetSoundMode(void) { return 1; }            // stereo
-void OSSetSoundMode(u32 mode) { (void) mode; }
-u32 OSGetProgressiveMode(void) { return 0; }
-void OSSetProgressiveMode(u32 on) { (void) on; }
+u32 OSGetSoundMode(void)
+{
+    return 1;
+} // stereo
+void OSSetSoundMode(u32 mode)
+{
+    (void) mode;
+}
+u32 OSGetProgressiveMode(void)
+{
+    return 0;
+}
+void OSSetProgressiveMode(u32 on)
+{
+    (void) on;
+}
 
 // --- VI -------------------------------------------------------------------
 //
@@ -400,14 +436,21 @@ void VIWaitForRetrace(void)
 
         if (melee_pc_now() > deadline) {
             OSReport("melee_pc: no VI retrace for a second; giving up on the "
-                     "wait (retrace_count=%u)\n", retrace_count);
+                     "wait (retrace_count=%u)\n",
+                     retrace_count);
             return;
         }
     }
 }
-int melee_pc_dbg_in_retrace(void) { return in_retrace ? 1 : 0; }
+int melee_pc_dbg_in_retrace(void)
+{
+    return in_retrace ? 1 : 0;
+}
 
-int melee_pc_dbg_irq_enabled(void) { return irq_enabled ? 1 : 0; }
+int melee_pc_dbg_irq_enabled(void)
+{
+    return irq_enabled ? 1 : 0;
+}
 
 void melee_pc_dbg_vi_state(long long* now, long long* next, long long* period)
 {
@@ -416,13 +459,28 @@ void melee_pc_dbg_vi_state(long long* now, long long* next, long long* period)
     *period = (long long) VI_PERIOD_TICKS;
 }
 
-u32 VIGetNextField(void) { return retrace_count & 1; }
+u32 VIGetNextField(void)
+{
+    return retrace_count & 1;
+}
 
 // Frames since boot, for melee_compat/src/pad_inject.c.
-unsigned long melee_pc_retrace_count(void) { return retrace_count; }
-u32 VIGetDTVStatus(void) { return 0; }
-void VISetBlack(BOOL black) { (void) black; }
-void VISetNextFrameBuffer(void* fb) { (void) fb; }
+unsigned long melee_pc_retrace_count(void)
+{
+    return retrace_count;
+}
+u32 VIGetDTVStatus(void)
+{
+    return 0;
+}
+void VISetBlack(BOOL black)
+{
+    (void) black;
+}
+void VISetNextFrameBuffer(void* fb)
+{
+    (void) fb;
+}
 
 VIRetraceCallback VISetPreRetraceCallback(VIRetraceCallback cb)
 {
@@ -440,19 +498,38 @@ VIRetraceCallback VISetPostRetraceCallback(VIRetraceCallback cb)
 
 // --- GX -------------------------------------------------------------------
 
-void GXSetCopyClamp(GXFBClamp clamp) { (void) clamp; }
-void GXSetMisc(GXMiscToken token, u32 val) { (void) token; (void) val; }
+void GXSetCopyClamp(GXFBClamp clamp)
+{
+    (void) clamp;
+}
+void GXSetMisc(GXMiscToken token, u32 val)
+{
+    (void) token;
+    (void) val;
+}
 
 // Progressive-scan render mode. Aurora declares the symbol but only defines
 // the interlaced modes; copy the 480i geometry.
 GXRenderModeObj GXNtsc480Prog;
 
-double __fabs(double x) { return __builtin_fabs(x); }
-float __fabsf(float x) { return __builtin_fabsf(x); }
-float __fnmsubs(float a, float b, float c) { return -(a * b - c); }
+double __fabs(double x)
+{
+    return __builtin_fabs(x);
+}
+float __fabsf(float x)
+{
+    return __builtin_fabsf(x);
+}
+float __fnmsubs(float a, float b, float c)
+{
+    return -(a * b - c);
+}
 
 // mwcc's sqrtf intrinsic.  The hardware compiler expands it to the Newton
 // refinement of frsqrte that math_ppc.h's sqrtf() reproduces, so route it
 // there rather than to the host libm: the two do not round alike, and game
 // code compares distances against tuned constants.
-float sqrtf__Ff(float x) { return sqrtf(x); }
+float sqrtf__Ff(float x)
+{
+    return sqrtf(x);
+}

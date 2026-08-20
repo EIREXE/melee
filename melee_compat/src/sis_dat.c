@@ -2,9 +2,8 @@
 #include "compat_report.h"
 
 #include <string.h>
-
-#include <baselib/archive.h>
 #include <dolphin/os.h>
+#include <baselib/archive.h>
 
 void* malloc(size_t size);
 
@@ -83,7 +82,8 @@ void* melee_pc_sis_convert(HSD_Archive* archive, void* sis)
 
     host = malloc(n * sizeof(void*));
     if (host == NULL) {
-        OSReport("melee_pc: out of memory converting a %u-slot SIS block\n", n);
+        OSReport("melee_pc: out of memory converting a %u-slot SIS block\n",
+                 n);
         return sis;
     }
 

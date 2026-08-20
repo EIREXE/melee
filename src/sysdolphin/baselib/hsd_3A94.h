@@ -3,8 +3,8 @@
 
 #include <placeholder.h>
 
-#include <stddef.h>
 #include <Gecko_setjmp.h>
+#include <stddef.h>
 #include <dolphin/card.h>
 
 typedef struct CardFileData {
@@ -73,9 +73,9 @@ typedef struct HsdCmdEntry {
     s32 f5;
 } HsdCmdEntry;
 
-/// The whole card work area. On GameCube this is three adjacent .bss objects --
-/// hsd_804D1138 (0x10), hsd_804D1148 (0x1200) and hsd_804D2348 (0x300) -- and
-/// the card code walks straight across the boundaries: CMD_QUEUE() indexes
+/// The whole card work area. On GameCube this is three adjacent .bss objects
+/// -- hsd_804D1138 (0x10), hsd_804D1148 (0x1200) and hsd_804D2348 (0x300) --
+/// and the card code walks straight across the boundaries: CMD_QUEUE() indexes
 /// hsd_804D1138 + offsetof(CardContext, x1210), which lands in hsd_804D2348.
 /// See hsd_4D11.c, which reserves the storage.
 typedef struct CardContext {
@@ -119,8 +119,7 @@ MELEE_PC_LAYOUT_ASSERT(offsetof(CardState, x170) == 0x170);
     ((HsdCmdEntry*) ((base) + offsetof(CardContext, x1210)))
 
 /// Ring length of the command buffer and of the queue behind it.
-#define CARD_CMD_COUNT                                                        \
-    (sizeof(((CardContext*) NULL)->x10) / sizeof(CardCmd))
+#define CARD_CMD_COUNT (sizeof(((CardContext*) NULL)->x10) / sizeof(CardCmd))
 #define CARD_QUEUE_COUNT                                                      \
     (sizeof(((CardContext*) NULL)->x1210) / sizeof(HsdCmdEntry))
 

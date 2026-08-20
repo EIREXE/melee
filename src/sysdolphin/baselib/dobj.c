@@ -207,7 +207,8 @@ static char HSD_DObj_804D5C84[5] = "dobj\0";
 HSD_DObj* HSD_DObjLoadDesc(HSD_DObjDesc* desc)
 {
     HSD_DObj* dobj;
-    HSD_ClassInfo* info; MELEE_PC_DAT(HSD_DObjDesc, desc);
+    HSD_ClassInfo* info;
+    MELEE_PC_DAT(HSD_DObjDesc, desc);
 
     if (desc == NULL) {
         return NULL;
