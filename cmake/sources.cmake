@@ -236,7 +236,25 @@ set(MELEE_SOURCES_GAME
     src/melee/ft/chara/ftCommon/ftCo_Squat.c
     src/melee/ft/chara/ftCommon/ftCo_SquatWait.c
     src/melee/ft/chara/ftCommon/ftCo_SquatRv.c
+    src/melee/ft/chara/ftCommon/ftCo_0D67.c
     src/melee/ft/chara/ftCommon/ftCo_Attack100.c
+    src/melee/ft/chara/ftCommon/ftCo_0D72.c
+    src/melee/ft/chara/ftCommon/ftCo_JumpAerialF1.c
+    src/melee/ft/chara/ftCommon/ftCo_ItemScopeStart.c
+    src/melee/ft/chara/ftCommon/ftCo_ItemScopeRapid.c
+    src/melee/ft/chara/ftCommon/ftCo_ItemScopeFire.c
+    src/melee/ft/chara/ftCommon/ftCo_ItemScope.c
+    src/melee/ft/chara/ftCommon/ftCo_Catch.c
+    src/melee/ft/chara/ftCommon/ftCo_0D8E.c
+    src/melee/ft/chara/ftCommon/ftCo_0D95.c
+    src/melee/ft/chara/ftCommon/ftCo_CatchPull.c
+    src/melee/ft/chara/ftCommon/ftCo_CatchWait.c
+    src/melee/ft/chara/ftCommon/ftCo_CatchAttack.c
+    src/melee/ft/chara/ftCommon/ftCo_CatchCut.c
+    src/melee/ft/chara/ftCommon/ftCo_CapturePulled.c
+    src/melee/ft/chara/ftCommon/ftCo_CaptureWait.c
+    src/melee/ft/chara/ftCommon/ftCo_CaptureJump.c
+    src/melee/ft/chara/ftCommon/ftCo_0DC2.c
     src/melee/ft/chara/ftCommon/ftCo_CaptureCut.c
     src/melee/ft/chara/ftCommon/ftCo_Throw.c
     src/melee/ft/chara/ftCommon/ftCo_Thrown.c
@@ -275,9 +293,15 @@ set(MELEE_SOURCES_GAME
     src/melee/ft/chara/ftLink/ftLk_SpecialS.c
     src/melee/ft/chara/ftLink/ftLk_SpecialN.c
     src/melee/ft/chara/ftKirby/ftkirby.c
+    src/melee/ft/chara/ftKirby/ftkirbydata.c
     src/melee/ft/chara/ftKirby/ftkirbyattackdash.c
     src/melee/ft/chara/ftKirby/ftkirbyspecialhi.c
+    src/melee/ft/chara/ftKirby/ftkirbyspeciallw.c
+    src/melee/ft/chara/ftKirby/ftkirbyspecials.c
     src/melee/ft/chara/ftKirby/ftkirbyspecialn.c
+    src/melee/ft/chara/ftKirby/ftkirbyspecialmario.c
+    src/melee/ft/chara/ftKirby/ftkirbyspecialluigi.c
+    src/melee/ft/chara/ftKirby/ftkirbyspecialcaptain.c
     src/melee/ft/chara/ftKirby/ftkirbyspecialpikachu.c
     src/melee/ft/chara/ftKirby/ftkirbyspecialkoopa.c
     src/melee/ft/chara/ftKirby/ftkirbyspeciallink.c
@@ -622,6 +646,7 @@ set(MELEE_SOURCES_GAME
     src/melee/db/dbbonus.c
     src/melee/db/dballoc.c
     src/melee/mn/mnmain.c
+    src/melee/mn/mn_22EC.c
     src/melee/mn/mnmainrule.c
     src/melee/mn/mnruleplus.c
     src/melee/mn/mnitemsw.c
@@ -943,19 +968,15 @@ set(MELEE_SOURCES_HSD
 set(MELEE_SOURCES_NONMATCHING
     src/melee/lb/lbcollision.c
     src/melee/lb/lbshadow.c
-    src/melee/lb/lb_00F9.c
     src/melee/lb/lbsnap.c
     src/melee/lb/lbbgflash.c
     src/melee/lb/lbaudio_ax.c
     src/melee/ft/chara/ftCommon/ftCo_DamageIce.c
     src/melee/ft/chara/ftCommon/ftCo_ItemThrow.c
-    src/melee/ft/chara/ftCommon/ftCo_DownBound.c
     src/melee/ft/chara/ftCommon/ftCo_0A01.c
     src/melee/ft/ftcpuattack.c
     src/melee/ft/ftafterimage.c
-    src/melee/ft/chara/ftCommon/ftCo_Attack100.c
-    src/melee/ft/chara/ftKirby/ftkirby.c
-    src/melee/ft/chara/ftKirby/ftkirbyspecialn.c
+    src/melee/ft/chara/ftCommon/ftCo_0D95.c
     src/melee/gm/gmmain_lib.c
     src/melee/gm/gm_1601.c
     src/melee/gm/gm_16F1.c
@@ -979,13 +1000,11 @@ set(MELEE_SOURCES_NONMATCHING
     src/melee/gr/grmaterial.c
     src/melee/gr/grkongo.c
     src/melee/gr/grzebes.c
-    src/melee/gr/gronett.c
     src/melee/gr/grbigblue.c
     src/melee/gr/grmutecity.c
     src/melee/gr/grinishie1.c
     src/melee/gr/grbigblueroute.c
     src/melee/gr/grgreens.c
-    src/melee/mn/mnmain.c
     src/melee/mn/mnmainrule.c
     src/melee/mn/mnruleplus.c
     src/melee/mn/mnitemsw.c
@@ -1000,7 +1019,6 @@ set(MELEE_SOURCES_NONMATCHING
     src/melee/mn/mnevent.c
     src/melee/mn/mninfo.c
     src/melee/mn/mnsnap.c
-    src/melee/mn/mnstagesel.c
     src/melee/mn/mncharsel.c
     src/melee/if/ifstatus.c
     src/melee/if/if_2F72.c

@@ -1312,6 +1312,9 @@ void efAsync_LoadSync(int idx)
     {
         bool chk = lbArchive_80017040(NULL, lookup->ef_DAT_file, &spC,
                                       lookup->effDataTable_name, 0);
+#ifdef MELEE_PC
+        EF_DAT_Entry* gc_table = spC;
+#endif
         // Same as in efAsync_OnLoad above: spC is a public symbol inside the
         // archive, so its three pointer fields are 4-byte big-endian slots.
         MELEE_PC_DAT(EF_DAT_Entry, spC);
@@ -1326,7 +1329,11 @@ void efAsync_LoadSync(int idx)
                                (void*) spC->effDataTable_name, NULL, NULL);
             }
         }
+#ifdef MELEE_PC
+        lookup->data = (u8*) gc_table + 8;
+#else
         lookup->data = &spC->data;
+#endif
     }
 }
 

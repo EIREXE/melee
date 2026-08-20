@@ -189,6 +189,7 @@ add_library(melee_compat_impl STATIC
   melee_compat/src/gx_arrays.c
   melee_compat/src/dat_reloc.c
   melee_compat/src/varargs.c
+  melee_compat/src/mwcc_runtime.c
 )
 target_link_libraries(melee_compat_impl PRIVATE melee_pc_options)
 

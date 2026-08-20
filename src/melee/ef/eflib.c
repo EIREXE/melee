@@ -441,8 +441,9 @@ EF_Effect* efLib_Create(int gfx_id, HSD_GObj* parent_gobj)
     EF_EffectDesc* desc;
     u8 p_link;
 
-    desc = &((EF_EffectDesc*) efAsync_DatEntries[gfx_id / 1000]
-                 .data)[gfx_id % 1000];
+    desc = MELEE_PC_DAT_ELEM(
+        EF_EffectDesc, (EF_EffectDesc*) efAsync_DatEntries[gfx_id / 1000].data,
+        gfx_id % 1000);
 
     if (efLib_LoadKind == EF_LOADKIND_ASYNC) {
         if (efLib_EffectCount >= 64) {

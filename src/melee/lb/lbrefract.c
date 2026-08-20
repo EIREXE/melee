@@ -658,8 +658,11 @@ static void fn_80022940(void)
 void lbRefract_80022998(HSD_MObj* mobj, u32 rendermode, s32 arg2)
 {
     u64 write_z;
+#ifdef MELEE_PC
+    GXCompare compare;
+#else
     enum _GXCompare compare;
-
+#endif
     HSD_TObjSetup(lbl_804336D0.tobj_list[arg2]);
 
     GXSetNumTexGens(2);

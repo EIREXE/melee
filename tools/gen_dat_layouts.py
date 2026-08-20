@@ -53,6 +53,7 @@ ROOTS = [
     # lbRefract_800222A4() looks this up as "lbRefData" in LbRf.dat.
     "lbRefract_Data",
     "EF_DAT_Entry",
+    "EF_EffectDesc",
     "GroundParam",
     "it_804D6D20_t",
     "GroundItemData",
@@ -269,6 +270,18 @@ ARRAYS = {
     ("UnkStageDat_x8_t", "unk4"): ("ptrnullraw",),
     ("UnkStageDat_x8_t", "unk8"): ("ptrnullraw",),
     ("UnkStageDat_x8_t", "unkC"): ("ptrnullraw",),
+}
+
+# Overrides the pointee type used for one field, for the rare case where the
+# matched C type alone doesn't say enough. Consulted after the type is read
+# out of the clang record dump, before it's looked up in the DAT type table.
+PTR_TYPES = {
+    # Declared void* in the matched struct (its true pointee was never
+    # pinned down), but Ground_801C34AC() compares it against a converted
+    # HSD_Joint* by identity (ground.c:1950) -- it has to go through the same
+    # conversion as that other pointer, or the comparison can never match on
+    # the host (two different address spaces).
+    ("GroundJointMap", "joint"): "HSD_Joint",
 }
 
 PROBE = """
@@ -541,6 +554,7 @@ def kind_for(ctype: str) -> str:
 
 
 ARRAYS_USED = set()
+PTR_TYPES_USED = set()
 
 
 def main() -> int:
@@ -665,7 +679,9 @@ def main() -> int:
             arr = ARRAYS.get((name, r["name"]))
             if arr is not None:
                 ARRAYS_USED.add((name, r["name"]))
-            pointee = base_type(r["ctype"])
+            if (name, r["name"]) in PTR_TYPES:
+                PTR_TYPES_USED.add((name, r["name"]))
+            pointee = PTR_TYPES.get((name, r["name"]), base_type(r["ctype"]))
             pid = f"DAT_T_{pointee}" if pointee in ids else "DAT_T_NONE"
 
             # A plain DAT_PTR with no element type is fine -- the converter
@@ -841,6 +857,16 @@ def main() -> int:
     if unused:
         print("error: ARRAYS entries that matched no field:", file=sys.stderr)
         for owner, field in unused:
+            why = ("type not in the table"
+                   if owner not in ids else "no such field")
+            print(f"  ({owner!r}, {field!r}) -- {why}", file=sys.stderr)
+        return 1
+
+    unused_ptr_types = sorted(set(PTR_TYPES) - PTR_TYPES_USED)
+    if unused_ptr_types:
+        print("error: PTR_TYPES entries that matched no field:",
+              file=sys.stderr)
+        for owner, field in unused_ptr_types:
             why = ("type not in the table"
                    if owner not in ids else "no such field")
             print(f"  ({owner!r}, {field!r}) -- {why}", file=sys.stderr)

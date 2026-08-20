@@ -19,6 +19,27 @@
 typedef union UnkFlagStruct {
     u8 u8;
     struct {
+        // Bitfield allocation order is implementation-defined: mwcc on
+        // PowerPC allocates the first-declared member at the MSB; clang/GCC
+        // on x86-64 allocate it at the LSB. Code that only ever reads/writes
+        // through the named bN accessors doesn't care which physical bit a
+        // name lands on -- but some callers (Fighter's x21FC_flag, notably
+        // fighter.c's `.u8 = 1` gating ftdrawcommon.c's draw check on `.b7`)
+        // read/write the whole byte via `.u8` too, and expect that to mean
+        // the same flag as on GameCube. Reversing the declaration order under
+        // MELEE_PC reproduces mwcc's name-to-bit-position mapping under
+        // clang's opposite allocation direction, so every accessor -- `.u8`
+        // and `.bN` alike -- keeps its GameCube meaning on the host build.
+#ifdef MELEE_PC
+        u8 b7 : 1;
+        u8 b6 : 1;
+        u8 b5 : 1;
+        u8 b4 : 1;
+        u8 b3 : 1;
+        u8 b2 : 1;
+        u8 b1 : 1;
+        u8 b0 : 1;
+#else
         u8 b0 : 1;
         u8 b1 : 1;
         u8 b2 : 1;
@@ -27,6 +48,7 @@ typedef union UnkFlagStruct {
         u8 b5 : 1;
         u8 b6 : 1;
         u8 b7 : 1;
+#endif
     };
 } UnkFlagStruct;
 

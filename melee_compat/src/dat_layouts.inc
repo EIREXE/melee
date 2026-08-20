@@ -3,7 +3,7 @@
 // GameCube (ppc32) vs host field layouts for the DAT-resident HSD
 // types, extracted from the real headers by clang.
 //
-// 121 types, reached from the HSD_*LoadDesc entry points.
+// 122 types, reached from the HSD_*LoadDesc entry points.
 // Types flagged with has_union need a hook in dat_reloc.c.
 
 static const DatField HSD_Joint_fields[] = {
@@ -313,6 +313,15 @@ static const DatField EF_DAT_Entry_fields[] = {
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
 };
 
+static const DatField EF_EffectDesc_fields[] = {
+    {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float lifetime
+    {    4,    8, DAT_PTR        , DAT_T_HSD_Joint             , 0, 0 }, // HSD_Joint * joint
+    {    8,   16, DAT_PTR        , DAT_T_HSD_AnimJoint         , 0, 0 }, // HSD_AnimJoint * animjoint
+    {   12,   24, DAT_PTR        , DAT_T_HSD_MatAnimJoint      , 0, 0 }, // HSD_MatAnimJoint * matanim_joint
+    {   16,   32, DAT_PTR        , DAT_T_HSD_ShapeAnimJoint    , 0, 0 }, // HSD_ShapeAnimJoint * shapeanim_joint
+    { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
+};
+
 static const DatField GroundParam_fields[] = {
     {    0,    0, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // float y
     {    4,    4, DAT_U16        , DAT_T_NONE                  , 0, 0 }, // s16 x4
@@ -474,7 +483,7 @@ static const DatField UnkStageDat_fields[] = {
 };
 
 static const DatField GroundJointMap_fields[] = {
-    {    0,    0, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // void * joint
+    {    0,    0, DAT_PTR        , DAT_T_HSD_Joint             , 0, 0 }, // void * joint
     {    4,    8, DAT_PTR        , DAT_T_NONE                  , 0, 0 }, // s16 * pairs (array, raw)
     {    8,   16, DAT_U32        , DAT_T_NONE                  , 0, 0 }, // s32 pair_count
     { 0, 0, DAT_END, DAT_T_NONE, 0, 0 },
@@ -2825,6 +2834,7 @@ static const DatType dat_types[] = {
     { "SceneDesc", 16, 32, SceneDesc_fields, 0 },
     { "lbRefract_Data", 8, 16, lbRefract_Data_fields, 0 },
     { "EF_DAT_Entry", 12, 24, EF_DAT_Entry_fields, 0 },
+    { "EF_EffectDesc", 20, 40, EF_EffectDesc_fields, 0 },
     { "GroundParam", 220, 224, GroundParam_fields, 0 },
     { "it_804D6D20_t", 24, 48, it_804D6D20_t_fields, 0 },
     { "GroundItemData", 8, 16, GroundItemData_fields, 0 },

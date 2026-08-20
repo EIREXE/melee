@@ -5,7 +5,7 @@
 
 #include <stddef.h>
 #include <dolphin/gx/GXStruct.h>
-#include <dolphin/thp.h>
+#include <dolphin/thp/thp.h>
 
 void lbMthp_8001F410(const char* filename, u32* rate_table, void* buf,
                      size_t heap_size, int loop);
